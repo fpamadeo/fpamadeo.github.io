@@ -1,0 +1,20 @@
+{
+  "UID": 0,
+  "Company": "",
+  "Title": "Career Overview",
+  "media": "",
+  "Highlights": [
+    "5+ years of full-stack software engineering experience across fintech and SaaS.",
+    "Proven track record of building and shipping production systems at scale.",
+    "Strong collaborator — experienced working across engineering, design, and product.",
+    "Passionate about clean architecture, developer experience, and mentoring.",
+    "Open source contributor with projects totaling 500+ GitHub stars."
+  ],
+  "Bullets": [
+    "Languages: JavaScript, TypeScript, Python, Go",
+    "Frameworks: Vue.js, React, Node.js, Express",
+    "Cloud & Infra: AWS, GCP, Docker, Kubernetes, Terraform",
+    "Databases: PostgreSQL, MongoDB, Redis",
+    "Tools: Git, GitHub Actions, Jira, Figma"
+  ]
+}

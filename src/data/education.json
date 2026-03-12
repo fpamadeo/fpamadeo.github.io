@@ -1,0 +1,22 @@
+[
+  {
+    "UID": 101,
+    "Company": "State University",
+    "Title": "B.S. Computer Science",
+    "StartDate": "2014-08-01T00:00:00",
+    "EndDate": "2018-05-31T00:00:00",
+    "media": "",
+    "Summary": "Focused on software engineering, algorithms, and distributed systems. Graduated with honors.",
+    "Bullets": [
+      "Capstone project: built a distributed key-value store in Go.",
+      "Teaching assistant for Introduction to Data Structures for 2 semesters.",
+      "Member of ACM student chapter and competitive programming club."
+    ],
+    "Tags": ["Computer Science", "Algorithms", "Distributed Systems", "Go", "Python"],
+    "Highlights": [
+      "Graduated Cum Laude with a 3.7 GPA.",
+      "Dean's List all 8 semesters.",
+      "Capstone project awarded 'Best in Class' by faculty panel."
+    ]
+  }
+]

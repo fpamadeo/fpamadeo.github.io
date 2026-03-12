@@ -1,0 +1,62 @@
+[
+  {
+    "UID": 1,
+    "Company": "Acme Corporation",
+    "Title": "Senior Software Engineer",
+    "StartDate": "2022-03-01T00:00:00",
+    "EndDate": "Present",
+    "media": "",
+    "Summary": "Led development of scalable microservices architecture handling 10M+ daily requests.",
+    "Bullets": [
+      "Architected and deployed a microservices platform reducing latency by 40%.",
+      "Mentored a team of 5 junior engineers across two agile squads.",
+      "Drove adoption of CI/CD pipelines, reducing deployment time from 2 hours to 12 minutes."
+    ],
+    "Tags": ["Vue.js", "Node.js", "AWS", "Microservices", "CI/CD"],
+    "Highlights": [
+      "Promoted to Senior Engineer within 18 months of joining.",
+      "Awarded 'Engineer of the Quarter' Q3 2023.",
+      "Key contributor to platform rewrite that saved $200K/year in infrastructure costs."
+    ]
+  },
+  {
+    "UID": 2,
+    "Company": "Acme Corporation",
+    "Title": "Software Engineer",
+    "StartDate": "2020-06-01T00:00:00",
+    "EndDate": "2022-02-28T00:00:00",
+    "media": "",
+    "Summary": "Developed and maintained full-stack features for the company's core SaaS product.",
+    "Bullets": [
+      "Built a real-time notification system using WebSockets serving 50K+ users.",
+      "Refactored legacy jQuery codebase to Vue.js, improving maintainability significantly.",
+      "Collaborated with UX team to implement a new design system across 30+ components."
+    ],
+    "Tags": ["Vue.js", "JavaScript", "PostgreSQL", "WebSockets"],
+    "Highlights": [
+      "Delivered notification system 2 weeks ahead of schedule.",
+      "Vue.js migration reduced bundle size by 35%.",
+      "Received highest peer review score in 2021 annual review cycle."
+    ]
+  },
+  {
+    "UID": 3,
+    "Company": "Bright Startup Inc.",
+    "Title": "Frontend Developer",
+    "StartDate": "2018-08-01T00:00:00",
+    "EndDate": "2020-05-31T00:00:00",
+    "media": "",
+    "Summary": "Built consumer-facing web applications for an early-stage fintech startup.",
+    "Bullets": [
+      "Developed the company's primary dashboard from scratch using React.",
+      "Integrated third-party payment APIs including Stripe and Plaid.",
+      "Improved Lighthouse performance score from 54 to 91 across all pages."
+    ],
+    "Tags": ["React", "JavaScript", "Stripe", "Fintech", "CSS"],
+    "Highlights": [
+      "First frontend hire — built the entire front-end infrastructure solo.",
+      "Dashboard became the company's primary sales demo tool.",
+      "Lighthouse performance improvements contributed to 15% increase in user retention."
+    ]
+  }
+]
