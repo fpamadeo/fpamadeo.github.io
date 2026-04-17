@@ -4,17 +4,23 @@
   "Title": "Career Overview",
   "media": "",
   "Highlights": [
-    "5+ years of full-stack software engineering experience across fintech and SaaS.",
-    "Proven track record of building and shipping production systems at scale.",
-    "Strong collaborator — experienced working across engineering, design, and product.",
-    "Passionate about clean architecture, developer experience, and mentoring.",
-    "Open source contributor with projects totaling 500+ GitHub stars."
+    "Developed new workflows and optimized existing software solutions across the stack for the successful launch of EpicU, Epic’s multi-million dollar end-user training management application.",
+    "Reduced the training billing process by 60%, enabling Finance to manage a 4x increase in training volume post-EpicU launch.",
+    " Centralized the Go-Live scheduling process, streamlining a week-long process to a day.",
+    "Modernized e-learning platform with progress and completion tracking, supporting hundreds of billable training from new asynchronous training tracks"
   ],
   "Bullets": [
-    "Languages: JavaScript, TypeScript, Python, Go",
-    "Frameworks: Vue.js, React, Node.js, Express",
-    "Cloud & Infra: AWS, GCP, Docker, Kubernetes, Terraform",
-    "Databases: PostgreSQL, MongoDB, Redis",
-    "Tools: Git, GitHub Actions, Jira, Figma"
+    "Languages: C#, JavaScript, TypeScript, C, C++, Python",
+    "Frameworks: Vue, React, .NET, ASP.NET Core, Node, Angular",
+    "Cloud: Azure, Google Workspace",
+    "Databases: SQL, NoSQL, MUMPS, Chronicles",
+    "Tools: Git, GitHub Actions, Jira, SVN, NuGet, Splunk"
+  ],
+  "Certifications": [
+    { "Name": "Artificial Intelligence(AI) Fundamentals", "Issuer": "IBM", "Date": "Oct 2024" },
+    { "Name": "Data Fundamentals", "Issuer": "IBM", "Date": "Sept 2024" },
+    { "Name": "Agile Explorer", "Issuer": "IBM", "Date": "Oct 2024" },
+    { "Name": ".NET/C#", "Issuer": "Epic Systems", "Date": "May 2020" },
+    { "Name": "Aria/CSS", "Issuer": "Epic Systems", "Date": "Mar 2020" }
   ]
 }

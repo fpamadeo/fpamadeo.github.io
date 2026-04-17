@@ -1,43 +1,31 @@
 {
-  "name": "Francis Paul Amadeo",
-  "profileImage": "",
-  "summary": "Software engineer, occasional writer, and perpetual tinkerer. I build things for the web and think too hard about systems design.",
-  "bio": "ACT I\n\nSCENE I. Verona. A public place.\n\nEnter SAMPSON and GREGORY, of the house of Capulet, armed with swords and bucklers.\n\nSAMPSON: Gregory, o' my word, we'll not carry coals.\n\nGREGORY: No, for then we should be colliers.\n\nSAMPSON: I mean, an we be in choler, we'll draw.\n\nGREGORY: Ay, while you live, draw your neck out o' the collar.\n\nSAMPSON: I strike quickly, being moved.\n\nGREGORY: But thou art not quickly moved to strike.\n\nSAMPSON: A dog of the house of Montague moves me.\n\nGREGORY: To move is to stir; and to be valiant is to stand: therefore, if thou art moved, thou runn'st away.\n\nSAMPSON: A dog of that house shall move me to stand: I will take the wall of any man or maid of Montague's.\n\nGREGORY: That shows thee a weak slave; for the weakest goes to the wall.\n\nSAMPSON: True; and therefore women, being the weaker vessels, are ever thrust to the wall: therefore I will push Montague's men from the wall, and thrust his maids to the wall.\n\nGREGORY: The quarrel is between our masters and us their men.\n\nSAMPSON: 'Tis all one, I will show myself a tyrant: when I have fought with the men, I will be cruel with the maids, and cut off their heads.\n\nGREGORY: The heads of the maids?\n\nSAMPSON: Ay, the heads of the maids, or their maidenheads; take it in what sense thou wilt.",
+  "name": "FRANCIS PAUL AMADEO",
+  "profileImage": "assets/images/Casual_photo_for_site.jpg",
+  "summary": "A Full Stack software engineer with experience in Learning Management Systems and Internal Tools and a strong focus in process optimization.",
+  "bio": "In my tenure with Epic Systems’ LMS developer team, I would lead projects from gathering requirements to shipping in production. Within my first year, my projects were able to save the company over 500 annual hours of internal and manual processing. \n\n This led to me quickly taking ownership over different functionalities and features in the EpicU system, such as our E-learning platform, our install scheduling tool, and our training billing processes, to name a few.In these roles, I would regularly meet with key stakeholders to provide project status updates and to ensure the developers’ timelines and releases align with their long term goals. \n\n Currently, I am a Freelance Software Engineer that analyzes an organization's process and improve on them by providing software tools and automation",
   "favorites": {
     "Music": [
-      "Radiohead",
-      "Massive Attack",
-      "Sigur Rós",
-      "FKA twigs",
-      "Floating Points"
+      "Drag Path — twenty one pilots",
+      "P.K.A.N.M. — Himawari",
+      "Settled — The Ransom Collective",
+      "Ang Pag-Ibig ay Kanibalismo II — fitterkarma",
+      "Tenderfoot — Reese Lansangan"
     ],
-    "Movies": [
-      "Stalker (1979)",
-      "Mulholland Drive",
-      "In the Mood for Love",
-      "The Tree of Life",
-      "Blade Runner 2049"
-    ],
+    "Movies": ["Hot Fuzz", "Back to the Future Trilogy", "Knives Out", "Past Lives", "Sinners"],
     "Books": [
-      "Gödel, Escher, Bach — Douglas Hofstadter",
-      "Blood Meridian — Cormac McCarthy",
-      "The Master and Margarita — Bulgakov",
-      "Thinking, Fast and Slow — Kahneman",
-      "The Pragmatic Programmer — Hunt & Thomas"
+      "No Matter The Wreckage — Sarah Kay",
+      "Atomic Habits — James Clear",
+      "Insomniacs After School — Makoto Ojiro",
+      "Helium — Rudy Francisco",
+      "7 Habits of Highly Effective People — Stephen R. Covey(Currently Reading)"
     ],
     "TV Shows": [
-      "The Wire",
-      "Twin Peaks",
-      "Severance",
-      "Midnight Mass",
-      "Dark"
+      "How I Met Your Mother",
+      "Only Murders In The Building",
+      "Gravity Falls",
+      "Only Connect",
+      "Ted Lasso"
     ],
-    "Video Games": [
-      "Disco Elysium",
-      "Hollow Knight",
-      "Outer Wilds",
-      "Hades",
-      "Planescape: Torment"
-    ]
+    "Video Games": ["Tekken 7", "Disgaea 5", "Hades II", "Inscryption", "Persona 4"]
   }
 }
