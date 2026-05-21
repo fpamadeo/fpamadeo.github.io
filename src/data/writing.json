@@ -2,21 +2,24 @@
   {
     "UID": 201,
     "Title": "On Distributed Consensus",
-    "Tags": ["distributed systems", "Raft", "Paxos", "computer science"],
+    "tags": ["Topic: Distributed Systems", "Topic: Raft", "Topic: Paxos", "Domain: Computer Science"],
+    "related": [],
     "Date": "2024-01-15T00:00:00",
     "Content": "WORK IN PROGRESS"
   },
   {
     "UID": 202,
     "Title": "Why I Switched from React to Vue",
-    "Tags": ["Vue.js", "React", "frontend", "opinion"],
+    "tags": ["Tech: Vue.js", "Tech: React", "Domain: Frontend", "Type: Opinion"],
+    "related": [],
     "Date": "2023-11-03T00:00:00",
     "Content": "WORK IN PROGRESS"
   },
   {
     "UID": 203,
     "Title": "A Practical Guide to CI/CD for Solo Developers",
-    "Tags": ["CI/CD", "GitHub Actions", "DevOps", "tutorial"],
+    "tags": ["Topic: CI/CD", "Tool: GitHub Actions", "Domain: DevOps", "Type: Tutorial"],
+    "related": [],
     "Date": "2023-08-20T00:00:00",
     "Content": "WORK IN PROGRESS"
   }

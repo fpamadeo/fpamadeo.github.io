@@ -1,0 +1,64 @@
+﻿<template>
+  <div class="page-wrapper">
+    <AppHeader />
+
+    <main class="page-main">
+      <SidebarComponent
+        :experiences="experiences"
+        :education="education"
+        :career-summary="careerSummary"
+        :show-search="true"
+        :search-query="searchQuery"
+        :linked-uid="linkedUID"
+        @select="onSelect"
+        @deselect="onDeselect"
+        @search="onSearch"
+        @showPrinny="onShowPrinny"
+      />
+      <HighlightComponent
+        :selected-entry="selectedEntry"
+        :default-entry="defaultHighlights"
+        :search-query="searchQuery"
+        :show-prinny="showPrinny"
+        @tag-click="onTagClick"
+      />
+    </main>
+
+    <AppFooter />
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import AppHeader from '@/components/AppHeader.ve'
+import AppFooter from '@/components/AppFooter.ve'
+import SidebarComponent from '@/components/SidebarComponent.ve'
+import HighlightComponent from '@/components/HighlightComponent.ve'
+
+import experienceData        from '@/data/experience.json'
+import educationData         from '@/data/education.json'
+import defaultHighlightsData from '@/data/defaultHighlights.json'
+
+const experiences       = ref(experienceData)
+const education         = ref(educationData)
+const defaultHighlights = ref(defaultHighlightsData)
+
+const careerSummary = 'Full- stack engineer with 5+ years building scalable products. Click any role to explore details, or use search to filter by skill or keyword.'
+
+const selectedEntry = ref(null)
+const searchQuery   = ref('')
+const linkedUID     = ref(null)
+const showPrinny    = ref(false)
+
+function onSelect(entry)  { selectedEntry. value = entry }
+function onDeselect()   { selectedEntry. value = null; searchQuery. value = ''; linkedUID. value = null; showPrinny. value = false }
+function onSearch(query)  { searchQuery. value = query }
+function onShowPrinny(val) { showPrinny. value = val }
+function onTagClick(uid) { linkedUID. value = uid }
+</script>
+
+<style scoped>
+.page-wrapper { display: flex; flex- direction: column; min-height: 100vh; }
+.page-main { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+@media (max-width: 767px) { .page-main { flex-direction: column-reverse; overflow: visible; } }
+</style>

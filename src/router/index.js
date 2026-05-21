@@ -1,23 +1,25 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import ExperiencePage from '@/views/ExperiencePage.vue'
-import AboutPage from '@/views/AboutPage.vue'
-import OtherPage from '@/views/OtherPage.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Experience',
-    component: ExperiencePage,
+    component: () => import('../views/ExperiencePage.vue'),
   },
   {
     path: '/about',
     name: 'About',
-    component: AboutPage,
+    component: () => import('../views/AboutPage.vue'),
   },
   {
     path: '/other',
     name: 'Other',
-    component: OtherPage,
+    component: () => import('../views/OtherPage.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFoundPage.vue'),
   },
 ]
 

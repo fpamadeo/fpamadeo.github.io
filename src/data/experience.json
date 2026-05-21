@@ -9,13 +9,14 @@
     "media": "assets/images/example freelance work.jpg",
     "Summary": "Full Stack Engineer and consultant services based in Chicagoland",
     "Bullets": [
-      "Simplified clients’ processes with automation and software tools in collaboration with power users and admins",
+      "Simplified clients\u2019 processes with automation and software tools in collaboration with power users and admins",
       "Consulted for organizations on how to increase security and scalability of their software functionalities."
     ],
-    "Tags": [],
+    "related": [],
+    "tags": ["Client: Freelance", "Role: Full Stack", "Stack: JavaScript", "Stack: Python", "Skill: Automation", "Skill: Architecture"],
     "Highlights": [
       "Reduced 80% of manual intervention in event planning and logistics by developing a customized software tool with an outlined process..",
-      "Improved member participation and retention after introducing an automated monthly process that provided data to inform the organization leadership’s decisions."
+      "Improved member participation and retention after introducing an automated monthly process that provided data to inform the organization leadership\u2019s decisions."
     ]
   },
   {
@@ -29,16 +30,17 @@
     "Summary": "Developed and maintained full-stack features for the Epic's Learning Management System and Internal Tools.",
     "Bullets": [
       "Freed up 50% of the Finance team to rotate to other responsibilities by automating key tasks in the training billing process with the use of MUMPS, JavaScript, Node, .NET, and C#",
-      "Enabled 1,000s of billable hours of asynchronous training thru implementation of completion tracking in Epic’s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
+      "Enabled 1,000s of billable hours of asynchronous training thru implementation of completion tracking in Epic\u2019s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
       "Equipped the administrators to manage 100s of post-lockdown Go-Lives with an improved and centralized Go-Live scheduling workflow in a single-page app, utilizing Angular, JavaScript, and React.js.",
-      "improved Learning Management Systems’ sites’ middleware performance and scalability by refactoring backend infrastructure for customer-facing website."
+      "improved Learning Management Systems\u2019 sites\u2019 middleware performance and scalability by refactoring backend infrastructure for customer-facing website."
     ],
-    "Tags": [212],
+    "related": [212],
+    "tags": ["Company: Epic Systems", "Domain: Healthcare", "Role: Full Stack", "Stack: JavaScript", "Stack: .NET", "Stack: C#", "Stack: TypeScript", "Stack: SQL", "Tech: Azure"],
     "Highlights": [
-      "Developed and designed for the successful launch of Epic’s multi-million dollar end-user training management application by leading projects for new workflows and optimized existing software solutions across the stack.",
+      "Developed and designed for the successful launch of Epic\u2019s multi-million dollar end-user training management application by leading projects for new workflows and optimized existing software solutions across the stack.",
       "Reduced the training billing process by 60%, enabling Finance to manage a 4x increase in training volume post-End User Training launch.",
       "Streamlined a >7 day process to 1 day by centralizing the Go-Live scheduling functionalities.",
-      "Supported over 500 new billable training by modernizing Epic’s e-learning platform with progress and completion tracking."
+      "Supported over 500 new billable training by modernizing Epic\u2019s e-learning platform with progress and completion tracking."
     ]
   },
   {
@@ -55,7 +57,8 @@
       "Analyzed and outlined an optimized Training Billing process, effectively removing numerous bottlenecks and preserving data integrity.",
       "Coordinated company-wide training back-end requirements with the HIPAA Security trainer and admins for the annual HIPAA training."
     ],
-    "Tags": [211],
+    "related": [211],
+    "tags": ["Company: Epic Systems", "Domain: Healthcare", "Role: Leadership", "Skill: Microservices", "Skill: HIPAA", "Skill: ETL"],
     "Highlights": [
       "Ensured the long-term success of the Training Billing team by regularly reviewing designs and changes in the EpicU system.",
       "Coordinated Training billing changes in collaboration with the Trainer, Admin, finance, and the Software teams",
@@ -75,7 +78,8 @@
       "Designed and developed the main functionalityies of the wireless controller.",
       "Fabricated and wired circuits for Stella, a chain-driven robot, and its."
     ],
-    "Tags": [101, 222],
+    "related": [101, 222],
+    "tags": ["Domain: Robotics", "Role: Leadership", "Stack: C++", "Skill: Wireless", "Skill: Arduino", "Event: MRDC"],
     "Highlights": [
       "Project Stella 2019 won 2nd place overall in MRDC 2019.",
       "Delegated and oversaw electrical and proframming tasks for the electrical team",
@@ -96,7 +100,8 @@
       "Programmed Arduinos and fabricated various mechanisms to perform robots' functionalities.",
       "Mentored junior engineers on mechanical, electrical, and software need."
     ],
-    "Tags": [101, 222, 221],
+    "related": [101, 221],
+    "tags": ["Domain: Robotics", "Role: Mentoring", "Skill: Electrical Engineering", "Tool: Altium", "Tool: Eagle"],
     "Highlights": [
       "Became Software Lead for Project Stella 2019.",
       "Became outreach Director in 2019.",
@@ -116,9 +121,10 @@
       "Developed a circuit simulator in Python that students of all levels of Python familiarity can understand.",
       "Outlined and written the technical document used in the first ECE 464 class at UIC"
     ],
-    "Tags": [101],
+    "related": [101],
+    "tags": ["Domain: Education", "Stack: Python", "Skill: Circuit Simulation", "Skill: Research"],
     "Highlights": [
-      "Developed and designed the circuit simulator used in UIC’s first offering of ECE 464: Testing and Reliability of Digital Systems in Fall 2019",
+      "Developed and designed the circuit simulator used in UIC\u2019s first offering of ECE 464: Testing and Reliability of Digital Systems in Fall 2019",
       "Researched and presented a study in front of a panel of ECE professors."
     ]
   }

@@ -13,11 +13,12 @@
       "Member of Tau Beta Pi Honor Society.",
       "Dean's Lister for 4 semesters."
     ],
-    "Tags": ["Computer Engineering"],
+    "related": [211, 221, 222, 231],
+    "tags": ["Degree: Computer Engineering", "Honor: Cum Laude", "Society: IEEE HKN", "Society: Tau Beta Pi"],
     "Highlights": [
       "Graduated Cum Laude with a 3.6 GPA.",
       "Software Lead for Project STELLA 2019, the 2nd place overall at the 32nd Midwestern Robotics Design Competition.",
-      "Built the circuit simulator  used in UIC’s ECE 464: Testing and Reliability of Digital Systems inaugural class."
+      "Built the circuit simulator  used in UIC\u2019s ECE 464: Testing and Reliability of Digital Systems inaugural class."
     ]
   },
   {
@@ -32,6 +33,8 @@
       "Received Semester Honors all 6 semesters"
     ],
     "Bullets": [],
-    "Summary": "Graduated with High Honors."
+    "Summary": "Graduated with High Honors.",
+    "related": [],
+    "tags": ["Degree: Engineering Science", "Honor: High Honors"]
   }
 ]

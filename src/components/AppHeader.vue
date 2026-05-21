@@ -1,6 +1,6 @@
 <template>
   <header class="app-header">
-    <div class="header-title">LOREM IPSUM</div>
+    <div class="header-title">Francis Paul Amadeo</div>
     <nav class="header-nav" aria-label="Main navigation">
       <RouterLink to="/" :class="{ active: route.path === '/' }">Experience</RouterLink>
       <span class="nav-sep" aria-hidden="true"> | </span>

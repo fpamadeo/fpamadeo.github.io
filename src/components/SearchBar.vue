@@ -43,6 +43,7 @@ const query = ref('')
 const inputRef = ref(null)
 
 const RICK_STRINGS = ['rick', 'rick astley']
+const FROG_STRINGS = ['crazy frog', 'axel f', 'axel f cool', 'beverly hills']
 
 function handleSearch() {
   const trimmed = query.value.trim()
@@ -53,13 +54,17 @@ function handleSearch() {
   emit('search', trimmed)
 }
 
-// Exposed so parent (SidebarComponent) can clear the input on summary click
+// Exposed so parent (SidebarComponent) can clear or set the input
 function clear() {
   query.value = ''
   emit('search', '')
 }
 
-defineExpose({ clear })
+function setQuery(value) {
+  query.value = value
+}
+
+defineExpose({ clear, setQuery })
 </script>
 
 <style scoped>

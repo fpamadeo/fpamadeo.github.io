@@ -59,6 +59,13 @@ body {
   --sidebar-padding: 1rem;
   --transition-fast: 0.15s ease;
   --transition-med: 0.25s ease;
+
+  /* Tag pill colors */
+  --color-tag-bg: #f0f0f0;
+  --color-tag-hover-bg: #e4e4e4;
+
+  /* Rule separator color — used by RuleSeparator.vue */
+  --color-rule: #d0d0d0;
 }
 
 /* ─── Router link reset ───────────────────────────────────────── */
