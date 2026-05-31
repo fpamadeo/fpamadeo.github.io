@@ -1,14 +1,21 @@
 <template>
-  <div class="search-bar squircle" role="search">
+  <div
+    class="search-bar squircle"
+    role="search"
+  >
+    <label
+      for="search-input"
+      class="sr-only"
+    >Search entries</label>
     <input
+      id="search-input"
       ref="inputRef"
       v-model="query"
       type="text"
       class="search-input"
       placeholder="Search..."
-      aria-label="Search entries"
       @keydown.enter="handleSearch"
-    />
+    >
     <button
       class="search-btn"
       aria-label="Submit search"
@@ -27,20 +34,29 @@
         stroke-linejoin="round"
         aria-hidden="true"
       >
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        <circle
+          cx="11"
+          cy="11"
+          r="8"
+        />
+        <line
+          x1="21"
+          y1="21"
+          x2="16.65"
+          y2="16.65"
+        />
       </svg>
     </button>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
 const emit = defineEmits(['search'])
 
 const query = ref('')
-const inputRef = ref(null)
+const inputRef = ref<any>(null)
 
 const RICK_STRINGS = ['rick', 'rick astley']
 
@@ -87,8 +103,13 @@ defineExpose({ clear })
   font-family: var(--font-body);
   font-size: 0.82rem;
   color: var(--color-text);
-  outline: none;
   min-width: 0;
+}
+
+.search-input:focus-visible {
+  outline: 2px solid var(--color-selected-outline);
+  outline-offset: 1px;
+  border-radius: 2px;
 }
 
 .search-input::placeholder {
@@ -112,6 +133,11 @@ defineExpose({ clear })
 .search-btn:hover {
   color: var(--color-text);
   background-color: rgba(0, 0, 0, 0.06);
+}
+
+.search-btn:focus-visible {
+  outline: 2px solid var(--color-selected-outline);
+  outline-offset: 1px;
 }
 
 .search-btn:active {

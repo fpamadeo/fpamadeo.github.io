@@ -1,62 +1,168 @@
 [
   {
-    "UID": 1,
-    "Company": "Acme Corporation",
-    "Title": "Senior Software Engineer",
-    "StartDate": "2022-03-01T00:00:00",
+    "UID": 201,
+    "Company": "Freelance",
+    "Title": "Full Stack Software Engineer",
+    "StartDate": "2024-01-01T00:00:00",
     "EndDate": "Present",
-    "media": "",
-    "Summary": "Led development of scalable microservices architecture handling 10M+ daily requests.",
+    "location": "Greater Chicago Area",
+    "media": "assets/images/example freelance work.jpg",
+    "Summary": "Full Stack Engineer and consultant services based in Chicagoland",
     "Bullets": [
-      "Architected and deployed a microservices platform reducing latency by 40%.",
-      "Mentored a team of 5 junior engineers across two agile squads.",
-      "Drove adoption of CI/CD pipelines, reducing deployment time from 2 hours to 12 minutes."
+      "Simplified clients\u2019 processes with automation and software tools in collaboration with power users and admins",
+      "Consulted for organizations on how to increase security and scalability of their software functionalities."
     ],
-    "Tags": ["Vue.js", "Node.js", "AWS", "Microservices", "CI/CD"],
+    "related": [],
+    "tags": [
+      "Client: Freelance",
+      "Role: Full Stack",
+      "Stack: JavaScript",
+      "Stack: Python",
+      "Skill: Automation",
+      "Skill: Architecture"
+    ],
     "Highlights": [
-      "Promoted to Senior Engineer within 18 months of joining.",
-      "Awarded 'Engineer of the Quarter' Q3 2023.",
-      "Key contributor to platform rewrite that saved $200K/year in infrastructure costs."
+      "Reduced 80% of manual intervention in event planning and logistics by developing a customized software tool with an outlined process.",
+      "Improved member participation and retention after introducing an automated monthly process that provided data to inform the organization leadership\u2019s decisions."
     ]
   },
   {
-    "UID": 2,
-    "Company": "Acme Corporation",
+    "UID": 211,
+    "Company": "Epic Systems",
     "Title": "Software Engineer",
     "StartDate": "2020-06-01T00:00:00",
     "EndDate": "2022-02-28T00:00:00",
-    "media": "",
-    "Summary": "Developed and maintained full-stack features for the company's core SaaS product.",
+    "media": "assets/images/EpicU_Group_Anniversary.jpg",
+    "location": "Verona, WI",
+    "Summary": "Developed and maintained full-stack features for the Epic's Learning Management System and Internal Tools.",
     "Bullets": [
-      "Built a real-time notification system using WebSockets serving 50K+ users.",
-      "Refactored legacy jQuery codebase to Vue.js, improving maintainability significantly.",
-      "Collaborated with UX team to implement a new design system across 30+ components."
+      "Freed up 50% of the Finance team to rotate to other responsibilities by automating key tasks in the training billing process with the use of MUMPS, JavaScript, Node, .NET, and C#",
+      "Enabled 1,000s of billable hours of asynchronous training through implementation of completion tracking in Epic\u2019s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
+      "Equipped the administrators to manage 100s of post-lockdown Go-Lives with an improved and centralized Go-Live scheduling workflow in a single-page app, utilizing Angular, JavaScript, and React.js.",
+      "improved Learning Management Systems\u2019 sites\u2019 middleware performance and scalability by refactoring backend infrastructure for customer-facing website."
     ],
-    "Tags": ["Vue.js", "JavaScript", "PostgreSQL", "WebSockets"],
+    "related": [212],
+    "tags": [
+      "Company: Epic Systems",
+      "Domain: Healthcare",
+      "Role: Full Stack",
+      "Stack: JavaScript",
+      "Stack: .NET",
+      "Stack: C#",
+      "Stack: TypeScript",
+      "Stack: SQL",
+      "Tech: Azure"
+    ],
     "Highlights": [
-      "Delivered notification system 2 weeks ahead of schedule.",
-      "Vue.js migration reduced bundle size by 35%.",
-      "Received highest peer review score in 2021 annual review cycle."
+      "Developed and designed for the successful launch of Epic\u2019s multi-million dollar end-user training management application by leading projects for new workflows and optimized existing software solutions across the stack.",
+      "Reduced the training billing process by 60%, enabling Finance to manage a 4x increase in training volume post-End User Training launch.",
+      "Streamlined a >7 day process to 1 day by centralizing the Go-Live scheduling functionalities.",
+      "Supported over 500 new billable training by modernizing Epic\u2019s e-learning platform with progress and completion tracking."
     ]
   },
   {
-    "UID": 3,
-    "Company": "Bright Startup Inc.",
-    "Title": "Frontend Developer",
-    "StartDate": "2018-08-01T00:00:00",
-    "EndDate": "2020-05-31T00:00:00",
+    "UID": 212,
+    "Company": "Epic Systems",
+    "Title": "Feature Owner",
+    "StartDate": "2020-06-01T00:00:00",
+    "EndDate": "2022-02-28T00:00:00",
     "media": "",
-    "Summary": "Built consumer-facing web applications for an early-stage fintech startup.",
+    "location": "Verona, WI",
+    "Summary": "Technical point-person and main contact for key stakeholders.",
     "Bullets": [
-      "Developed the company's primary dashboard from scratch using React.",
-      "Integrated third-party payment APIs including Stripe and Plaid.",
-      "Improved Lighthouse performance score from 54 to 91 across all pages."
+      "Led the Development and maintenance of microservices for the Training Billing, Go-Live Scheduling, HIPAA Security Training, E-Learning functionalities, among others.",
+      "Analyzed and outlined an optimized Training Billing process, effectively removing numerous bottlenecks and preserving data integrity.",
+      "Coordinated company-wide training back-end requirements with the HIPAA Security trainer and admins for the annual HIPAA training."
     ],
-    "Tags": ["React", "JavaScript", "Stripe", "Fintech", "CSS"],
+    "related": [211],
+    "tags": [
+      "Company: Epic Systems",
+      "Domain: Healthcare",
+      "Role: Leadership",
+      "Skill: Microservices",
+      "Skill: HIPAA",
+      "Skill: ETL"
+    ],
     "Highlights": [
-      "First frontend hire — built the entire front-end infrastructure solo.",
-      "Dashboard became the company's primary sales demo tool.",
-      "Lighthouse performance improvements contributed to 15% increase in user retention."
+      "Ensured the long-term success of the Training Billing team by regularly reviewing designs and changes in the EpicU system.",
+      "Coordinated Training billing changes in collaboration with the Trainer, Admin, finance, and the Software teams",
+      " Improved the daily and weekly ETLs with analysis and optimization of billing profiles and databases."
+    ]
+  },
+  {
+    "UID": 221,
+    "Company": "Chicago Engineering Design Team",
+    "Title": "Software Lead",
+    "location": "Chicago, IL",
+    "StartDate": "2018-08-01T00:00:00",
+    "EndDate": "2019-03-04T00:00:00",
+    "media": "assets/images/Stella2019group.jpg",
+    "mediaFit": "force-height",
+    "Summary": "Lead Programmer of the Project STELLA robot for the 32nd Midwestern Robotics Design Competition",
+    "Bullets": [
+      "Designed and developed the main functionalities of the wireless controller."
+    ],
+    "related": [101, 222],
+    "tags": [
+      "Domain: Robotics",
+      "Role: Leadership",
+      "Stack: C++",
+      "Skill: Wireless",
+      "Skill: Arduino",
+      "Event: MRDC"
+    ],
+    "Highlights": [
+      "Project Stella 2019 won 2nd place overall in MRDC 2019.",
+      "Delegated and oversaw electrical and programming tasks for the electrical team",
+      "Led the design and development of a custom wireless controller."
+    ]
+  },
+  {
+    "UID": 222,
+    "Company": "Chicago Engineering Design Team",
+    "Title": "Senior ECE Member",
+    "location": "Chicago,IL",
+    "StartDate": "2019-12-01T00:00:00",
+    "EndDate": "2017-08-04T00:00:00",
+    "media": "",
+    "Summary": "Core member and mentor for the UIC Robotics organization.",
+    "Bullets": [
+      "Provided electrical, software and mechanical support and design advice to various teams and robots.",
+      "Programmed Arduinos and fabricated various mechanisms to perform robots' functionalities.",
+      "Mentored junior engineers on mechanical, electrical, and software needs."
+    ],
+    "related": [101, 221],
+    "tags": [
+      "Domain: Robotics",
+      "Role: Mentoring",
+      "Skill: Electrical Engineering",
+      "Tool: Altium",
+      "Tool: Eagle"
+    ],
+    "Highlights": [
+      "Became Software Lead for Project Stella 2019.",
+      "Became Outreach Director in 2019.",
+      "Led the conversion of EDT's NASA Robot Mining Competition electrical components from Altium Designer to AutoCAD Eagle."
+    ]
+  },
+  {
+    "UID": 231,
+    "Company": "University of Illinois at Chicago",
+    "Title": "Computer Engineering Intern",
+    "StartDate": "2019-07-01T00:00:00",
+    "EndDate": "2019-08-01T00:00:00",
+    "media": "",
+    "location": "Chicago, IL",
+    "Summary": "ECE Intern under Dr. Wenjing Rao",
+    "Bullets": [
+      "Developed a circuit simulator in Python that students of all levels of Python familiarity can understand.",
+      "Outlined and written the technical document used in the first ECE 464 class at UIC"
+    ],
+    "related": [101],
+    "tags": ["Domain: Education", "Stack: Python", "Skill: Circuit Simulation", "Skill: Research"],
+    "Highlights": [
+      "Developed and designed the circuit simulator used in UIC\u2019s first offering of ECE 464: Testing and Reliability of Digital Systems in Fall 2019",
+      "Researched and presented a study in front of a panel of ECE professors."
     ]
   }
 ]

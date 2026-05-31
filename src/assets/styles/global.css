@@ -36,6 +36,12 @@ body {
   flex-direction: column;
 }
 
+/* ─── Global focus-visible baseline ───────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-selected-outline);
+  outline-offset: 1px;
+}
+
 /* ─── CSS Variables ───────────────────────────────────────────── */
 :root {
   --color-bg: #ffffff;
@@ -46,6 +52,8 @@ body {
   --color-selected-outline: #f5c518;
   --color-dimmed-bg: rgba(0, 0, 0, 0.05);
   --color-search-bg: #f4f4f4;
+  --color-search-highlight-bg: #d4f0f7;
+  --color-search-highlight-outline: #64c8d4;
   --color-border: #e0e0e0;
 
   --header-height: 50px;
@@ -69,6 +77,19 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* ─── Screen-reader-only utility ─────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ─── Squircle utility (SearchBar) ───────────────────────────── */

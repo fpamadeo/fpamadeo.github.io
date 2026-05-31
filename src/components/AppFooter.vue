@@ -1,20 +1,29 @@
 <template>
   <footer class="app-footer">
-    <nav class="footer-nav" aria-label="Footer navigation">
+    <nav
+      class="footer-nav"
+      aria-label="Footer navigation"
+    >
       <a
         href="https://github.com/fpamadeo"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="GitHub profile"
       >GitHub</a>
-      <span class="nav-sep" aria-hidden="true"> | </span>
+      <span
+        class="nav-sep"
+        aria-hidden="true"
+      > | </span>
       <a
-        href="https://linkedin.com/in/fpamadeo"
+        href="https://linkedin.com/in/franpaul"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LinkedIn profile"
       >LinkedIn</a>
-      <span class="nav-sep" aria-hidden="true"> | </span>
+      <span
+        class="nav-sep"
+        aria-hidden="true"
+      > | </span>
       <!-- Easter egg: invisible text, tooltip hints to search for Rick -->
       <span
         class="easter-egg"
@@ -25,7 +34,7 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const easterEggTooltip = 'Search for Rick'
 const easterEggText = '✦'
 </script>

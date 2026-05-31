@@ -1,22 +1,40 @@
 [
   {
     "UID": 101,
-    "Company": "State University",
-    "Title": "B.S. Computer Science",
-    "StartDate": "2014-08-01T00:00:00",
-    "EndDate": "2018-05-31T00:00:00",
+    "Company": "University of Illinois at Chicago",
+    "Title": "Bachelor of Science in Computer Engineering",
+    "StartDate": "",
+    "EndDate": "",
     "media": "",
-    "Summary": "Focused on software engineering, algorithms, and distributed systems. Graduated with honors.",
+    "Summary": "Graduated cum laude.",
     "Bullets": [
-      "Capstone project: built a distributed key-value store in Go.",
-      "Teaching assistant for Introduction to Data Structures for 2 semesters.",
-      "Member of ACM student chapter and competitive programming club."
+      "Senior Design project: built a modular add-on for commercial deep fryers with Arduinos, DC Motor, and both laser-cut and 3D-printed parts.",
+      "Member of IEEE-Eta Kappa Nu Honor Society Iota Lambda chapter's relaunch.",
+      "Member of Tau Beta Pi Honor Society.",
+      "Dean's Lister for 4 semesters."
     ],
-    "Tags": ["Computer Science", "Algorithms", "Distributed Systems", "Go", "Python"],
+    "related": [211, 221, 222, 231],
+    "tags": ["Degree: Computer Engineering", "Honor: Cum Laude", "Society: IEEE HKN", "Society: Tau Beta Pi"],
     "Highlights": [
-      "Graduated Cum Laude with a 3.7 GPA.",
-      "Dean's List all 8 semesters.",
-      "Capstone project awarded 'Best in Class' by faculty panel."
+      "Graduated Cum Laude with a 3.6 GPA.",
+      "Software Lead for Project STELLA 2019, the 2nd place overall at the 32nd Midwestern Robotics Design Competition.",
+      "Built the circuit simulator used in UIC\u2019s ECE 464: Testing and Reliability of Digital Systems inaugural class."
     ]
+  },
+  {
+    "UID": 102,
+    "Company": "College of Lake County",
+    "Title": "Associate Degree in Engineering Science",
+    "StartDate": "",
+    "EndDate": "",
+    "Highlights": [
+      "Graduated with High Honors and 3.7 GPA",
+      "Received the Certification of Academic Distinction",
+      "Received Semester Honors all 6 semesters"
+    ],
+    "Bullets": [],
+    "Summary": "Graduated with High Honors.",
+    "related": [],
+    "tags": ["Degree: Engineering Science", "Honor: High Honors"]
   }
 ]

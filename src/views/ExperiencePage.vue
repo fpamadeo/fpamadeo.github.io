@@ -2,21 +2,29 @@
   <div class="page-wrapper">
     <AppHeader />
 
-    <main class="page-main">
+    <main
+      id="main-content"
+      class="page-main"
+    >
       <SidebarComponent
-        :experiences="experiences"
-        :education="education"
-        :career-summary="careerSummary"
+        ref="sidebarRef"
+        :config="sidebarConfig"
         :show-search="true"
         :search-query="searchQuery"
+        :linked-uid="linkedUID"
         @select="onSelect"
         @deselect="onDeselect"
         @search="onSearch"
       />
       <HighlightComponent
+        ref="highlightRef"
         :selected-entry="selectedEntry"
         :default-entry="defaultHighlights"
         :search-query="searchQuery"
+        :invalid-uid="invalidUID"
+        :entries="sortedEntries"
+        @tag-click="onTagClick"
+        @navigate="onNavigate"
       />
     </main>
 
@@ -24,38 +32,110 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue'
 import HighlightComponent from '@/components/HighlightComponent.vue'
 
-import experienceData from '@/data/experience.json'
-import educationData from '@/data/education.json'
+import experienceData        from '@/data/experience.json'
+import educationData         from '@/data/education.json'
 import defaultHighlightsData from '@/data/defaultHighlights.json'
 
-const experiences = ref(experienceData)
-const education = ref(educationData)
+const route = useRoute()
 const defaultHighlights = ref(defaultHighlightsData)
 
-const careerSummary = 'Full-stack engineer with 5+ years building scalable products. Click any role to explore details, or use search to filter by skill or keyword.'
+const selectedEntry = ref<any>(null)
+const searchQuery   = ref('')
+const linkedUID     = ref<any>(null)
+const invalidUID    = ref(false)
+const sidebarRef    = ref<any>(null)
+const highlightRef  = ref<any>(null)
 
-const selectedEntry = ref(null)
-const searchQuery = ref('')
+const allEntries = computed(() => [
+  ...experienceData,
+  ...educationData,
+])
 
-function onSelect(entry) {
-  selectedEntry.value = entry
+// Matches sidebar sort order: sections in config order, entries sorted by EndDate desc
+function parseDate(d: any): number {
+  if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
+  return new Date(d).getTime()
 }
 
-function onDeselect() {
-  selectedEntry.value = null
-  searchQuery.value = ''
+const sortedEntries = computed(() =>
+  ([...experienceData] as any[])
+    .sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate))
+    .concat(
+      ([...educationData] as any[]).sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate))
+    )
+)
+
+function findEntryByUID(uid) {
+  return allEntries.value.find(entry => entry.UID === uid) || null
 }
 
-function onSearch(query) {
-  searchQuery.value = query
+const sidebarConfig = computed(() => ({
+  sections: [
+    {
+      label: 'Experience',
+      entries: experienceData,
+      showDates: true,
+    },
+    {
+      label: 'Education',
+      entries: educationData,
+      showDates: false,
+    },
+  ],
+  summary: {
+    content: 'Full-stack engineer with 5+ years building scalable products. For freelance and professional opportunities, [connect on LinkedIn](https://linkedin.com/in/franpaul) or [send me an email](/#/contact).',
+    hint: '(Click any role to explore details, or use search to filter by skill or keyword.)',
+    ariaLabel: 'Career summary — click to reset selection',
+  },
+  defaultSelectedUID: null,
+}))
+
+function onSelect(entry)  { selectedEntry.value = entry }
+function onDeselect()     { selectedEntry.value = null; searchQuery.value = ''; linkedUID.value = null }
+function onSearch(query)  { searchQuery.value = query }
+
+function onTagClick(uid) {
+  linkedUID.value = uid
 }
+
+function onNavigate(uid) {
+  const entry = findEntryByUID(uid)
+  if (entry) {
+    selectedEntry.value = entry
+    sidebarRef.value?.selectByUID(uid)
+  }
+}
+
+onMounted(() => {
+  const uidParam = route.query.uid
+  if (uidParam) {
+    const uid = parseInt(uidParam as string, 10)
+    if (isNaN(uid)) {
+      invalidUID.value = true
+      return
+    }
+    const entry = findEntryByUID(uid)
+    if (entry) {
+      selectedEntry.value = entry
+    } else {
+      invalidUID.value = true
+    }
+  }
+})
+
+watch(selectedEntry, () => {
+  nextTick(() => highlightRef.value?.focusHighlight())
+})
+
+defineExpose({ findEntryByUID, invalidUID })
 </script>
 
 <style scoped>
@@ -69,9 +149,9 @@ function onSearch(query) {
   display: flex;
   flex: 1;
   overflow: hidden;
+  min-height: 0;
 }
 
-/* ─── Mobile: stack Highlight above Sidebar ───────────────────── */
 @media (max-width: 767px) {
   .page-main {
     flex-direction: column-reverse;

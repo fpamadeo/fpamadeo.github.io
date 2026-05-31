@@ -37,3 +37,15 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Writing content drafts
+src/writing/content/
+
+# Python cache
+__pycache__/
+
+# Python sync tool binary
+src/writing/sync-writings.exe
+
+# OpenCode Sessions
+opencode-sessions/

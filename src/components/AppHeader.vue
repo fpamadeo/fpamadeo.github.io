@@ -1,17 +1,18 @@
 <template>
   <header class="app-header">
-    <div class="header-title">LOREM IPSUM</div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="header-title">Francis Paul Amadeo</div>
     <nav class="header-nav" aria-label="Main navigation">
-      <RouterLink to="/" :class="{ active: route.path === '/' }">Experience</RouterLink>
+      <RouterLink to="/" :class="{ active: route.path === '/' }"> at Work </RouterLink>
       <span class="nav-sep" aria-hidden="true"> | </span>
-      <RouterLink to="/about" :class="{ active: route.path === '/about' }">About</RouterLink>
+      <RouterLink to="/about" :class="{ active: route.path === '/about' }"> at Life </RouterLink>
       <span class="nav-sep" aria-hidden="true"> | </span>
-      <RouterLink to="/other" :class="{ active: route.path === '/other' }">Other</RouterLink>
+      <RouterLink to="/other" :class="{ active: route.path === '/other' }"> at Random </RouterLink>
     </nav>
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router'
 const route = useRoute()
 </script>
@@ -48,7 +49,7 @@ const route = useRoute()
 .header-nav {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 0.4rem;
   font-size: clamp(0.6rem, 1.2vw, 0.8rem);
   letter-spacing: 0.05em;
 }
@@ -58,7 +59,7 @@ const route = useRoute()
   text-decoration: none;
   opacity: 0.75;
   transition: opacity var(--transition-fast);
-  padding: 0 2px;
+  padding: 0 0.3rem;
 }
 
 .header-nav a:hover,
@@ -76,5 +77,24 @@ const route = useRoute()
   opacity: 0.4;
   font-size: 0.7em;
   user-select: none;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  background: #111;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  z-index: 200;
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 </style>

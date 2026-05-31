@@ -1,43 +1,31 @@
 {
-  "name": "Francis Paul Amadeo",
-  "profileImage": "",
-  "summary": "Software engineer, occasional writer, and perpetual tinkerer. I build things for the web and think too hard about systems design.",
-  "bio": "ACT I\n\nSCENE I. Verona. A public place.\n\nEnter SAMPSON and GREGORY, of the house of Capulet, armed with swords and bucklers.\n\nSAMPSON: Gregory, o' my word, we'll not carry coals.\n\nGREGORY: No, for then we should be colliers.\n\nSAMPSON: I mean, an we be in choler, we'll draw.\n\nGREGORY: Ay, while you live, draw your neck out o' the collar.\n\nSAMPSON: I strike quickly, being moved.\n\nGREGORY: But thou art not quickly moved to strike.\n\nSAMPSON: A dog of the house of Montague moves me.\n\nGREGORY: To move is to stir; and to be valiant is to stand: therefore, if thou art moved, thou runn'st away.\n\nSAMPSON: A dog of that house shall move me to stand: I will take the wall of any man or maid of Montague's.\n\nGREGORY: That shows thee a weak slave; for the weakest goes to the wall.\n\nSAMPSON: True; and therefore women, being the weaker vessels, are ever thrust to the wall: therefore I will push Montague's men from the wall, and thrust his maids to the wall.\n\nGREGORY: The quarrel is between our masters and us their men.\n\nSAMPSON: 'Tis all one, I will show myself a tyrant: when I have fought with the men, I will be cruel with the maids, and cut off their heads.\n\nGREGORY: The heads of the maids?\n\nSAMPSON: Ay, the heads of the maids, or their maidenheads; take it in what sense thou wilt.",
+  "name": "FRANCIS PAUL AMADEO",
+  "profileImage": "assets/images/Casual_photo_for_site.jpg",
+  "summary": "A Full Stack Software Engineer with experience in Learning Management Systems and Internal Tools and a strong focus on process optimization. For freelance and professional opportunities, [connect on LinkedIn](https://linkedin.com/in/franpaul) or [send me an email](/#/contact).",
+  "bio": "Hi! I have two first names and build customized software solutions that make people's daily work a little less tedious. But I'll leave that to the [at work](/#/) section. \n\n I am a serial learner: the kind of person who enjoys diving into music rabbit holes after dinner then goes to bed 3 hours after bedtime with twenty one <sup>|-/(kek)</sup> new subgenres, each with a new favorite band. I love good poetry and great lyrics that will make you pause and listen again. (*See entirety of \"**Complainers**\" by Rudy Francisco*) \n\n I'm the kind of person that watches quiz shows, like *Only Connect*, *Lateral with Tom Scott* and *Jeopardy!* because it makes me feel smart and dumb at the same time. I love learning how things connect, which is probably why I enjoy making software. :D \n\n I am a devout catholic who's been taught **It'll all work out as He intended, as long as I do my best.** \n Not because  everything goes right, but because showing up, staying curious and a willingness to adapt to any situation will guide me even when it doesn't. If any of this resonates, [I'd love to hear from you](/#/contact)",
   "favorites": {
     "Music": [
-      "Radiohead",
-      "Massive Attack",
-      "Sigur Rós",
-      "FKA twigs",
-      "Floating Points"
+      "Drag Path — twenty one pilots",
+      "P.K.A.N.M. — Himawari",
+      "Settled — The Ransom Collective",
+      "Ang Pag-Ibig ay Kanibalismo II — fitterkarma",
+      "Fighting Fish — Dessa"
     ],
-    "Movies": [
-      "Stalker (1979)",
-      "Mulholland Drive",
-      "In the Mood for Love",
-      "The Tree of Life",
-      "Blade Runner 2049"
-    ],
+    "Movies": ["Hot Fuzz", "Back to the Future Trilogy", "Knives Out", "Past Lives", "Sinners"],
     "Books": [
-      "Gödel, Escher, Bach — Douglas Hofstadter",
-      "Blood Meridian — Cormac McCarthy",
-      "The Master and Margarita — Bulgakov",
-      "Thinking, Fast and Slow — Kahneman",
-      "The Pragmatic Programmer — Hunt & Thomas"
+      "No Matter The Wreckage — Sarah Kay",
+      "Atomic Habits — James Clear",
+      "Insomniacs After School — Makoto Ojiro",
+      "Helium — Rudy Francisco",
+      "Clean Code — Robert C. Martin (Currently Reading)"
     ],
     "TV Shows": [
-      "The Wire",
-      "Twin Peaks",
-      "Severance",
-      "Midnight Mass",
-      "Dark"
+      "How I Met Your Mother",
+      "Only Murders In The Building",
+      "Gravity Falls",
+      "Only Connect",
+      "Ted Lasso"
     ],
-    "Video Games": [
-      "Disco Elysium",
-      "Hollow Knight",
-      "Outer Wilds",
-      "Hades",
-      "Planescape: Torment"
-    ]
+    "Video Games": ["Tekken 7", "Disgaea 5", "Hades II", "Inscryption", "Persona 4"]
   }
 }
