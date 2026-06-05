@@ -20,6 +20,7 @@
         :selected-entry="selectedEntry"
         :default-entry="defaultHighlights"
         :search-query="searchQuery"
+        :invalid-uid="invalidUID"
         :tag-filter-enabled="true"
         :active-tag="activeTag"
         :entries="sortedEntries"
@@ -35,6 +36,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
+import { useURLSelection } from '@/composables/useURLSelection'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue'
@@ -50,6 +52,14 @@ const linkedUID = ref<any>(null)
 const activeTag = ref('')
 const sidebarRef = ref<any>(null)
 const highlightRef = ref<any>(null)
+
+const { invalidUID } = useURLSelection({
+  findEntry: (uid) => writingAsExperiences.value.find((e) => e.UID === uid),
+  onSelect: (entry) => {
+    selectedEntry.value = entry
+    sidebarRef.value?.selectByUID(entry.UID)
+  },
+})
 
 const writingAsExperiences = computed(() =>
   writingData.map((w) => ({
@@ -84,6 +94,7 @@ const sidebarConfig = computed(() => ({
       label: 'Writing',
       entries: writingAsExperiences.value,
       showDates: true,
+      singularDate: true,
     },
   ],
   summary: {
@@ -133,6 +144,12 @@ function onTagBadgeClick(tag) {
     if (sidebarRef.value?.setActiveTag) sidebarRef.value.setActiveTag(tag)
   }
 }
+
+function findEntryByUID(uid: number) {
+  return writingAsExperiences.value.find((e) => e.UID === uid) || null
+}
+
+defineExpose({ findEntryByUID, invalidUID })
 
 watch(selectedEntry, () => {
   nextTick(() => highlightRef.value?.focusHighlight())

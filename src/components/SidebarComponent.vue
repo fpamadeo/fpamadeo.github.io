@@ -77,6 +77,7 @@
       <div
         v-for="entry in sortedSectionEntries(section.entries)"
         :key="entry.UID"
+        :data-uid="entry.UID"
         class="sidebar-entry"
         :class="entryClasses(entry)"
         :style="entryIndentStyle(entry, section.entries)"
@@ -93,7 +94,7 @@
           <span
             v-if="section.showDates !== false"
             class="entry-dates"
-          >{{ formatDateRange(entry.StartDate, entry.EndDate) }}</span>
+          >{{ section.singularDate ? formatSingularDate(entry.StartDate) : formatDateRange(entry.StartDate, entry.EndDate) }}</span>
         </div>
         <div class="entry-title">
           {{ entry.Title }}
@@ -108,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { marked } from 'marked'
 import SearchBar from './SearchBar.vue'
 import { buildTagDisplay } from '@/composables/useTagAggregation'
@@ -197,6 +198,17 @@ function formatDate(d) {
   const mm = String(dt.getMonth() + 1).padStart(2, '0')
   const yy = String(dt.getFullYear()).slice(-2)
   return `${mm}/${yy}`
+}
+
+function formatSingularDate(d) {
+  if (!d) return ''
+  const dt = new Date(d)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const mon = months[dt.getMonth()]
+  const day = dt.getDate()
+  const yr = dt.getFullYear()
+  return `${mon} ${day}, ${yr}`
 }
 
 function formatDateRange(start, end) {
@@ -337,7 +349,25 @@ function selectByUID(uid) {
   }
 }
 
-defineExpose({ setActiveTag, clearTagFilter, selectByUID })
+function scrollToUID(uid) {
+  nextTick(() => {
+    const el = sidebarRef.value?.querySelector(`[data-uid="${uid}"]`)
+    if (!el) return
+    const container = sidebarRef.value
+    const entryTop = el.offsetTop
+    const entryHeight = el.offsetHeight
+    const containerHeight = container.clientHeight
+    const targetScroll = entryTop - (containerHeight / 2) + (entryHeight / 2)
+    const maxScroll = container.scrollHeight - containerHeight
+    container.scrollTop = Math.max(0, Math.min(targetScroll, maxScroll))
+  })
+}
+
+watch(selectedUID, (uid) => {
+  if (uid != null) scrollToUID(uid)
+})
+
+defineExpose({ setActiveTag, clearTagFilter, selectByUID, scrollToUID })
 </script>
 
 <style scoped>

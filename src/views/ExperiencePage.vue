@@ -33,8 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, computed, watch, nextTick } from 'vue'
+import { useURLSelection } from '@/composables/useURLSelection'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue'
@@ -44,15 +44,21 @@ import experienceData        from '@/data/experience.json'
 import educationData         from '@/data/education.json'
 import defaultHighlightsData from '@/data/defaultHighlights.json'
 
-const route = useRoute()
 const defaultHighlights = ref(defaultHighlightsData)
 
 const selectedEntry = ref<any>(null)
 const searchQuery   = ref('')
 const linkedUID     = ref<any>(null)
-const invalidUID    = ref(false)
 const sidebarRef    = ref<any>(null)
 const highlightRef  = ref<any>(null)
+
+const { invalidUID } = useURLSelection({
+  findEntry: (uid) => allEntries.value.find((e) => e.UID === uid),
+  onSelect: (entry) => {
+    selectedEntry.value = entry
+    sidebarRef.value?.selectByUID(entry.UID)
+  },
+})
 
 const allEntries = computed(() => [
   ...experienceData,
@@ -113,23 +119,6 @@ function onNavigate(uid) {
     sidebarRef.value?.selectByUID(uid)
   }
 }
-
-onMounted(() => {
-  const uidParam = route.query.uid
-  if (uidParam) {
-    const uid = parseInt(uidParam as string, 10)
-    if (isNaN(uid)) {
-      invalidUID.value = true
-      return
-    }
-    const entry = findEntryByUID(uid)
-    if (entry) {
-      selectedEntry.value = entry
-    } else {
-      invalidUID.value = true
-    }
-  }
-})
 
 watch(selectedEntry, () => {
   nextTick(() => highlightRef.value?.focusHighlight())

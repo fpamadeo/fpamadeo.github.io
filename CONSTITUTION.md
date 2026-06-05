@@ -281,6 +281,7 @@ The mobile version of the site is a core part of the design, not an afterthought
 - Expand the "Other" section into a full blog system
 - Add a reading list or bookmarks section
 - Implement more sophisticated content categorization
+- **Code cleanup and hardening** — see `.opencode/plans/code-cleanup.md` for the full prioritized list (target: review by June 15, 2026)
 
 ---
 

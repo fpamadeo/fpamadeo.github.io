@@ -480,6 +480,82 @@ describe('SidebarComponent', () => {
     })
   })
 
+  describe('Singular Date', () => {
+    it('renders date range by default when singularDate is not set', () => {
+      const dateSpans = wrapper.findAll('.entry-dates')
+      // First mock entry: 2020-06-01 → 2022-02-28 → "06/20 – 02/22"
+      expect(dateSpans[0].text()).toBe('06/20 – 02/22')
+    })
+
+    it('renders singular date when singularDate is true', () => {
+      const singularConfig = {
+        sections: [
+          {
+            label: 'Writing',
+            showDates: true,
+            singularDate: true,
+            entries: [
+              {
+                UID: 1,
+                Company: 'Test',
+                Title: 'Post',
+                StartDate: '2026-05-31T00:00:00',
+                EndDate: '2026-05-31T00:00:00',
+                Summary: 'Test post',
+                related: [],
+                tags: [],
+                Bullets: [],
+                Highlights: [],
+              },
+            ],
+          },
+        ],
+        summary: null,
+        defaultSelectedUID: null,
+      }
+      const w = mount(SidebarComponent, {
+        props: { config: singularConfig, showSearch: false },
+      })
+      const dateSpan = w.find('.entry-dates')
+      expect(dateSpan.text()).toBe('May 31, 2026')
+      w.unmount()
+    })
+
+    it('handles empty date gracefully in singular mode', () => {
+      const singularConfig = {
+        sections: [
+          {
+            label: 'Writing',
+            showDates: true,
+            singularDate: true,
+            entries: [
+              {
+                UID: 1,
+                Company: 'Test',
+                Title: 'Post',
+                StartDate: null,
+                EndDate: null,
+                Summary: 'Test post',
+                related: [],
+                tags: [],
+                Bullets: [],
+                Highlights: [],
+              },
+            ],
+          },
+        ],
+        summary: null,
+        defaultSelectedUID: null,
+      }
+      const w = mount(SidebarComponent, {
+        props: { config: singularConfig, showSearch: false },
+      })
+      const dateSpan = w.find('.entry-dates')
+      expect(dateSpan.text()).toBe('')
+      w.unmount()
+    })
+  })
+
   describe('Edge Cases', () => {
     it('handles empty sections', () => {
       const config = {

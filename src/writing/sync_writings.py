@@ -26,6 +26,10 @@ CONTENT_DIR = BASE_DIR / 'content'
 LOGS_DIR    = CONTENT_DIR / 'logs'
 OUTPUT_PATH = BASE_DIR.parent / 'data' / 'writing.json'
 
+# Delimiter used to separate values within backslash metadata fields.
+# Change this if you prefer a different separator.
+FIELD_DELIMITER = ';'
+
 
 # ─── File helpers ───────────────────────────────────────────────────
 
@@ -36,14 +40,65 @@ def is_empty_file(path):
         return True
 
 
+def parse_semicolon_values(val, field_name="field"):
+    """Parse a FIELD_DELIMITER-separated string with outer-quote stripping.
+
+    - Splits the string on FIELD_DELIMITER, respecting quoted segments
+      (semicolons inside "..." are not treated as delimiters).
+    - Each segment is stripped of leading/trailing whitespace.
+    - If a segment's first and last characters are both ", exactly one "
+      is stripped from each end (non-recursive, one pass).
+    - Empty segments after stripping are dropped with a warning.
+    - If a segment starts with " but does not end with ", an "unclosed
+      quote" warning is emitted (the value is kept as-is).
+
+    Returns (list_of_strings, list_of_warnings).
+    """
+    if not val:
+        return [], []
+    warnings = []
+
+    in_quotes = False
+    segments = []
+    current = []
+    for ch in val:
+        if ch == '"':
+            in_quotes = not in_quotes
+            current.append(ch)
+        elif ch == FIELD_DELIMITER and not in_quotes:
+            segments.append(''.join(current))
+            current = []
+        else:
+            current.append(ch)
+    segments.append(''.join(current))
+
+    cleaned = []
+    for i, seg in enumerate(segments):
+        t = seg.strip()
+        if len(t) >= 2 and t[0] == '"' and t[-1] == '"':
+            t = t[1:-1]
+        if not t:
+            if seg.strip() == '"':
+                warnings.append(f"unclosed quote in \\{field_name}")
+            else:
+                warnings.append(f"empty value at position {i+1} in \\{field_name}")
+        elif t == '"':
+            warnings.append(f"unclosed quote in \\{field_name}")
+        else:
+            if t[0] == '"' and t[-1] != '"':
+                warnings.append(f"unclosed quote in \\{field_name}")
+            cleaned.append(t)
+    return cleaned, warnings
+
+
 def parse_txt(path):
-    """Return (uid, title, tags, related, content).
+    """Return (uid, title, tags, related, content, warnings).
 
     Lines starting with \\ are metadata.  The first line that does *not*
     start with \\ marks the beginning of the content body.  No title →
     use filename stem.  No uid → return None so the caller generates one.
 
-    \\tags: and \\related: are semicolon-separated lists.
+    \\tags: and \\related: are FIELD_DELIMITER-separated lists.
     If absent they return None (preserve existing on update).
     """
     lines = path.read_text(encoding='utf-8').splitlines(keepends=True)
@@ -53,6 +108,7 @@ def parse_txt(path):
     tags = None
     related = None
     content_start = 0
+    warnings = []
 
     for i, line in enumerate(lines):
         s = line.rstrip('\n\r')
@@ -65,26 +121,36 @@ def parse_txt(path):
             uid = val if val else None
         elif meta.startswith('Title:'):
             val = meta[6:].strip()
+            if len(val) >= 2 and val[0] == '"' and val[-1] == '"':
+                val = val[1:-1]
             title = val if val else None
         elif meta.startswith('tags:'):
             val = meta[5:].strip()
-            tags = [t.strip() for t in val.split(';') if t.strip()] if val else []
+            if val:
+                tags, tag_warnings = parse_semicolon_values(val, "tags")
+                warnings.extend(tag_warnings)
+            else:
+                tags = []
         elif meta.startswith('related:'):
             val = meta[8:].strip()
-            raw = [r.strip() for r in val.split(';') if r.strip()] if val else []
-            related = []
-            for r in raw:
-                try:
-                    related.append(int(r))
-                except ValueError:
-                    related.append(r)
+            if val:
+                raw, rel_warnings = parse_semicolon_values(val, "related")
+                warnings.extend(rel_warnings)
+                related = []
+                for r in raw:
+                    try:
+                        related.append(int(r))
+                    except ValueError:
+                        related.append(r)
+            else:
+                related = []
     else:
         content_start = len(lines)
 
     content = ''.join(lines[content_start:]).strip()
     if title is None:
         title = path.stem
-    return uid, title, tags, related, content
+    return uid, title, tags, related, content, warnings
 
 
 def ensure_uid(path, uid):
@@ -250,7 +316,9 @@ def main():
                 'content': '', 'sync': False, 'empty': True,
             })
             continue
-        uid, title, tags, related, content = parse_txt(fp)
+        uid, title, tags, related, content, parse_warnings = parse_txt(fp)
+        for w in parse_warnings:
+            summary.append(f'WARNING: {fp.name}: {w}')
         entries.append({
             'fp': fp, 'uid': uid, 'title': title,
             'tags': tags, 'related': related,
