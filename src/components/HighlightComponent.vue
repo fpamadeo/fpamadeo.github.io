@@ -133,11 +133,6 @@
           </div>
         </div>
 
-        <div v-if="activeEntry.related && activeEntry.related.length" class="highlight-relations">
-          <span class="relations-label">Related entries:</span>
-          <span class="relations-count">{{ activeEntry.related.length }}</span>
-          <span class="relations-hint">(highlighted in sidebar)</span>
-        </div>
       </template>
 
       <div v-if="activeEntry.tags && activeEntry.tags.length" class="highlight-section">
@@ -159,6 +154,12 @@
             >{{ tag }}</button>
           </span>
         </div>
+      </div>
+
+      <div v-if="activeEntry.related && activeEntry.related.length" class="highlight-relations">
+        <span class="relations-label">Related entries:</span>
+        <span class="relations-count">{{ activeEntry.related.length }}</span>
+        <span class="relations-hint">(highlighted in sidebar)</span>
       </div>
     </template>
   </section>
@@ -487,6 +488,17 @@ defineExpose({ focusHighlight })
   font-weight: 600;
 }
 
+/* ─── Related entries footer ─────────────────────────────────── */
+.highlight-relations {
+  display: flex;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: auto;
+}
+
 /* ─── Writing content ─────────────────────────────────────────── */
 .content-body {
   font-size: 0.9rem;
@@ -527,6 +539,26 @@ defineExpose({ focusHighlight })
 .content-body :deep(ol) {
   padding-left: 1.2rem;
   margin: 0.3rem 0;
+}
+.content-body :deep(table) {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.8rem 0;
+}
+.content-body :deep(th) {
+  background: var(--color-header-bg);
+  color: var(--color-header-text);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-weight: 700;
+  border: 1px solid var(--color-border);
+}
+.content-body :deep(td) {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-border);
+}
+.content-body :deep(tbody tr:nth-child(even)) {
+  background: var(--color-dimmed-bg);
 }
 .content-body :deep(hr) {
   border: none;

@@ -75,7 +75,11 @@ function clear() {
   emit('search', '')
 }
 
-defineExpose({ clear })
+function setQuery(val: string) {
+  query.value = val
+}
+
+defineExpose({ clear, setQuery })
 </script>
 
 <style scoped>
