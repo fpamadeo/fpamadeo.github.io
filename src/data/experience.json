@@ -6,7 +6,7 @@
     "StartDate": "2024-01-01T00:00:00",
     "EndDate": "Present",
     "location": "Greater Chicago Area",
-    "media": "assets/images/example freelance work.jpg",
+    "media": "assets/images/example freelance work.png",
     "Summary": "Full Stack Engineer and consultant services based in Chicagoland",
     "Bullets": [
       "Simplified clients\u2019 processes with automation and software tools in collaboration with power users and admins",
@@ -99,9 +99,7 @@
     "media": "assets/images/Stella2019group.jpg",
     "mediaFit": "force-height",
     "Summary": "Lead Programmer of the Project STELLA robot for the 32nd Midwestern Robotics Design Competition",
-    "Bullets": [
-      "Designed and developed the main functionalities of the wireless controller."
-    ],
+    "Bullets": ["Designed and developed the main functionalities of the wireless controller."],
     "related": [101, 222],
     "tags": [
       "Domain: Robotics",

@@ -44,19 +44,11 @@ describe('HighlightComponent', () => {
       expect(wrapper.find('.highlight').exists()).toBe(true)
     })
 
-    it('displays tags section first', () => {
+    it('renders highlights before bullets before tags', () => {
       const section = wrapper.findAll('.highlight-section-title')
-      expect(section[0].text()).toBe('TAGS')
-    })
-
-    it('displays highlights section', () => {
-      const section = wrapper.findAll('.highlight-section-title')
-      expect(section[1].text()).toBe('HIGHLIGHTS')
-    })
-
-    it('displays bullets section', () => {
-      const section = wrapper.findAll('.highlight-section-title')
-      expect(section[2].text()).toBe('BULLETS')
+      expect(section[0].text()).toBe('HIGHLIGHTS')
+      expect(section[1].text()).toBe('BULLETS')
+      expect(section[2].text()).toBe('TAGS')
     })
 
     it('renders list items for highlights', () => {
@@ -163,9 +155,9 @@ describe('HighlightComponent', () => {
   })
 
   describe('Tag Badges', () => {
-    it('renders tag badges when entry has tags', () => {
-      const badges = wrapper.findAll('.tag-badge')
-      expect(badges.length).toBe(2)
+    it('renders tag pills when entry has tags', () => {
+      const pills = wrapper.findAll('.tag-pill')
+      expect(pills.length).toBe(2)
     })
 
     it('tag badges section has correct title', () => {
@@ -173,40 +165,37 @@ describe('HighlightComponent', () => {
       expect(titles.map(t => t.text())).toContain('TAGS')
     })
 
-    it('tag badges are not clickable when tagFilterEnabled is false', () => {
-      const badge = wrapper.find('.tag-badge')
-      expect(badge.classes()).not.toContain('is-clickable')
-      expect(badge.attributes('role')).toBeUndefined()
+    it('tag pills are disabled when tagFilterEnabled is false', () => {
+      const pill = wrapper.find('.tag-pill')
+      expect(pill.attributes('disabled')).toBeDefined()
     })
 
-    it('tag badges become clickable when tagFilterEnabled is true', async () => {
+    it('tag pills become enabled when tagFilterEnabled is true', async () => {
       await wrapper.setProps({ tagFilterEnabled: true })
-      const badge = wrapper.find('.tag-badge')
-      expect(badge.classes()).toContain('is-clickable')
-      expect(badge.attributes('role')).toBe('button')
-      expect(badge.attributes('tabindex')).toBe('0')
+      const pill = wrapper.find('.tag-pill')
+      expect(pill.attributes('disabled')).toBeUndefined()
     })
 
-    it('clicking clickable tag badge emits tag-badge-click', async () => {
+    it('clicking enabled tag pill emits tag-badge-click', async () => {
       await wrapper.setProps({ tagFilterEnabled: true })
-      const badge = wrapper.find('.tag-badge')
-      await badge.trigger('click')
+      const pill = wrapper.find('.tag-pill')
+      await pill.trigger('click')
 
       expect(wrapper.emitted('tag-badge-click')).toBeTruthy()
       expect(wrapper.emitted('tag-badge-click')[0][0]).toBe('Domain: Healthcare')
     })
 
-    it('active tag badge has is-active class', async () => {
+    it('active tag pill has is-active class', async () => {
       await wrapper.setProps({ tagFilterEnabled: true, activeTag: 'Domain: Healthcare' })
-      const badge = wrapper.find('.tag-badge')
-      expect(badge.classes()).toContain('is-active')
+      const pill = wrapper.find('.tag-pill.is-active')
+      expect(pill.exists()).toBe(true)
     })
 
-    it('non-matching active tag does not highlight other badges', async () => {
+    it('non-matching active tag does not highlight other pills', async () => {
       await wrapper.setProps({ tagFilterEnabled: true, activeTag: 'Stack: Python' })
-      const badges = wrapper.findAll('.tag-badge')
-      expect(badges[1].classes()).toContain('is-active')
-      expect(badges[0].classes()).not.toContain('is-active')
+      const pills = wrapper.findAll('.tag-pill')
+      expect(pills[1].classes()).toContain('is-active')
+      expect(pills[0].classes()).not.toContain('is-active')
     })
   })
 

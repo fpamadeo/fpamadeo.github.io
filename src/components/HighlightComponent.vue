@@ -64,36 +64,11 @@
         />
       </div>
 
-      <div v-if="activeEntry.tags && activeEntry.tags.length" class="highlight-section">
-        <h3 class="highlight-section-title">TAGS</h3>
-        <div class="tag-badges">
-          <span
-            v-for="tag in activeEntry.tags"
-            :key="tag"
-            class="tag-badge"
-            :class="{
-              'is-clickable': tagFilterEnabled,
-              'is-active': tagFilterEnabled && activeTag === tag,
-            }"
-            :role="tagFilterEnabled ? 'button' : undefined"
-            :tabindex="tagFilterEnabled ? 0 : undefined"
-            :aria-label="tagFilterEnabled ? 'Filter by tag: ' + tag : undefined"
-            :aria-pressed="tagFilterEnabled ? activeTag === tag : undefined"
-            @click="tagFilterEnabled && handleTagBadgeClick(tag)"
-            @keydown.enter="tagFilterEnabled && handleTagBadgeClick(tag)"
-            @keydown.space.prevent="tagFilterEnabled && handleTagBadgeClick(tag)"
-            >{{ tag }}</span
-          >
-        </div>
-      </div>
-
       <article
         v-if="activeEntry.Content && activeEntry.Content !== 'WORK IN PROGRESS'"
         class="highlight-content"
       >
-        <h3 class="highlight-section-title">
-          {{ activeEntry.Title }}
-        </h3>
+        <h2 class="highlight-title">{{ activeEntry.Title }}</h2>
         <div class="content-body" v-html="renderBlock(activeEntry.Content)" />
       </article>
 
@@ -164,6 +139,27 @@
           <span class="relations-hint">(highlighted in sidebar)</span>
         </div>
       </template>
+
+      <div v-if="activeEntry.tags && activeEntry.tags.length" class="highlight-section">
+        <h3 class="highlight-section-title">TAGS</h3>
+        <div class="tag-filter-area">
+          <span
+            v-for="tag in activeEntry.tags"
+            :key="tag"
+            class="tag-pill-wrapper"
+          >
+            <button
+              class="tag-pill"
+              :class="{ 'is-active': tagFilterEnabled && activeTag === tag }"
+              :disabled="!tagFilterEnabled"
+              :aria-pressed="tagFilterEnabled ? activeTag === tag : undefined"
+              @click="handleTagBadgeClick(tag)"
+              @keydown.enter="handleTagBadgeClick(tag)"
+              @keydown.space.prevent="handleTagBadgeClick(tag)"
+            >{{ tag }}</button>
+          </span>
+        </div>
+      </div>
     </template>
   </section>
 </template>
@@ -410,6 +406,13 @@ defineExpose({ focusHighlight })
   border-bottom: 1px solid var(--color-border);
 }
 
+.highlight-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
 .highlight-list {
   list-style: none;
   padding: 0;
@@ -433,20 +436,55 @@ defineExpose({ focusHighlight })
   color: var(--color-text-light);
 }
 
-/* ─── Tags ────────────────────────────────────────────────────── */
-.highlight-tags {
+/* ─── Tag pills ───────────────────────────────────────────────── */
+.tag-filter-area {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.3rem;
+  align-items: baseline;
 }
 
-.tag {
-  font-size: 0.72rem;
-  padding: 0.2rem 0.55rem;
+.tag-pill-wrapper {
+  display: inline-flex;
+}
+
+.tag-pill {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  padding: 2px 7px;
   border: 1px solid var(--color-border);
-  border-radius: 20px;
-  color: var(--color-text-light);
-  background: #fafafa;
+  border-radius: 10px;
+  background: var(--color-tag-bg, #f0f0f0);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.tag-pill:hover {
+  background: var(--color-tag-hover-bg, #e4e4e4);
+  border-color: #ccc;
+}
+
+.tag-pill:focus-visible {
+  outline: 2px solid var(--color-selected-outline);
+  outline-offset: 1px;
+}
+
+.tag-pill:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.tag-pill.is-active {
+  background: var(--color-selected-outline);
+  border-color: var(--color-selected-outline);
+  color: #111;
+  font-weight: 600;
 }
 
 /* ─── Writing content ─────────────────────────────────────────── */
