@@ -68,11 +68,11 @@ src/
 
 ## 4. Routes Structure
 
-| Route | Page | Purpose |
-|-------|------|---------|
-| `/` | WorkPage | Showcase work as a software engineer |
-| `/about` | AboutPage | Showcase personality and self |
-| `/other` | OtherPage | Curated showcase of thoughts |
+| Route    | Page      | Purpose                              |
+| -------- | --------- | ------------------------------------ |
+| `/`      | WorkPage  | Showcase work as a software engineer |
+| `/about` | AboutPage | Showcase personality and self        |
+| `/other` | OtherPage | Curated showcase of thoughts         |
 
 **Design Principle**: All three routes should have a similar layout and design that mirrors the simple outline of a resume, with creative liberties taken to express personality.
 
@@ -81,34 +81,43 @@ src/
 ## 5. Data Structure
 
 ### 5.1 experience.json
+
 Professional experience entries containing:
+
 - Company/Organization name
 - Role/Title
 - Date range
 - Highlights (array of accomplishments with tags)
 
 ### 5.2 education.json
+
 Education entries containing:
+
 - Institution name
 - Degree/Certification
 - Date range
 - Relevant details
 
 ### 5.3 writing.json
+
 Blog/thought entries containing:
+
 - Title
 - Date published
 - Content (markdown supported)
 - Tags for categorization
 
 ### 5.4 about.json
+
 Personal information containing:
+
 - Bio/Introduction
 - Profile details
 - Favorites (books, tools, etc.)
 - Personality traits/interests
 
 ### 5.5 defaultHighlights.json
+
 Default highlighted content for sidebar display on the main page.
 
 ---
@@ -198,27 +207,32 @@ The following scripts should be added to improve code quality:
 ## 8. Component Contracts
 
 ### SidebarComponent
+
 - **Purpose**: Searchable sidebar for filtering entries
 - **Props**: `title`, `items`, `searchable`
 - **Emits**: `select` when an item is chosen
 - **Features**: Search filtering, item selection, tag-based highlighting
 
 ### HighlightComponent
+
 - **Purpose**: Display main content area
 - **Props**: `title`, `items`
 - **Features**: Render highlighted/selected content
 
 ### SearchBar
+
 - **Purpose**: Text search input
 - **Props**: `placeholder`
 - **Emits**: `search` with input value
 - **Features**: Real-time search filtering
 
 ### AppHeader
+
 - **Purpose**: Navigation header
 - **Features**: Links to Work, About, Other pages
 
 ### AppFooter
+
 - **Purpose**: Site footer
 - **Features**: Social links, copyright
 
@@ -267,17 +281,19 @@ The mobile version of the site is a core part of the design, not an afterthought
 ## 10. Future Vision & Roadmap
 
 ### Short-term Goals
-- Add TypeScript support for better type safety
-- Implement dark mode toggle
-- Add linting and type checking scripts
-- Revisit contact page — finalize real email address in `src/views/ContactPage.vue:17-19` and decide on UX approach (auto `mailto:` redirect vs. static page)
+
+- [✅] Add TypeScript support for better type safety
+- [✅] Add linting and type checking scripts
+- [✅] Finalize contact page — email (`***********@gmail.com`) and approach (static page with clickable link) finalized
 
 ### Medium-term Goals
+
 - Improve SEO with sitemap.xml and Open Graph meta tags
 - Add PWA manifest for offline capability
 - Enhance accessibility (skip links, focus management)
 
 ### Long-term Goals
+
 - Expand the "Other" section into a full blog system
 - Add a reading list or bookmarks section
 - Implement more sophisticated content categorization
@@ -325,6 +341,7 @@ The mobile version of the site is a core part of the design, not an afterthought
 **Rule**: When the user indicates the session is complete (e.g., "done for today", "finished", "that's all", "stop", "end session", or any similar phrase indicating completion), a session summary must be created automatically.
 
 **Trigger Phrases**:
+
 - "done for today"
 - "done"
 - "finished"
@@ -336,6 +353,7 @@ The mobile version of the site is a core part of the design, not an afterthought
 - Any phrase indicating session completion
 
 **Required Actions**:
+
 1. Create a markdown file in `opencode-sessions/` folder
 2. Filename format: `session-YYYY-MM-DD.md`
 3. Include:
@@ -359,5 +377,5 @@ The mobile version of the site is a core part of the design, not an afterthought
 
 ---
 
-*Last Updated: May 2026*
-*Version: 1.0*
+_Last Updated: June 2026_
+_Version: 1.0_

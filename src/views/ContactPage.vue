@@ -68,6 +68,7 @@ import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import RuleSeparator from '@/components/RuleSeparator.vue'
 import aboutData from '@/data/about.json'
+import contactData from '@/data/contact.json'
 
 const initials = computed(() =>
   aboutData.name
@@ -78,11 +79,10 @@ const initials = computed(() =>
     .join('')
 )
 
-// TODO: Replace with your actual email before going live
-const local = 'yourname'
-const domain = 'example.com'
+const { local, domain } = contactData.email
 const email = local + '@' + domain
 
+// Obfuscated display text to reduce scraping
 const displayEmail = '[this domain name](at)[Google\'s email service]'
 </script>
 

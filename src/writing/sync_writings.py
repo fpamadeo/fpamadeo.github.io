@@ -92,7 +92,7 @@ def parse_semicolon_values(val, field_name="field"):
 
 
 def parse_txt(path):
-    """Return (uid, title, tags, related, content, warnings).
+    """Return (uid, title, tags, related, date_published, summary, subtitle, content, warnings).
 
     Lines starting with \\ are metadata.  The first line that does *not*
     start with \\ marks the beginning of the content body.  No title →
@@ -100,6 +100,9 @@ def parse_txt(path):
 
     \\tags: and \\related: are FIELD_DELIMITER-separated lists.
     If absent they return None (preserve existing on update).
+
+    \\datePublished:, \\summary:, \\subtitle: are plain text fields.
+    If absent they return None.
     """
     lines = path.read_text(encoding='utf-8').splitlines(keepends=True)
 
@@ -107,6 +110,9 @@ def parse_txt(path):
     title = None
     tags = None
     related = None
+    date_published = None
+    summary = None
+    subtitle = None
     content_start = 0
     warnings = []
 
@@ -131,7 +137,7 @@ def parse_txt(path):
                 warnings.extend(tag_warnings)
             else:
                 tags = []
-        elif meta.startswith('related:'):
+        elif meta.lower().startswith('related:'):
             val = meta[8:].strip()
             if val:
                 raw, rel_warnings = parse_semicolon_values(val, "related")
@@ -144,13 +150,22 @@ def parse_txt(path):
                         related.append(r)
             else:
                 related = []
+        elif meta.startswith('datePublished:'):
+            val = meta[14:].strip()
+            date_published = val if val else None
+        elif meta.startswith('summary:'):
+            val = meta[8:].strip()
+            summary = val if val else None
+        elif meta.startswith('subtitle:'):
+            val = meta[9:].strip()
+            subtitle = val if val else None
     else:
         content_start = len(lines)
 
     content = ''.join(lines[content_start:]).strip()
     if title is None:
         title = path.stem
-    return uid, title, tags, related, content, warnings
+    return uid, title, tags, related, date_published, summary, subtitle, content, warnings
 
 
 def ensure_uid(path, uid):
@@ -316,12 +331,15 @@ def main():
                 'content': '', 'sync': False, 'empty': True,
             })
             continue
-        uid, title, tags, related, content, parse_warnings = parse_txt(fp)
+        uid, title, tags, related, date_published, summary_text, subtitle, content, parse_warnings = parse_txt(fp)
         for w in parse_warnings:
             summary.append(f'WARNING: {fp.name}: {w}')
         entries.append({
             'fp': fp, 'uid': uid, 'title': title,
             'tags': tags, 'related': related,
+            'date_published': date_published,
+            'summary': summary_text,
+            'subtitle': subtitle,
             'content': content, 'sync': True, 'empty': False,
         })
 
@@ -413,6 +431,16 @@ def main():
                     existing['tags'] = e['tags']
                 if e['related'] is not None:
                     existing['related'] = e['related']
+                if e.get('date_published'):
+                    existing['datePublished'] = e['date_published']
+                if e.get('summary') is not None:
+                    existing['summary'] = e['summary']
+                elif existing.get('summary') is None:
+                    existing['summary'] = ''
+                if e.get('subtitle') is not None:
+                    existing['subtitle'] = e['subtitle']
+                elif existing.get('subtitle') is None:
+                    existing['subtitle'] = ''
                 updated.append(fp.name)
                 summary.append(f'UPDATED: {fp.name} (UID: {uid})')
             else:
@@ -425,6 +453,9 @@ def main():
                 'tags': e['tags'] if e['tags'] is not None else [],
                 'related': e['related'] if e['related'] is not None else [],
                 'Date': date_iso,
+                'datePublished': e.get('date_published') or date_iso,
+                'summary': e.get('summary', ''),
+                'subtitle': e.get('subtitle', ''),
                 'Content': e['content'],
             }
             try:

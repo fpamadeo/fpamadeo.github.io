@@ -1,13 +1,13 @@
 [
   {
-    "UID": 201,
-    "Company": "Freelance",
-    "Title": "Full Stack Software Engineer",
+    "id": 201,
+    "Title": "Freelance",
+    "subtitle": "Full Stack Software Engineer",
     "StartDate": "2024-01-01T00:00:00",
     "EndDate": "Present",
     "location": "Greater Chicago Area",
     "media": "assets/images/example freelance work.png",
-    "Summary": "Full Stack Engineer and consultant services based in Chicagoland",
+    "Description": "Full Stack Engineer and consultant services based in Chicagoland",
     "Bullets": [
       "Simplified clients\u2019 processes with automation and software tools in collaboration with power users and admins",
       "Consulted for organizations on how to increase security and scalability of their software functionalities."
@@ -27,14 +27,14 @@
     ]
   },
   {
-    "UID": 211,
-    "Company": "Epic Systems",
-    "Title": "Software Engineer",
+    "id": 211,
+    "Title": "Epic Systems",
+    "subtitle": "Software Engineer",
     "StartDate": "2020-06-01T00:00:00",
     "EndDate": "2022-02-28T00:00:00",
     "media": "assets/images/EpicU_Group_Anniversary.jpg",
     "location": "Verona, WI",
-    "Summary": "Developed and maintained full-stack features for the Epic's Learning Management System and Internal Tools.",
+    "Description": "Developed and maintained full-stack features for the Epic's Learning Management System and Internal Tools.",
     "Bullets": [
       "Freed up 50% of the Finance team to rotate to other responsibilities by automating key tasks in the training billing process with the use of MUMPS, JavaScript, Node, .NET, and C#",
       "Enabled 1,000s of billable hours of asynchronous training through implementation of completion tracking in Epic\u2019s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
@@ -61,14 +61,14 @@
     ]
   },
   {
-    "UID": 212,
-    "Company": "Epic Systems",
-    "Title": "Feature Owner",
+    "id": 212,
+    "Title": "Epic Systems",
+    "subtitle": "Feature Owner",
     "StartDate": "2020-06-01T00:00:00",
     "EndDate": "2022-02-28T00:00:00",
     "media": "",
     "location": "Verona, WI",
-    "Summary": "Technical point-person and main contact for key stakeholders.",
+    "Description": "Technical point-person and main contact for key stakeholders.",
     "Bullets": [
       "Led the Development and maintenance of microservices for the Training Billing, Go-Live Scheduling, HIPAA Security Training, E-Learning functionalities, among others.",
       "Analyzed and outlined an optimized Training Billing process, effectively removing numerous bottlenecks and preserving data integrity.",
@@ -90,15 +90,15 @@
     ]
   },
   {
-    "UID": 221,
-    "Company": "Chicago Engineering Design Team",
-    "Title": "Software Lead",
+    "id": 221,
+    "Title": "Chicago Engineering Design Team",
+    "subtitle": "Software Lead",
     "location": "Chicago, IL",
     "StartDate": "2018-08-01T00:00:00",
     "EndDate": "2019-03-04T00:00:00",
     "media": "assets/images/Stella2019group.jpg",
     "mediaFit": "force-height",
-    "Summary": "Lead Programmer of the Project STELLA robot for the 32nd Midwestern Robotics Design Competition",
+    "Description": "Lead Programmer of the Project STELLA robot for the 32nd Midwestern Robotics Design Competition",
     "Bullets": ["Designed and developed the main functionalities of the wireless controller."],
     "related": [101, 222],
     "tags": [
@@ -116,14 +116,14 @@
     ]
   },
   {
-    "UID": 222,
-    "Company": "Chicago Engineering Design Team",
-    "Title": "Senior ECE Member",
+    "id": 222,
+    "Title": "Chicago Engineering Design Team",
+    "subtitle": "Senior ECE Member",
     "location": "Chicago,IL",
     "StartDate": "2019-12-01T00:00:00",
     "EndDate": "2017-08-04T00:00:00",
     "media": "",
-    "Summary": "Core member and mentor for the UIC Robotics organization.",
+    "Description": "Core member and mentor for the UIC Robotics organization.",
     "Bullets": [
       "Provided electrical, software and mechanical support and design advice to various teams and robots.",
       "Programmed Arduinos and fabricated various mechanisms to perform robots' functionalities.",
@@ -144,14 +144,14 @@
     ]
   },
   {
-    "UID": 231,
-    "Company": "University of Illinois at Chicago",
-    "Title": "Computer Engineering Intern",
+    "id": 231,
+    "Title": "University of Illinois at Chicago",
+    "subtitle": "Computer Engineering Intern",
     "StartDate": "2019-07-01T00:00:00",
     "EndDate": "2019-08-01T00:00:00",
     "media": "",
     "location": "Chicago, IL",
-    "Summary": "ECE Intern under Dr. Wenjing Rao",
+    "Description": "ECE Intern under Dr. Wenjing Rao",
     "Bullets": [
       "Developed a circuit simulator in Python that students of all levels of Python familiarity can understand.",
       "Outlined and written the technical document used in the first ECE 464 class at UIC"

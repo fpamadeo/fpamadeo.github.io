@@ -12,32 +12,61 @@
       :class="{ 'prinny-overlay--visible': showPrinny }"
       @click="dismissPrinny"
     >
-      <img src="/assets/images/prinny-twirl.gif" alt="Prinny" class="prinny-gif" decoding="async" />
-      <button class="prinny-close" aria-label="Close">x</button>
+      <img
+        src="/assets/images/prinny-twirl.gif"
+        alt="Prinny"
+        class="prinny-gif"
+        decoding="async"
+      >
+      <button
+        class="prinny-close"
+        aria-label="Close"
+      >
+        x
+      </button>
     </div>
 
-    <div v-if="showInvalidBanner" class="invalid-uid-banner" role="alert">
-      <span class="invalid-uid-text"
-        >The UID provided in the URL was not found. Showing default highlights.</span
+    <div
+      v-if="showInvalidBanner"
+      class="invalid-uid-banner"
+      role="alert"
+    >
+      <span class="invalid-uid-text">The UID provided in the URL was not found. Showing default highlights.</span>
+      <button
+        class="invalid-uid-close"
+        aria-label="Dismiss"
+        @click="dismissInvalidUID = true"
       >
-      <button class="invalid-uid-close" aria-label="Dismiss" @click="dismissInvalidUID = true">
         ×
       </button>
     </div>
 
-    <div v-if="isWip" class="wip-container">
-      <div class="wip-watermark" aria-hidden="true">WORK IN PROGRESS PO</div>
-      <p class="wip-label">This piece is not yet published.</p>
+    <div
+      v-if="isWip"
+      class="wip-container"
+    >
+      <div
+        class="wip-watermark"
+        aria-hidden="true"
+      >
+        WORK IN PROGRESS PO
+      </div>
+      <p class="wip-label">
+        This piece is not yet published.
+      </p>
     </div>
 
     <!-- Normal highlight display -->
     <template v-else>
       <!-- Entry Navigation -->
-      <div v-if="entries.length && selectedEntry" class="highlight-nav">
+      <div
+        v-if="entries.length && selectedEntry"
+        class="highlight-nav"
+      >
         <button
           class="nav-btn nav-prev"
           :disabled="!hasPrev"
-          :aria-label="'Previous entry: ' + (prevEntry?.Title || '')"
+          :aria-label="'Previous entry: ' + (prevEntry?.subtitle || '')"
           @click="goPrev"
         >
           ← Previous
@@ -46,30 +75,38 @@
         <button
           class="nav-btn nav-next"
           :disabled="!hasNext"
-          :aria-label="'Next entry: ' + (nextEntry?.Title || '')"
+          :aria-label="'Next entry: ' + (nextEntry?.subtitle || '')"
           @click="goNext"
         >
           Next →
         </button>
       </div>
 
-      <div v-if="activeEntry.media" class="highlight-media">
+      <div
+        v-if="activeEntry.media"
+        class="highlight-media"
+      >
         <img
           :src="activeEntry.media"
-          :alt="`Media for ${activeEntry.Title || activeEntry.Company}`"
+          :alt="`Media for ${activeEntry.Title || activeEntry.subtitle}`"
           class="highlight-img"
           :style="mediaStyle"
           loading="lazy"
           decoding="async"
-        />
+        >
       </div>
 
       <article
-        v-if="activeEntry.Content && activeEntry.Content !== 'WORK IN PROGRESS'"
+        v-if="activeEntry.body && activeEntry.body !== 'WORK IN PROGRESS'"
         class="highlight-content"
       >
-        <h2 class="highlight-title">{{ activeEntry.Title }}</h2>
-        <div class="content-body" v-html="renderBlock(activeEntry.Content)" />
+        <h2 class="highlight-title">
+          {{ activeEntry.Title }}
+        </h2>
+        <div
+          class="content-body"
+          v-html="renderBlock(activeEntry.body)"
+        />
       </article>
 
       <!-- Standard experience/education entry -->
@@ -78,7 +115,9 @@
           v-if="activeEntry.Highlights && activeEntry.Highlights.length"
           class="highlight-section"
         >
-          <h3 class="highlight-section-title">HIGHLIGHTS</h3>
+          <h3 class="highlight-section-title">
+            HIGHLIGHTS
+          </h3>
           <ul class="highlight-list">
             <li
               v-for="(item, i) in activeEntry.Highlights"
@@ -89,12 +128,18 @@
               }"
               @click="handleItemClick(item)"
             >
-              <span class="item-text" v-html="highlightText(itemText(item))" />
+              <span
+                class="item-text"
+                v-html="highlightText(itemText(item))"
+              />
             </li>
           </ul>
         </div>
 
-        <div v-if="activeEntry.Bullets && activeEntry.Bullets.length" class="highlight-section">
+        <div
+          v-if="activeEntry.Bullets && activeEntry.Bullets.length"
+          class="highlight-section"
+        >
           <h3 class="highlight-section-title">
             {{ activeEntry.BulletsTitle || 'BULLETS' }}
           </h3>
@@ -108,7 +153,10 @@
               }"
               @click="handleItemClick(item)"
             >
-              <span class="item-text" v-html="highlightText(itemText(item))" />
+              <span
+                class="item-text"
+                v-html="highlightText(itemText(item))"
+              />
             </li>
           </ul>
         </div>
@@ -132,11 +180,15 @@
             </div>
           </div>
         </div>
-
       </template>
 
-      <div v-if="activeEntry.tags && activeEntry.tags.length" class="highlight-section">
-        <h3 class="highlight-section-title">TAGS</h3>
+      <div
+        v-if="activeEntry.tags && activeEntry.tags.length"
+        class="highlight-section"
+      >
+        <h3 class="highlight-section-title">
+          TAGS
+        </h3>
         <div class="tag-filter-area">
           <span
             v-for="tag in activeEntry.tags"
@@ -156,7 +208,10 @@
         </div>
       </div>
 
-      <div v-if="activeEntry.related && activeEntry.related.length" class="highlight-relations">
+      <div
+        v-if="activeEntry.related && activeEntry.related.length"
+        class="highlight-relations"
+      >
         <span class="relations-label">Related entries:</span>
         <span class="relations-count">{{ activeEntry.related.length }}</span>
         <span class="relations-hint">(highlighted in sidebar)</span>
@@ -205,29 +260,69 @@ onUnmounted(() => {
 const dismissInvalidUID = ref(false)
 const highlightRef = ref<any>(null)
 
+type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
+
+class MediaFit {
+  private fit: ObjectFit
+
+  constructor(raw: string) {
+    const normalized = raw.toLowerCase()
+    switch (normalized) {
+      case 'cover':
+      case 'fill':
+      case 'contain':
+      case 'none':
+      case 'scale-down':
+        this.fit = normalized
+        break
+      case 'as-is':
+        this.fit = 'none'
+        break
+      case 'force-height':
+      case 'force-width':
+        this.fit = 'fill'
+        break
+      default:
+        throw new Error(
+          `Invalid mediaFit value: "${raw}". Allowed: cover, fill, contain, none, scale-down, as-is, force-height, force-width`
+        )
+    }
+  }
+
+  get value(): ObjectFit {
+    return this.fit
+  }
+}
+
 const activeEntry = computed(() => props.selectedEntry ?? props.defaultEntry)
 const mediaStyle = computed(() => {
-  const fit = activeEntry.value?.mediaFit || 'cover'
-  switch (fit) {
+  const raw = activeEntry.value?.mediaFit || 'cover'
+  let objectFit: ObjectFit
+  try {
+    objectFit = new MediaFit(raw).value
+  } catch {
+    objectFit = 'cover'
+  }
+  switch (raw) {
     case 'as-is':
-      return { objectFit: 'none', width: 'auto', height: 'auto', maxHeight: 'none' }
+      return { objectFit, width: 'auto', height: 'auto', maxHeight: 'none' }
     case 'force-height':
-      return { objectFit: 'fill', maxHeight: 'none' }
+      return { objectFit, maxHeight: 'none' }
     case 'force-width':
-      return { objectFit: 'fill', width: 'auto' }
+      return { objectFit, width: 'auto' }
     default:
-      return { objectFit: fit }
+      return { objectFit }
   }
 })
 const showInvalidBanner = computed(() => props.invalidUID && !dismissInvalidUID.value)
-const isWip = computed(() => activeEntry.value?.Content === 'WORK IN PROGRESS')
+const isWip = computed(() => activeEntry.value?.body === 'WORK IN PROGRESS')
 
 const activeLinkedUID = ref<any>(null)
 
 // Navigation
 const currentIndex = computed(() => {
   if (!props.selectedEntry) return -1
-  return (props.entries as any[]).findIndex((e: any) => e.UID === (props.selectedEntry as any).UID)
+  return (props.entries as any[]).findIndex((e: any) => e.id === (props.selectedEntry as any).id)
 })
 
 const hasPrev = computed(() => currentIndex.value > 0)
@@ -244,12 +339,12 @@ const nextEntry = computed(() =>
 
 function goPrev() {
   if (!hasPrev.value) return
-  emit('navigate', (props.entries as any[])[currentIndex.value - 1].UID)
+  emit('navigate', (props.entries as any[])[currentIndex.value - 1].id)
 }
 
 function goNext() {
   if (!hasNext.value) return
-  emit('navigate', (props.entries as any[])[currentIndex.value + 1].UID)
+  emit('navigate', (props.entries as any[])[currentIndex.value + 1].id)
 }
 
 watch(

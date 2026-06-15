@@ -11,7 +11,7 @@
         :config="sidebarConfig"
         :show-search="true"
         :search-query="searchQuery"
-        :linked-uid="linkedUID"
+        :linked-id="linkedUID"
         @select="onSelect"
         @deselect="onDeselect"
         @search="onSearch"
@@ -53,10 +53,10 @@ const sidebarRef    = ref<any>(null)
 const highlightRef  = ref<any>(null)
 
 const { invalidUID } = useURLSelection({
-  findEntry: (uid) => allEntries.value.find((e) => e.UID === uid),
+  findEntry: (uid) => allEntries.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
-    sidebarRef.value?.selectByUID(entry.UID)
+    sidebarRef.value?.selectById(entry.id)
   },
 })
 
@@ -80,7 +80,7 @@ const sortedEntries = computed(() =>
 )
 
 function findEntryByUID(uid) {
-  return allEntries.value.find(entry => entry.UID === uid) || null
+  return allEntries.value.find(entry => entry.id === uid) || null
 }
 
 const sidebarConfig = computed(() => ({
@@ -116,7 +116,7 @@ function onNavigate(uid) {
   const entry = findEntryByUID(uid)
   if (entry) {
     selectedEntry.value = entry
-    sidebarRef.value?.selectByUID(uid)
+    sidebarRef.value?.selectById(uid)
   }
 }
 

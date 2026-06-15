@@ -1,12 +1,12 @@
 [
   {
-    "UID": 101,
-    "Company": "University of Illinois at Chicago",
-    "Title": "Bachelor of Science in Computer Engineering",
+    "id": 101,
+    "Title": "University of Illinois at Chicago",
+    "subtitle": "Bachelor of Science in Computer Engineering",
     "StartDate": "",
     "EndDate": "",
     "media": "",
-    "Summary": "Graduated cum laude.",
+    "Description": "Graduated cum laude.",
     "Bullets": [
       "Senior Design project: built a modular add-on for commercial deep fryers with Arduinos, DC Motor, and both laser-cut and 3D-printed parts.",
       "Member of IEEE-Eta Kappa Nu Honor Society Iota Lambda chapter's relaunch.",
@@ -22,9 +22,9 @@
     ]
   },
   {
-    "UID": 102,
-    "Company": "College of Lake County",
-    "Title": "Associate Degree in Engineering Science",
+    "id": 102,
+    "Title": "College of Lake County",
+    "subtitle": "Associate Degree in Engineering Science",
     "StartDate": "",
     "EndDate": "",
     "Highlights": [
@@ -33,7 +33,7 @@
       "Received Semester Honors all 6 semesters"
     ],
     "Bullets": [],
-    "Summary": "Graduated with High Honors.",
+    "Description": "Graduated with High Honors.",
     "related": [],
     "tags": ["Degree: Engineering Science", "Honor: High Honors"]
   }

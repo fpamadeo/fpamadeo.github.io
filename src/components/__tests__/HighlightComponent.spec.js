@@ -259,7 +259,7 @@ describe('HighlightComponent', () => {
     it('handles entry with Content field', async () => {
       const entryWithContent = {
         ...mockDefaultEntry,
-        Content: 'This is the content field',
+        body: 'This is the content field',
       }
 
       await wrapper.setProps({ selectedEntry: entryWithContent })
@@ -272,7 +272,7 @@ describe('HighlightComponent', () => {
     it('handles WORK IN PROGRESS content', async () => {
       const wipEntry = {
         ...mockDefaultEntry,
-        Content: 'WORK IN PROGRESS',
+        body: 'WORK IN PROGRESS',
       }
 
       await wrapper.setProps({ selectedEntry: wipEntry })
@@ -285,9 +285,9 @@ describe('HighlightComponent', () => {
   describe('Tag Click Interactions', () => {
     it('emits tag-click with UID when item with tag is clicked', async () => {
       const entryWithTaggedItems = {
-        UID: 1,
-        Company: 'Test',
+        id: 1,
         Title: 'Test',
+        subtitle: 'Test',
         Highlights: [
           { text: 'Item with tag', tagUID: 5 },
           'Regular item',

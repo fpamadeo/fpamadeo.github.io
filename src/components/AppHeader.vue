@@ -1,13 +1,42 @@
 <template>
   <header class="app-header">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="header-title">Francis Paul Amadeo</div>
-    <nav class="header-nav" aria-label="Main navigation">
-      <RouterLink to="/" :class="{ active: route.path === '/' }"> at Work </RouterLink>
-      <span class="nav-sep" aria-hidden="true"> | </span>
-      <RouterLink to="/about" :class="{ active: route.path === '/about' }"> at Life </RouterLink>
-      <span class="nav-sep" aria-hidden="true"> | </span>
-      <RouterLink to="/other" :class="{ active: route.path === '/other' }"> at Random </RouterLink>
+    <a
+      href="#main-content"
+      class="skip-link"
+    >Skip to main content</a>
+    <div class="header-title">
+      Francis Paul Amadeo
+    </div>
+    <nav
+      class="header-nav"
+      aria-label="Main navigation"
+    >
+      <RouterLink
+        to="/"
+        :class="{ active: route.path === '/' }"
+      >
+        at Work
+      </RouterLink>
+      <span
+        class="nav-sep"
+        aria-hidden="true"
+      > | </span>
+      <RouterLink
+        to="/about"
+        :class="{ active: route.path === '/about' }"
+      >
+        at Life
+      </RouterLink>
+      <span
+        class="nav-sep"
+        aria-hidden="true"
+      > | </span>
+      <RouterLink
+        to="/other"
+        :class="{ active: route.path === '/other' }"
+      >
+        at Random
+      </RouterLink>
     </nav>
   </header>
 </template>

@@ -9,36 +9,36 @@ const mockConfig = {
       showDates: true,
       entries: [
         {
-          UID: 1,
-          Company: 'Epic Systems',
-          Title: 'Software Engineer',
+          id: 1,
+          Title: 'Epic Systems',
+          subtitle: 'Software Engineer',
           StartDate: '2020-06-01T00:00:00',
           EndDate: '2022-02-28T00:00:00',
-          Summary: 'Developed full-stack features',
+          Description: 'Developed full-stack features',
           related: [],
           tags: ['Company: Epic Systems', 'Domain: Healthcare'],
           Bullets: [],
           Highlights: [],
         },
         {
-          UID: 2,
-          Company: 'Other Co',
-          Title: 'Dev',
+          id: 2,
+          Title: 'Other Co',
+          subtitle: 'Dev',
           StartDate: '2018-01-01T00:00:00',
           EndDate: '2020-01-01T00:00:00',
-          Summary: 'Other role',
+          Description: 'Other role',
           related: [],
           tags: ['Domain: Healthcare', 'Stack: Python'],
           Bullets: [],
           Highlights: [],
         },
         {
-          UID: 3,
-          Company: 'Startup',
-          Title: 'Founder',
+          id: 3,
+          Title: 'Startup',
+          subtitle: 'Founder',
           StartDate: '2016-01-01T00:00:00',
           EndDate: '2018-01-01T00:00:00',
-          Summary: 'Built stuff',
+          Description: 'Built stuff',
           related: [],
           tags: ['Stack: Python', 'Stack: JavaScript', 'Skill: Automation'],
           Bullets: [],
@@ -51,10 +51,10 @@ const mockConfig = {
       showDates: false,
       entries: [
         {
-          UID: 101,
-          Company: 'University of Illinois at Chicago',
-          Title: 'BS in Computer Engineering',
-          Summary: 'Graduated cum laude',
+          id: 101,
+          Title: 'University of Illinois at Chicago',
+          subtitle: 'BS in Computer Engineering',
+          Description: 'Graduated cum laude',
           related: [],
           tags: ['Degree: Computer Engineering'],
           Bullets: [],
@@ -67,7 +67,7 @@ const mockConfig = {
     content: 'A passionate software engineer',
     ariaLabel: 'Summary',
   },
-  defaultSelectedUID: null,
+  defaultSelectedId: null,
 }
 
 describe('SidebarComponent', () => {
@@ -80,7 +80,7 @@ describe('SidebarComponent', () => {
         showSearch: true,
         showTagFilter: false,
         searchQuery: '',
-        linkedUID: null,
+        linkedId: null,
       },
     })
   })
@@ -234,7 +234,7 @@ describe('SidebarComponent', () => {
       await stackPill.trigger('click')
 
       // Entries with Stack: tags should NOT be dimmed
-      const stackEntry = wrapper.findAll('.sidebar-entry').filter(e => e.text().includes('Stack:'))
+      wrapper.findAll('.sidebar-entry').filter(e => e.text().includes('Stack:'))
       // The specific entries are hard to query, but we know UID 3 has Stack: tags
       // Just verify the tag-filter emit has "Stack:"
       expect(wrapper.emitted('tag-filter')[0][0]).toBe('Stack:')
@@ -322,7 +322,7 @@ describe('SidebarComponent', () => {
           showSearch: true,
           showTagFilter: false,
           searchQuery: '',
-          linkedUID: null,
+          linkedId: null,
         },
       })
     })
@@ -397,7 +397,7 @@ describe('SidebarComponent', () => {
     })
 
     it('linked entry matching search does not get is-search-highlight', async () => {
-      await wrapper.setProps({ searchQuery: 'Epic', linkedUID: 1 })
+      await wrapper.setProps({ searchQuery: 'Epic', linkedId: 1 })
       const linked = wrapper.findAll('.sidebar-entry').filter(e => e.text().includes('Epic Systems'))
       linked.forEach(e => {
         expect(e.classes()).toContain('is-linked')
@@ -414,24 +414,24 @@ describe('SidebarComponent', () => {
           showDates: true,
           entries: [
             {
-              UID: 1,
-              Company: 'Epic Systems',
-              Title: 'Software Engineer',
+              id: 1,
+              Title: 'Epic Systems',
+              subtitle: 'Software Engineer',
               StartDate: '2020-06-01T00:00:00',
               EndDate: '2022-02-28T00:00:00',
-              Summary: 'Developed full-stack features',
+              Description: 'Developed full-stack features',
               related: [2],
               tags: ['Company: Epic Systems'],
               Bullets: [],
               Highlights: [],
             },
             {
-              UID: 2,
-              Company: 'Other Co',
-              Title: 'Dev',
+              id: 2,
+              Title: 'Other Co',
+              subtitle: 'Dev',
               StartDate: '2018-01-01T00:00:00',
               EndDate: '2020-01-01T00:00:00',
-              Summary: 'Other role',
+              Description: 'Other role',
               related: [],
               tags: [],
               Bullets: [],
@@ -441,7 +441,7 @@ describe('SidebarComponent', () => {
         },
       ],
       summary: null,
-      defaultSelectedUID: null,
+      defaultSelectedId: null,
     }
 
     let wrapper
@@ -452,7 +452,7 @@ describe('SidebarComponent', () => {
           config: relatedConfig,
           showSearch: true,
           searchQuery: '',
-          linkedUID: null,
+          linkedId: null,
         },
       })
     })
@@ -496,12 +496,12 @@ describe('SidebarComponent', () => {
             singularDate: true,
             entries: [
               {
-                UID: 1,
-                Company: 'Test',
-                Title: 'Post',
+                id: 1,
+                Title: 'Test',
+                subtitle: 'Post',
                 StartDate: '2026-05-31T00:00:00',
                 EndDate: '2026-05-31T00:00:00',
-                Summary: 'Test post',
+                Description: 'Test post',
                 related: [],
                 tags: [],
                 Bullets: [],
@@ -511,7 +511,7 @@ describe('SidebarComponent', () => {
           },
         ],
         summary: null,
-        defaultSelectedUID: null,
+        defaultSelectedId: null,
       }
       const w = mount(SidebarComponent, {
         props: { config: singularConfig, showSearch: false },
@@ -530,12 +530,12 @@ describe('SidebarComponent', () => {
             singularDate: true,
             entries: [
               {
-                UID: 1,
-                Company: 'Test',
-                Title: 'Post',
+                id: 1,
+                Title: 'Test',
+                subtitle: 'Post',
                 StartDate: null,
                 EndDate: null,
-                Summary: 'Test post',
+                Description: 'Test post',
                 related: [],
                 tags: [],
                 Bullets: [],
@@ -545,7 +545,7 @@ describe('SidebarComponent', () => {
           },
         ],
         summary: null,
-        defaultSelectedUID: null,
+        defaultSelectedId: null,
       }
       const w = mount(SidebarComponent, {
         props: { config: singularConfig, showSearch: false },

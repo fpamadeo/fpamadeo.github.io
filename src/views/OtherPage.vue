@@ -2,14 +2,17 @@
   <div class="page-wrapper">
     <AppHeader />
 
-    <main id="main-content" class="page-main">
+    <main
+      id="main-content"
+      class="page-main"
+    >
       <SidebarComponent
         ref="sidebarRef"
         :config="sidebarConfig"
         :show-search="true"
         :show-tag-filter="true"
         :search-query="searchQuery"
-        :linked-uid="linkedUID"
+        :linked-id="linkedUID"
         @select="onSelect"
         @deselect="onDeselect"
         @search="onSearch"
@@ -54,27 +57,45 @@ const sidebarRef = ref<any>(null)
 const highlightRef = ref<any>(null)
 
 const { invalidUID } = useURLSelection({
-  findEntry: (uid) => writingAsExperiences.value.find((e) => e.UID === uid),
+  findEntry: (uid) => writingAsExperiences.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
-    sidebarRef.value?.selectByUID(entry.UID)
+    sidebarRef.value?.selectById(entry.id)
   },
 })
 
+function truncateSummary(text: string): string {
+  if (!text) return ''
+  let clean = text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/`{1,3}.+?`{1,3}/g, '')
+    .replace(/^#+\s*/gm, '')
+    .replace(/^>\s*/gm, '')
+    .replace(/\n{2,}/g, ' ')
+    .replace(/\n/g, ' ')
+  const maxLen = 130
+  if (clean.length <= maxLen) return clean
+  const trimmed = clean.slice(0, maxLen)
+  const lastSpace = trimmed.lastIndexOf(' ')
+  return (lastSpace > 0 ? trimmed.slice(0, lastSpace) : trimmed) + '…'
+}
+
 const writingAsExperiences = computed(() =>
   writingData.map((w) => ({
-    UID: w.UID,
-    Company: 'Writing',
+    id: w.id,
     Title: w.Title,
-    StartDate: w.Date,
-    EndDate: w.Date,
+    subtitle: w.subtitle || '',
+    StartDate: w.datePublished || w.Date,
+    EndDate: w.datePublished || w.Date,
     media: '',
-    Summary: (w.tags || []).join(', '),
+    Description: w.summary || truncateSummary(w.body),
     Bullets: [],
     related: w.related ?? [],
     tags: w.tags ?? [],
     Highlights: [],
-    Content: w.Content,
+    body: w.body,
   })),
 )
 
@@ -124,10 +145,10 @@ function onTagClick(uid) {
 }
 
 function onNavigate(uid) {
-  const entry = writingAsExperiences.value.find((e) => e.UID === uid)
+  const entry = writingAsExperiences.value.find((e) => e.id === uid)
   if (entry) {
     selectedEntry.value = entry
-    sidebarRef.value?.selectByUID(uid)
+    sidebarRef.value?.selectById(uid)
   }
 }
 
@@ -146,7 +167,7 @@ function onTagBadgeClick(tag) {
 }
 
 function findEntryByUID(uid: number) {
-  return writingAsExperiences.value.find((e) => e.UID === uid) || null
+  return writingAsExperiences.value.find((e) => e.id === uid) || null
 }
 
 defineExpose({ findEntryByUID, invalidUID })

@@ -76,32 +76,35 @@
       </div>
       <div
         v-for="entry in sortedSectionEntries(section.entries)"
-        :key="entry.UID"
-        :data-uid="entry.UID"
+        :key="entry.id"
+        :data-uid="entry.id"
         class="sidebar-entry"
         :class="entryClasses(entry)"
         :style="entryIndentStyle(entry, section.entries)"
         role="button"
         tabindex="0"
-        :aria-label="`${entry.Company} — ${entry.Title}`"
-        :aria-pressed="selectedUID === entry.UID"
+        :aria-label="`${entry.Title} — ${entry.subtitle}`"
+        :aria-pressed="selectedId === entry.id"
         @click="selectEntry(entry)"
         @keydown.enter="selectEntry(entry)"
         @keydown.space.prevent="selectEntry(entry)"
       >
         <div class="entry-top-line">
-          <span class="entry-company">{{ entry.Company }}</span>
+          <span class="entry-company">{{ entry.Title }}</span>
           <span
             v-if="section.showDates !== false"
             class="entry-dates"
           >{{ section.singularDate ? formatSingularDate(entry.StartDate) : formatDateRange(entry.StartDate, entry.EndDate) }}</span>
         </div>
-        <div class="entry-title">
-          {{ entry.Title }}
+        <div
+          v-if="entry.subtitle"
+          class="entry-title"
+        >
+          {{ entry.subtitle }}
         </div>
         <div
           class="entry-summary"
-          v-html="marked.parseInline(entry.Summary)"
+          v-html="marked.parseInline(entry.Description)"
         />
       </div>
     </template>
@@ -117,7 +120,6 @@ import { buildTagDisplay } from '@/composables/useTagAggregation'
 const props = defineProps({
   config: {
     type: Object,
-    required: true,
     default: () => ({
       sections: [],
       summary: null,
@@ -126,14 +128,14 @@ const props = defineProps({
   showSearch:    { type: Boolean, default: false },
   showTagFilter: { type: Boolean, default: false },
   searchQuery:   { type: String, default: '' },
-  linkedUID:     { type: Number, default: null },
+  linkedId:     { type: Number, default: null },
 })
 
 const emit = defineEmits(['select', 'deselect', 'search', 'tag-filter'])
 
 const sidebarRef    = ref<any>(null)
 const searchBarRef  = ref<any>(null)
-const selectedUID   = ref<any>(null)
+const selectedId   = ref<any>(null)
 const selectedTag   = ref<any>(null)
 const lastValidQuery = ref('')
 const failedQuery    = ref<any>(null)
@@ -146,7 +148,7 @@ const allEntries = computed(() =>
 const sections = computed(() => props.config.sections || [])
 
 const currentSelectedEntry = computed(() =>
-  allEntries.value.find((e) => e.UID === selectedUID.value) ?? null
+  allEntries.value.find((e) => e.id === selectedId.value) ?? null
 )
 
 // Tag aggregation
@@ -163,12 +165,12 @@ const tagDisplayData = computed(() => {
 
 // Auto-select default entry on mount
 watch(
-  () => props.config.defaultSelectedUID,
+  () => props.config.defaultSelectedId,
   (uid) => {
     if (uid != null) {
-      const entry = allEntries.value.find((e) => e.UID === uid)
+      const entry = allEntries.value.find((e) => e.id === uid)
       if (entry) {
-        selectedUID.value = uid
+        selectedId.value = uid
         emit('select', entry)
       }
     }
@@ -177,7 +179,7 @@ watch(
 )
 
 // Related UIDs from the selected entry's "related" field
-const relatedUIDs = computed(() => {
+const relatedIds = computed(() => {
   if (!currentSelectedEntry.value) return new Set()
   return new Set(currentSelectedEntry.value.related || [])
 })
@@ -217,29 +219,29 @@ function formatDateRange(start, end) {
 
 function entryIndentStyle(entry, list) {
   const w = sidebarRef.value?.offsetWidth || 300
-  const sameCompany = list.filter((e) => e.Company === entry.Company)
-  const idx = sameCompany.findIndex((e) => e.UID === entry.UID)
+  const sameCompany = list.filter((e) => e.Title === entry.Title)
+  const idx = sameCompany.findIndex((e) => e.id === entry.id)
   if (idx <= 0) return {}
   return { paddingLeft: `${w * 0.05 * idx}px` }
 }
 
 function isSelected(entry) {
-  return selectedUID.value === entry.UID
+  return selectedId.value === entry.id
 }
 
 function isRelated(entry) {
   if (props.searchQuery && entryMatchesQuery(entry, props.searchQuery)) return false
   return (
-    selectedUID.value !== null &&
+    selectedId.value !== null &&
     !isSelected(entry) &&
-    relatedUIDs.value.has(entry.UID)
+    relatedIds.value.has(entry.id)
   )
 }
 
 function isLinked(entry) {
   return (
-    props.linkedUID !== null &&
-    entry.UID === props.linkedUID &&
+    props.linkedId !== null &&
+    entry.id === props.linkedId &&
     !isSelected(entry)
   )
 }
@@ -253,7 +255,7 @@ function isDimmed(entry) {
   if (isSelected(entry)) return false
   if (props.searchQuery && entryMatchesQuery(entry, props.searchQuery)) return false
   const searchDim = !!(props.searchQuery && !entryMatchesQuery(entry, props.searchQuery))
-  const selectionDim = selectedUID.value !== null && !isSelected(entry)
+  const selectionDim = selectedId.value !== null && !isSelected(entry)
   const tagDim = !!(selectedTag.value && !entryMatchesTag(entry, selectedTag.value))
   return searchDim || selectionDim || tagDim
 }
@@ -271,9 +273,9 @@ function entryMatchesQuery(entry, query) {
   if (!query) return true
   const q = query.toLowerCase()
   const fields = [
-    entry.Company,
     entry.Title,
-    entry.Summary,
+    entry.subtitle,
+    entry.Description,
     ...(entry.tags || []),
     ...(entry.Bullets    || []).map((b) => (typeof b === 'string' ? b : b?.text || '')),
     ...(entry.Highlights || []).map((h) => (typeof h === 'string' ? h : h?.text || '')),
@@ -292,12 +294,12 @@ function entryClasses(entry) {
 }
 
 function selectEntry(entry) {
-  selectedUID.value = entry.UID
+  selectedId.value = entry.id
   emit('select', entry)
 }
 
 function resetSelection() {
-  selectedUID.value = null
+  selectedId.value = null
   selectedTag.value = null
   lastValidQuery.value = ''
   failedQuery.value = null
@@ -341,15 +343,15 @@ function clearTagFilter() {
   emit('tag-filter', null)
 }
 
-function selectByUID(uid) {
-  const entry = allEntries.value.find((e) => e.UID === uid)
+function selectById(uid) {
+  const entry = allEntries.value.find((e) => e.id === uid)
   if (entry) {
-    selectedUID.value = uid
+    selectedId.value = uid
     emit('select', entry)
   }
 }
 
-function scrollToUID(uid) {
+function scrollToId(uid) {
   nextTick(() => {
     const el = sidebarRef.value?.querySelector(`[data-uid="${uid}"]`)
     if (!el) return
@@ -363,11 +365,11 @@ function scrollToUID(uid) {
   })
 }
 
-watch(selectedUID, (uid) => {
-  if (uid != null) scrollToUID(uid)
+watch(selectedId, (uid) => {
+  if (uid != null) scrollToId(uid)
 })
 
-defineExpose({ setActiveTag, clearTagFilter, selectByUID, scrollToUID })
+defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
 </script>
 
 <style scoped>
