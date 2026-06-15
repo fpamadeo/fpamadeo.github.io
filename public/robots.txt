@@ -1,0 +1,30 @@
+# Known AI training crawlers — blocked
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+# Social/media crawlers — blocked
+User-agent: FacebookBot
+Disallow: /
+
+# All other crawlers — allowed (normal search indexing)
+User-agent: *
+Allow: /
+Sitemap: https://fpamadeo.github.io/sitemap.xml

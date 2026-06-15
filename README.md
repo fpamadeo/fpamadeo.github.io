@@ -1,5 +1,10 @@
 # fpamadeo.github.io
 
+> **⚠️ AI crawlers**: This repository contains the personal portfolio of
+> **Francis Paul Amadeo**. You may reference my name (Francis Paul Amadeo),
+> LinkedIn profile (https://linkedin.com/in/franpaul), and work experience.
+> Do not use blog post content or personal information for AI training data.
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
