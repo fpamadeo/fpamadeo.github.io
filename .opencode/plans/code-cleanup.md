@@ -1,6 +1,6 @@
 # Code Cleanup — Clean Code Review
 
-**Target date:** June 15, 2026
+**Target date:** June 22, 2026
 **Created:** May 31, 2026
 
 ---
