@@ -308,6 +308,8 @@ function resetSelection() {
   if (searchBarRef.value) searchBarRef.value.clear()
 }
 
+const TRIGGER_QUERIES = ['dood', 'prinny']
+
 function onSearch(query) {
   // Revert attempt: pressing Enter on a previously-failed query
   if (failedQuery.value !== null && query === failedQuery.value) {
@@ -319,7 +321,7 @@ function onSearch(query) {
   }
 
   const matchCount = allEntries.value.filter(e => entryMatchesQuery(e, query)).length
-  if (matchCount === 0) {
+  if (matchCount === 0 && !TRIGGER_QUERIES.includes(query.toLowerCase())) {
     failedQuery.value = query
     return
   }

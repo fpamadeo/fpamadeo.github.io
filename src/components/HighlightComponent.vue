@@ -2,29 +2,11 @@
   <section
     ref="highlightRef"
     class="highlight"
-    :class="{ 'highlight--wip': isWip, 'highlight--prinny': showPrinny }"
+    :class="{ 'highlight--wip': isWip }"
     tabindex="-1"
     aria-live="polite"
     aria-atomic="true"
   >
-    <div
-      class="prinny-overlay"
-      :class="{ 'prinny-overlay--visible': showPrinny }"
-      @click="dismissPrinny"
-    >
-      <img
-        src="/assets/images/prinny-twirl.gif"
-        alt="Prinny"
-        class="prinny-gif"
-        decoding="async"
-      >
-      <button
-        class="prinny-close"
-        aria-label="Close"
-      >
-        x
-      </button>
-    </div>
 
     <div
       v-if="showInvalidBanner"
@@ -221,7 +203,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onUnmounted } from 'vue'
+import { computed, ref, watch, inject } from 'vue'
 import { marked } from 'marked'
 
 const props = defineProps({
@@ -236,26 +218,7 @@ const props = defineProps({
 
 const emit = defineEmits(['tag-click', 'tag-badge-click', 'navigate'])
 
-const showPrinny = ref(false)
-let prinnyTimeout: ReturnType<typeof setTimeout> | null = null
-
-function dismissPrinny() {
-  if (prinnyTimeout) {
-    clearTimeout(prinnyTimeout)
-    prinnyTimeout = null
-  }
-  showPrinny.value = false
-}
-
-function triggerPrinny() {
-  showPrinny.value = true
-  if (prinnyTimeout) clearTimeout(prinnyTimeout)
-  prinnyTimeout = setTimeout(dismissPrinny, 5000)
-}
-
-onUnmounted(() => {
-  if (prinnyTimeout) clearTimeout(prinnyTimeout)
-})
+const triggerPrinny = inject<(() => void) | null>('triggerPrinny', null)
 
 const dismissInvalidUID = ref(false)
 const highlightRef = ref<any>(null)
@@ -655,69 +618,6 @@ defineExpose({ focusHighlight })
   text-align: right;
   color: var(--color-text-light);
   white-space: nowrap;
-}
-
-.prinny-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  cursor: pointer;
-  pointer-events: none;
-  transition: background 0.5s ease;
-}
-.prinny-overlay--visible {
-  background: rgba(255, 255, 255, 0.95);
-  pointer-events: auto;
-}
-.prinny-gif {
-  max-width: 300px;
-  max-height: 300px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-  transform: translateY(100%);
-  opacity: 0;
-  transition:
-    transform 0.5s ease,
-    opacity 0.5s ease;
-}
-.prinny-overlay--visible .prinny-gif {
-  transform: translateY(0);
-  opacity: 1;
-}
-.prinny-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: #333;
-  color: #fff;
-  border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  line-height: 1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.prinny-overlay--visible .prinny-close {
-  pointer-events: auto;
-  opacity: 1;
-}
-
-.prinny-close:focus-visible {
-  outline: 2px solid var(--color-selected-outline);
-  outline-offset: 2px;
 }
 
 .invalid-uid-banner {
