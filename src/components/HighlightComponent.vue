@@ -540,49 +540,6 @@ defineExpose({ focusHighlight })
   align-items: baseline;
 }
 
-.tag-pill-wrapper {
-  display: inline-flex;
-}
-
-.tag-pill {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  padding: 2px 7px;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: var(--color-tag-bg, #f0f0f0);
-  color: var(--color-text);
-  cursor: pointer;
-  transition:
-    background-color var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-  white-space: nowrap;
-  line-height: 1.4;
-}
-
-.tag-pill:hover {
-  background: var(--color-tag-hover-bg, #e4e4e4);
-  border-color: #ccc;
-}
-
-.tag-pill:focus-visible {
-  outline: 2px solid var(--color-selected-outline);
-  outline-offset: 1px;
-}
-
-.tag-pill:disabled {
-  cursor: default;
-  opacity: 1;
-}
-
-.tag-pill.is-active {
-  background: var(--color-selected-outline);
-  border-color: var(--color-selected-outline);
-  color: #111;
-  font-weight: 600;
-}
-
 /* ─── Related entries footer ─────────────────────────────────── */
 .highlight-relations {
   display: flex;
