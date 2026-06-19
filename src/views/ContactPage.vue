@@ -83,7 +83,7 @@ const { local, domain } = contactData.email
 const email = local + '@' + domain
 
 // Obfuscated display text to reduce scraping
-const displayEmail = '[this domain name](at)[Google\'s email service]'
+const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
 </script>
 
 <style scoped>
