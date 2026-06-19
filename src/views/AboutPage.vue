@@ -1,106 +1,89 @@
 <template>
-  <div class="page-wrapper">
-    <AppHeader />
-    <RuleSeparator direction="horizontal" />
-
-    <main
-      id="main-content"
-      class="page-main"
-    >
-      <!-- Left panel: profile + name + summary -->
-      <aside class="about-sidebar">
-        <div class="profile-section">
-          <div class="profile-img-wrapper">
-            <img
-              v-if="aboutData.profileImage"
-              :src="aboutData.profileImage"
-              :alt="`Profile photo of ${aboutData.name}`"
-              class="profile-img"
-              loading="lazy"
-              decoding="async"
-            >
-            <div
-              v-else
-              class="profile-img-placeholder"
-              aria-label="Profile photo placeholder"
-            >
-              <span class="placeholder-initials">{{ initials }}</span>
-            </div>
-          </div>
-          <h1 class="profile-name">
-            {{ aboutData.name }}
-          </h1>
-          <p
-            class="profile-summary"
-            v-html="marked.parseInline(aboutData.summary)"
-          />
+  <aside class="about-sidebar">
+    <div class="profile-section">
+      <div class="profile-img-wrapper">
+        <img
+          v-if="aboutData.profileImage"
+          :src="aboutData.profileImage"
+          :alt="`Profile photo of ${aboutData.name}`"
+          class="profile-img"
+          loading="lazy"
+          decoding="async"
+        >
+        <div
+          v-else
+          class="profile-img-placeholder"
+          aria-label="Profile photo placeholder"
+        >
+          <span class="placeholder-initials">{{ initials }}</span>
         </div>
-      </aside>
+      </div>
+      <h1 class="profile-name">
+        {{ aboutData.name }}
+      </h1>
+      <p
+        class="profile-summary"
+        v-html="marked.parseInline(aboutData.summary)"
+      />
+    </div>
+  </aside>
 
-      <RuleSeparator direction="vertical" />
+  <RuleSeparator direction="vertical" />
 
-      <!-- Right panel: bio + favorites -->
-      <section class="about-highlight">
-        <div class="bio-section">
-          <h2 class="section-heading">
-            Bio
-          </h2>
-          <div class="bio-text">
-            <div
-              v-for="(paragraph, i) in bioParagraphs"
+  <section class="about-highlight">
+    <div class="bio-section">
+      <h2 class="section-heading">
+        Bio
+      </h2>
+      <div class="bio-text">
+        <div
+          v-for="(paragraph, i) in bioParagraphs"
+          :key="i"
+          class="bio-paragraph"
+          v-html="marked.parse(paragraph)"
+        />
+      </div>
+    </div>
+
+    <div class="favorites-section">
+      <h2 class="section-heading">
+        Current Favorites
+      </h2>
+      <div class="favorites-grid">
+        <div
+          v-for="(items, category) in aboutData.favorites"
+          :key="category"
+          class="favorites-category"
+        >
+          <h3 class="favorites-category-title">
+            {{ category }}
+          </h3>
+          <ul class="favorites-list">
+            <li
+              v-for="(item, i) in items"
               :key="i"
-              class="bio-paragraph"
-              v-html="marked.parse(paragraph)"
+              v-html="marked.parseInline(item)"
             />
-          </div>
+          </ul>
         </div>
+      </div>
+    </div>
 
-        <div class="favorites-section">
-          <h2 class="section-heading">
-            Current Favorites
-          </h2>
-          <div class="favorites-grid">
-            <div
-              v-for="(items, category) in aboutData.favorites"
-              :key="category"
-              class="favorites-category"
-            >
-              <h3 class="favorites-category-title">
-                {{ category }}
-              </h3>
-              <ul class="favorites-list">
-                <li
-                  v-for="(item, i) in items"
-                  :key="i"
-                  v-html="marked.parseInline(item)"
-                />
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <p class="attribution-footnote">
-          Favicon by
-          <a
-            href="https://duckhive.itch.io/penguin"
-            target="_blank"
-            rel="noopener noreferrer"
-          >duckhive</a>
-          on itch.io
-        </p>
-      </section>
-    </main>
-
-    <RuleSeparator direction="horizontal" />
-    <AppFooter />
-  </div>
+    <p class="attribution-footnote">
+      Favicon by
+      <a
+        href="https://duckhive.itch.io/penguin"
+        target="_blank"
+        rel="noopener noreferrer"
+      >duckhive</a>
+      on itch.io
+    </p>
+  </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { marked } from 'marked'
-import AppHeader from '@/components/AppHeader.vue'
-import AppFooter from '@/components/AppFooter.vue'
 import RuleSeparator from '@/components/RuleSeparator.vue'
 import aboutData from '@/data/about.json'
 
@@ -119,19 +102,6 @@ const bioParagraphs = computed(() =>
 </script>
 
 <style scoped>
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.page-main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
-}
-
 /* ─── Left panel ─────────────────────────────────────────────── */
 .about-sidebar {
   width: var(--sidebar-width);
@@ -183,7 +153,6 @@ const bioParagraphs = computed(() =>
   font-family: var(--font-body);
 }
 
-/* Barbara font — only for the name in About */
 .profile-name {
   font-family: var(--font-barbara);
   font-size: clamp(1rem, 2.5vw, 1.6rem);
@@ -235,7 +204,6 @@ const bioParagraphs = computed(() =>
   color: var(--color-text);
 }
 
-/* Markdown elements rendered inside bio blocks */
 .bio-paragraph :deep(p)      { margin-bottom: 0.5rem; }
 .bio-paragraph :deep(strong) { font-weight: 700; }
 .bio-paragraph :deep(em)     { font-style: italic; }
@@ -276,7 +244,6 @@ const bioParagraphs = computed(() =>
   gap: 0.3rem;
 }
 
-/* Inline markdown elements inside favorites items */
 .favorites-list li :deep(strong) { font-weight: 700; }
 .favorites-list li :deep(em)     { font-style: italic; }
 .favorites-list li :deep(code)   {
@@ -293,7 +260,6 @@ const bioParagraphs = computed(() =>
   line-height: 1.5;
 }
 
-/* ─── Footnote ──────────────────────────────────────────────── */
 .attribution-footnote {
   font-size: 0.75rem;
   color: var(--color-text-light);
@@ -315,10 +281,6 @@ const bioParagraphs = computed(() =>
 
 /* ─── Mobile ─────────────────────────────────────────────────── */
 @media (max-width: 767px) {
-  .page-main {
-    flex-direction: column;
-    overflow: visible;
-  }
   .about-sidebar {
     width: 100%;
     padding-top: 2rem;

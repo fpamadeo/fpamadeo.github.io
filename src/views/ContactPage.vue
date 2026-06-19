@@ -1,71 +1,54 @@
 <template>
-  <div class="page-wrapper">
-    <AppHeader />
-    <RuleSeparator direction="horizontal" />
-
-    <main
-      id="main-content"
-      class="page-main"
-    >
-      <!-- Left panel: profile -->
-      <aside class="contact-sidebar">
-        <div class="profile-section">
-          <div class="profile-img-wrapper">
-            <img
-              v-if="aboutData.profileImage"
-              :src="aboutData.profileImage"
-              :alt="`Profile photo of ${aboutData.name}`"
-              class="profile-img"
-              loading="lazy"
-              decoding="async"
-            >
-            <div
-              v-else
-              class="profile-img-placeholder"
-              aria-label="Profile photo placeholder"
-            >
-              <span class="placeholder-initials">{{ initials }}</span>
-            </div>
-          </div>
-          <h1 class="profile-name">
-            {{ aboutData.name }}
-          </h1>
-          <p
-            class="profile-summary"
-            v-html="marked.parseInline(aboutData.summary)"
-          />
+  <aside class="contact-sidebar">
+    <div class="profile-section">
+      <div class="profile-img-wrapper">
+        <img
+          v-if="aboutData.profileImage"
+          :src="aboutData.profileImage"
+          :alt="`Profile photo of ${aboutData.name}`"
+          class="profile-img"
+          loading="lazy"
+          decoding="async"
+        >
+        <div
+          v-else
+          class="profile-img-placeholder"
+          aria-label="Profile photo placeholder"
+        >
+          <span class="placeholder-initials">{{ initials }}</span>
         </div>
-      </aside>
+      </div>
+      <h1 class="profile-name">
+        {{ aboutData.name }}
+      </h1>
+      <p
+        class="profile-summary"
+        v-html="marked.parseInline(aboutData.summary)"
+      />
+    </div>
+  </aside>
 
-      <RuleSeparator direction="vertical" />
+  <RuleSeparator direction="vertical" />
 
-      <!-- Right panel: email (header + body pattern) -->
-      <section class="contact-highlight">
-        <div class="email-section">
-          <h2 class="section-heading">
-            Email
-          </h2>
-          <p class="email-text">
-            Feel free to reach out at
-            <a
-              :href="'mailto:' + email"
-              class="contact-email"
-            >{{ displayEmail }}</a>
-          </p>
-        </div>
-      </section>
-    </main>
-
-    <RuleSeparator direction="horizontal" />
-    <AppFooter />
-  </div>
+  <section class="contact-highlight">
+    <div class="email-section">
+      <h2 class="section-heading">
+        Email
+      </h2>
+      <p class="email-text">
+        Feel free to reach out at
+        <a
+          :href="'mailto:' + email"
+          class="contact-email"
+        >{{ displayEmail }}</a>
+      </p>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { marked } from 'marked'
-import AppHeader from '@/components/AppHeader.vue'
-import AppFooter from '@/components/AppFooter.vue'
 import RuleSeparator from '@/components/RuleSeparator.vue'
 import aboutData from '@/data/about.json'
 import contactData from '@/data/contact.json'
@@ -82,24 +65,10 @@ const initials = computed(() =>
 const { local, domain } = contactData.email
 const email = local + '@' + domain
 
-// Obfuscated display text to reduce scraping
 const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
 </script>
 
 <style scoped>
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.page-main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
-}
-
 /* ─── Left panel ─────────────────────────────────────────────── */
 .contact-sidebar {
   width: var(--sidebar-width);
@@ -210,10 +179,6 @@ const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
 
 /* ─── Mobile ─────────────────────────────────────────────────── */
 @media (max-width: 767px) {
-  .page-main {
-    flex-direction: column;
-    overflow: visible;
-  }
   .contact-sidebar {
     width: 100%;
     padding-top: 2rem;

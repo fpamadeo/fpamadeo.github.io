@@ -1,47 +1,34 @@
 <template>
-  <div class="page-wrapper">
-    <AppHeader />
-
-    <main
-      id="main-content"
-      class="page-main"
-    >
-      <SidebarComponent
-        ref="sidebarRef"
-        :config="sidebarConfig"
-        :show-search="true"
-        :show-tag-filter="true"
-        :search-query="searchQuery"
-        :linked-id="linkedUID"
-        @select="onSelect"
-        @deselect="onDeselect"
-        @search="onSearch"
-        @tag-filter="onTagFilter"
-      />
-      <HighlightComponent
-        ref="highlightRef"
-        :selected-entry="selectedEntry"
-        :default-entry="defaultHighlights"
-        :search-query="searchQuery"
-        :invalid-uid="invalidUID"
-        :tag-filter-enabled="true"
-        :active-tag="activeTag"
-        :entries="sortedEntries"
-        @tag-click="onTagClick"
-        @tag-badge-click="onTagBadgeClick"
-        @navigate="onNavigate"
-      />
-    </main>
-
-    <AppFooter />
-  </div>
+  <SidebarComponent
+    ref="sidebarRef"
+    :config="sidebarConfig"
+    :show-search="true"
+    :show-tag-filter="true"
+    :search-query="searchQuery"
+    :linked-id="linkedUID"
+    @select="onSelect"
+    @deselect="onDeselect"
+    @search="onSearch"
+    @tag-filter="onTagFilter"
+  />
+  <HighlightComponent
+    ref="highlightRef"
+    :selected-entry="selectedEntry"
+    :default-entry="defaultHighlights"
+    :search-query="searchQuery"
+    :invalid-uid="invalidUID"
+    :tag-filter-enabled="true"
+    :active-tag="activeTag"
+    :entries="sortedEntries"
+    @tag-click="onTagClick"
+    @tag-badge-click="onTagBadgeClick"
+    @navigate="onNavigate"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { useURLSelection } from '@/composables/useURLSelection'
-import AppHeader from '@/components/AppHeader.vue'
-import AppFooter from '@/components/AppFooter.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue'
 import HighlightComponent from '@/components/HighlightComponent.vue'
 
@@ -99,7 +86,6 @@ const writingAsExperiences = computed(() =>
   })),
 )
 
-// Matches sidebar sort order: entries sorted by EndDate desc
 function parseDate(d: any): number {
   if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
   return new Date(d).getTime()
@@ -176,25 +162,3 @@ watch(selectedEntry, () => {
   nextTick(() => highlightRef.value?.focusHighlight())
 })
 </script>
-
-<style scoped>
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.page-main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
-}
-
-@media (max-width: 767px) {
-  .page-main {
-    flex-direction: column-reverse;
-    overflow: visible;
-  }
-}
-</style>

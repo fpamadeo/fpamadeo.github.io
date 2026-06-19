@@ -1,42 +1,29 @@
 <template>
-  <div class="page-wrapper">
-    <AppHeader />
-
-    <main
-      id="main-content"
-      class="page-main"
-    >
-      <SidebarComponent
-        ref="sidebarRef"
-        :config="sidebarConfig"
-        :show-search="true"
-        :search-query="searchQuery"
-        :linked-id="linkedUID"
-        @select="onSelect"
-        @deselect="onDeselect"
-        @search="onSearch"
-      />
-      <HighlightComponent
-        ref="highlightRef"
-        :selected-entry="selectedEntry"
-        :default-entry="defaultHighlights"
-        :search-query="searchQuery"
-        :invalid-uid="invalidUID"
-        :entries="sortedEntries"
-        @tag-click="onTagClick"
-        @navigate="onNavigate"
-      />
-    </main>
-
-    <AppFooter />
-  </div>
+  <SidebarComponent
+    ref="sidebarRef"
+    :config="sidebarConfig"
+    :show-search="true"
+    :search-query="searchQuery"
+    :linked-id="linkedUID"
+    @select="onSelect"
+    @deselect="onDeselect"
+    @search="onSearch"
+  />
+  <HighlightComponent
+    ref="highlightRef"
+    :selected-entry="selectedEntry"
+    :default-entry="defaultHighlights"
+    :search-query="searchQuery"
+    :invalid-uid="invalidUID"
+    :entries="sortedEntries"
+    @tag-click="onTagClick"
+    @navigate="onNavigate"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { useURLSelection } from '@/composables/useURLSelection'
-import AppHeader from '@/components/AppHeader.vue'
-import AppFooter from '@/components/AppFooter.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue'
 import HighlightComponent from '@/components/HighlightComponent.vue'
 
@@ -65,7 +52,6 @@ const allEntries = computed(() => [
   ...educationData,
 ])
 
-// Matches sidebar sort order: sections in config order, entries sorted by EndDate desc
 function parseDate(d: any): number {
   if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
   return new Date(d).getTime()
@@ -126,25 +112,3 @@ watch(selectedEntry, () => {
 
 defineExpose({ findEntryByUID, invalidUID })
 </script>
-
-<style scoped>
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.page-main {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
-}
-
-@media (max-width: 767px) {
-  .page-main {
-    flex-direction: column-reverse;
-    overflow: visible;
-  }
-}
-</style>

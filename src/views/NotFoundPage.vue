@@ -1,43 +1,31 @@
 <template>
-  <div class="page-wrapper">
-    <AppHeader />
-    <RuleSeparator direction="horizontal" />
-
-    <main
-      id="main-content"
-      class="page-main not-found"
-    >
-      <div class="not-found-content">
-        <h1 class="not-found-code">
-          404
-        </h1>
-        <p class="not-found-message">
-          Page not found
-        </p>
-        <p class="not-found-description">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <router-link
-          to="/"
-          class="not-found-link"
-        >
-          Return to Experience
-        </router-link>
-      </div>
-    </main>
-
-    <AppFooter />
+  <div class="not-found">
+    <div class="not-found-content">
+      <h1 class="not-found-code">
+        404
+      </h1>
+      <p class="not-found-message">
+        Page not found
+      </p>
+      <p class="not-found-description">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+      <router-link
+        to="/"
+        class="not-found-link"
+      >
+        Return to Experience
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import AppHeader from '@/components/AppHeader.vue'
-import AppFooter from '@/components/AppFooter.vue'
-import RuleSeparator from '@/components/RuleSeparator.vue'
 </script>
 
 <style scoped>
 .not-found {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
