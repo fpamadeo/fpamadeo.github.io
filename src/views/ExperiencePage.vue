@@ -14,7 +14,7 @@
     :selected-entry="selectedEntry"
     :default-entry="defaultHighlights"
     :search-query="searchQuery"
-    :invalid-uid="invalidUID"
+    :invalid-id="invalidId"
     :entries="sortedEntries"
     @tag-click="onTagClick"
     @navigate="onNavigate"
@@ -39,7 +39,7 @@ const linkedUID     = ref<any>(null)
 const sidebarRef    = ref<any>(null)
 const highlightRef  = ref<any>(null)
 
-const { invalidUID } = useURLSelection({
+const { invalidId } = useURLSelection({
   findEntry: (uid) => allEntries.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
@@ -65,8 +65,8 @@ const sortedEntries = computed(() =>
     )
 )
 
-function findEntryByUID(uid) {
-  return allEntries.value.find(entry => entry.id === uid) || null
+function findEntryById(id) {
+  return allEntries.value.find(entry => entry.id === id) || null
 }
 
 const sidebarConfig = computed(() => ({
@@ -110,5 +110,5 @@ watch(selectedEntry, () => {
   nextTick(() => highlightRef.value?.focusHighlight())
 })
 
-defineExpose({ findEntryByUID, invalidUID })
+defineExpose({ findEntryById, invalidId })
 </script>

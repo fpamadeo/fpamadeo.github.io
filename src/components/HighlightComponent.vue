@@ -10,14 +10,14 @@
 
     <div
       v-if="showInvalidBanner"
-      class="invalid-uid-banner"
+      class="invalid-id-banner"
       role="alert"
     >
-      <span class="invalid-uid-text">The UID provided in the URL was not found. Showing default highlights.</span>
+      <span class="invalid-id-text">The UID provided in the URL was not found. Showing default highlights.</span>
       <button
-        class="invalid-uid-close"
+        class="invalid-id-close"
         aria-label="Dismiss"
-        @click="dismissInvalidUID = true"
+        @click="dismissInvalidId = true"
       >
         ×
       </button>
@@ -210,7 +210,7 @@ const props = defineProps({
   selectedEntry: { type: Object, default: null },
   defaultEntry: { type: Object, required: true },
   searchQuery: { type: String, default: '' },
-  invalidUID: { type: Boolean, default: false },
+  invalidId: { type: Boolean, default: false },
   tagFilterEnabled: { type: Boolean, default: false },
   activeTag: { type: String, default: '' },
   entries: { type: Array, default: () => [] },
@@ -220,7 +220,7 @@ const emit = defineEmits(['tag-click', 'tag-badge-click', 'navigate'])
 
 const triggerPrinny = inject<(() => void) | null>('triggerPrinny', null)
 
-const dismissInvalidUID = ref(false)
+const dismissInvalidId = ref(false)
 const highlightRef = ref<any>(null)
 
 type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
@@ -277,7 +277,7 @@ const mediaStyle = computed(() => {
       return { objectFit }
   }
 })
-const showInvalidBanner = computed(() => props.invalidUID && !dismissInvalidUID.value)
+const showInvalidBanner = computed(() => props.invalidId && !dismissInvalidId.value)
 const isWip = computed(() => activeEntry.value?.body === 'WORK IN PROGRESS')
 
 const activeLinkedUID = ref<any>(null)
@@ -620,7 +620,7 @@ defineExpose({ focusHighlight })
   white-space: nowrap;
 }
 
-.invalid-uid-banner {
+.invalid-id-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -632,12 +632,12 @@ defineExpose({ focusHighlight })
   margin-bottom: 1rem;
 }
 
-.invalid-uid-text {
+.invalid-id-text {
   font-size: 0.85rem;
   color: #856404;
 }
 
-.invalid-uid-close {
+.invalid-id-close {
   background: transparent;
   border: none;
   font-size: 1.25rem;
@@ -645,18 +645,18 @@ defineExpose({ focusHighlight })
   cursor: pointer;
   padding: 0;
   line-height: 1;
-  width: 24px;
-  height: 24px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.invalid-uid-close:hover {
+.invalid-id-close:hover {
   color: #533f03;
 }
 
-.invalid-uid-close:focus-visible {
+.invalid-id-close:focus-visible {
   outline: 2px solid #856404;
   outline-offset: 2px;
   border-radius: 2px;

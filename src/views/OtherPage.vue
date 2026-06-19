@@ -16,7 +16,7 @@
     :selected-entry="selectedEntry"
     :default-entry="defaultHighlights"
     :search-query="searchQuery"
-    :invalid-uid="invalidUID"
+    :invalid-id="invalidId"
     :tag-filter-enabled="true"
     :active-tag="activeTag"
     :entries="sortedEntries"
@@ -43,7 +43,7 @@ const activeTag = ref('')
 const sidebarRef = ref<any>(null)
 const highlightRef = ref<any>(null)
 
-const { invalidUID } = useURLSelection({
+const { invalidId } = useURLSelection({
   findEntry: (uid) => writingAsExperiences.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
@@ -152,11 +152,11 @@ function onTagBadgeClick(tag) {
   }
 }
 
-function findEntryByUID(uid: number) {
-  return writingAsExperiences.value.find((e) => e.id === uid) || null
+function findEntryById(id: number) {
+  return writingAsExperiences.value.find((e) => e.id === id) || null
 }
 
-defineExpose({ findEntryByUID, invalidUID })
+defineExpose({ findEntryById, invalidId })
 
 watch(selectedEntry, () => {
   nextTick(() => highlightRef.value?.focusHighlight())
