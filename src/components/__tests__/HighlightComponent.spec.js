@@ -314,41 +314,58 @@ describe('HighlightComponent', () => {
   })
 
   describe('Prinny Easter Egg', () => {
-    it('is hidden by default', () => {
-      const overlay = wrapper.find('.prinny-overlay')
-      expect(overlay.exists()).toBe(true)
-      expect(overlay.classes()).not.toContain('prinny-overlay--visible')
+    /**
+     * The Prinny overlay is rendered in App.vue (via provide/inject).
+     * HighlightComponent only holds the trigger logic — a watcher that
+     * calls the injected `triggerPrinny()` when searchQuery matches
+     * "dood" or "prinny". These tests verify the callback fires correctly.
+     */
+
+    function mountWithTrigger(initialQuery = '') {
+      const mockTrigger = vi.fn()
+      const w = mount(HighlightComponent, {
+        props: {
+          selectedEntry: null,
+          defaultEntry: mockDefaultEntry,
+          searchQuery: initialQuery,
+        },
+        global: {
+          provide: {
+            triggerPrinny: mockTrigger,
+          },
+        },
+      })
+      return { wrapper: w, mockTrigger }
+    }
+
+    it('calls triggerPrinny when searchQuery changes to "dood"', async () => {
+      const { wrapper: w, mockTrigger } = mountWithTrigger()
+      await w.setProps({ searchQuery: 'dood' })
+      expect(mockTrigger).toHaveBeenCalledTimes(1)
     })
 
-    it('appears when searchQuery is "dood"', async () => {
-      await wrapper.setProps({ searchQuery: 'dood' })
-      const overlay = wrapper.find('.prinny-overlay')
-      expect(overlay.classes()).toContain('prinny-overlay--visible')
+    it('calls triggerPrinny when searchQuery changes to "prinny"', async () => {
+      const { wrapper: w, mockTrigger } = mountWithTrigger()
+      await w.setProps({ searchQuery: 'prinny' })
+      expect(mockTrigger).toHaveBeenCalledTimes(1)
     })
 
-    it('appears when searchQuery is "prinny"', async () => {
-      await wrapper.setProps({ searchQuery: 'prinny' })
-      const overlay = wrapper.find('.prinny-overlay')
-      expect(overlay.classes()).toContain('prinny-overlay--visible')
+    it('does not call triggerPrinny for normal search queries', async () => {
+      const { wrapper: w, mockTrigger } = mountWithTrigger()
+      await w.setProps({ searchQuery: 'react' })
+      expect(mockTrigger).not.toHaveBeenCalled()
     })
 
-    it('hides on click', async () => {
-      await wrapper.setProps({ searchQuery: 'dood' })
-      const overlay = wrapper.find('.prinny-overlay')
-      expect(overlay.classes()).toContain('prinny-overlay--visible')
-      await overlay.trigger('click')
-      expect(overlay.classes()).not.toContain('prinny-overlay--visible')
+    it('is case-insensitive ("DOOD" triggers)', async () => {
+      const { wrapper: w, mockTrigger } = mountWithTrigger()
+      await w.setProps({ searchQuery: 'DOOD' })
+      expect(mockTrigger).toHaveBeenCalledTimes(1)
     })
 
-    it('auto-dismisses after 5 seconds', async () => {
-      vi.useFakeTimers()
-      await wrapper.setProps({ searchQuery: 'dood' })
-      const overlay = wrapper.find('.prinny-overlay')
-      expect(overlay.classes()).toContain('prinny-overlay--visible')
-      vi.advanceTimersByTime(5000)
-      await wrapper.vm.$nextTick()
-      expect(overlay.classes()).not.toContain('prinny-overlay--visible')
-      vi.useRealTimers()
+    it('trims whitespace around trigger words', async () => {
+      const { wrapper: w, mockTrigger } = mountWithTrigger()
+      await w.setProps({ searchQuery: '  dood  ' })
+      expect(mockTrigger).toHaveBeenCalledTimes(1)
     })
   })
 })

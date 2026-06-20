@@ -190,7 +190,7 @@ provide('triggerPrinny', triggerPrinny)
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: transparent;
   z-index: 100;
   cursor: pointer;
   overflow: hidden;
@@ -199,7 +199,7 @@ provide('triggerPrinny', triggerPrinny)
   max-width: 300px;
   max-height: 300px;
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
 }
 .prinny-overlay--enter .prinny-gif {
   animation: prinny-overlay-enter 0.4s ease-out forwards;
