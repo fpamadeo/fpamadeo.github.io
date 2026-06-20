@@ -272,7 +272,7 @@ describe('HighlightComponent', () => {
     it('handles WORK IN PROGRESS content', async () => {
       const wipEntry = {
         ...mockDefaultEntry,
-        body: 'WORK IN PROGRESS',
+        isWip: true,
       }
 
       await wrapper.setProps({ selectedEntry: wipEntry })

@@ -79,7 +79,7 @@
       </div>
 
       <article
-        v-if="activeEntry.body && activeEntry.body !== 'WORK IN PROGRESS'"
+        v-if="activeEntry.body && !isWip"
         class="highlight-content"
       >
         <h2 class="highlight-title">
@@ -278,7 +278,7 @@ const mediaStyle = computed(() => {
   }
 })
 const showInvalidBanner = computed(() => props.invalidId && !dismissInvalidId.value)
-const isWip = computed(() => activeEntry.value?.body === 'WORK IN PROGRESS')
+const isWip = computed(() => !!activeEntry.value?.isWip)
 
 const activeLinkedUID = ref<any>(null)
 
