@@ -99,7 +99,7 @@ function onTagClick(uid) {
 }
 
 function onNavigate(uid) {
-  const entry = findEntryByUID(uid)
+  const entry = findEntryById(uid)
   if (entry) {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(uid)

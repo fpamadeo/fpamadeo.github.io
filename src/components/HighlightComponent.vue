@@ -2,7 +2,6 @@
   <section
     ref="highlightRef"
     class="highlight"
-    :class="{ 'highlight--wip': isWip }"
     tabindex="-1"
     aria-live="polite"
     aria-atomic="true"
@@ -25,21 +24,13 @@
 
     <div
       v-if="isWip"
-      class="wip-container"
+      class="wip-overlay"
+      aria-hidden="true"
     >
-      <div
-        class="wip-watermark"
-        aria-hidden="true"
-      >
+      <div class="wip-watermark">
         WORK IN PROGRESS PO
       </div>
-      <p class="wip-label">
-        This piece is not yet published.
-      </p>
     </div>
-
-    <!-- Normal highlight display -->
-    <template v-else>
       <!-- Entry Navigation -->
       <div
         v-if="entries.length && selectedEntry && (hasPrev || hasNext)"
@@ -79,7 +70,7 @@
       </div>
 
       <article
-        v-if="activeEntry.body && !isWip"
+        v-if="activeEntry.body"
         class="highlight-content"
       >
         <h2 class="highlight-title">
@@ -198,7 +189,6 @@
         <span class="relations-count">{{ activeEntry.related.length }}</span>
         <span class="relations-hint">(highlighted in sidebar)</span>
       </div>
-    </template>
   </section>
 </template>
 
@@ -398,27 +388,25 @@ defineExpose({ focusHighlight })
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  position: relative;
+  min-height: 300px;
 }
 
 .highlight:focus-visible {
   outline: 2px solid var(--color-selected-outline);
   outline-offset: -2px;
 }
-.highlight--wip {
-  position: relative;
-  justify-content: center;
-  align-items: center;
-}
-
-.wip-container {
+.wip-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.4);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-  position: relative;
+  z-index: 10;
 }
 
 .wip-watermark {
@@ -434,14 +422,6 @@ defineExpose({ focusHighlight })
   pointer-events: none;
   user-select: none;
   text-transform: uppercase;
-}
-
-.wip-label {
-  font-size: 0.85rem;
-  color: var(--color-text-light);
-  font-style: italic;
-  position: relative;
-  z-index: 1;
 }
 
 /* ─── Media ───────────────────────────────────────────────────── */

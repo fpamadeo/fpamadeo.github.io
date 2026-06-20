@@ -273,12 +273,14 @@ describe('HighlightComponent', () => {
       const wipEntry = {
         ...mockDefaultEntry,
         isWip: true,
+        body: 'Content visible beneath overlay',
       }
 
       await wrapper.setProps({ selectedEntry: wipEntry })
 
-      expect(wrapper.find('.highlight--wip').exists()).toBe(true)
-      expect(wrapper.find('.wip-label').text()).toBe('This piece is not yet published.')
+      expect(wrapper.find('.wip-overlay').exists()).toBe(true)
+      expect(wrapper.find('.wip-watermark').text()).toContain('WORK IN PROGRESS')
+      expect(wrapper.find('.highlight-content').exists()).toBe(true)
     })
   })
 
