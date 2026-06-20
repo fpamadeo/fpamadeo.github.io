@@ -42,14 +42,14 @@
     <template v-else>
       <!-- Entry Navigation -->
       <div
-        v-if="entries.length && selectedEntry"
+        v-if="entries.length && selectedEntry && (hasPrev || hasNext)"
         class="highlight-nav"
       >
         <button
           class="nav-btn nav-prev"
           :disabled="!hasPrev"
-          :aria-label="'Previous entry: ' + (prevEntry?.subtitle || '')"
-          @click="goPrev"
+          :aria-label="prevLabel"
+          @click="changeEntry(-1)"
         >
           ← Previous
         </button>
@@ -57,8 +57,8 @@
         <button
           class="nav-btn nav-next"
           :disabled="!hasNext"
-          :aria-label="'Next entry: ' + (nextEntry?.subtitle || '')"
-          @click="goNext"
+          :aria-label="nextLabel"
+          @click="changeEntry(+1)"
         >
           Next →
         </button>
@@ -282,32 +282,41 @@ const isWip = computed(() => !!activeEntry.value?.isWip)
 
 const activeLinkedUID = ref<any>(null)
 
-// Navigation
+interface NavEntry {
+  id: number
+  subtitle?: string
+  Title?: string
+}
+
+const entryList = computed<NavEntry[]>(() => props.entries as NavEntry[])
+
 const currentIndex = computed(() => {
   if (!props.selectedEntry) return -1
-  return (props.entries as any[]).findIndex((e: any) => e.id === (props.selectedEntry as any).id)
+  return entryList.value.findIndex((e) => e.id === (props.selectedEntry as any).id)
 })
 
 const hasPrev = computed(() => currentIndex.value > 0)
-const hasNext = computed(
-  () => currentIndex.value >= 0 && currentIndex.value < props.entries.length - 1,
-)
+const hasNext = computed(() => currentIndex.value >= 0 && currentIndex.value < entryList.value.length - 1)
 
-const prevEntry = computed(() =>
-  hasPrev.value ? (props.entries as any[])[currentIndex.value - 1] : null,
-)
-const nextEntry = computed(() =>
-  hasNext.value ? (props.entries as any[])[currentIndex.value + 1] : null,
-)
+const prevEntry = computed(() => (hasPrev.value ? entryList.value[currentIndex.value - 1] : null))
+const nextEntry = computed(() => (hasNext.value ? entryList.value[currentIndex.value + 1] : null))
 
-function goPrev() {
-  if (!hasPrev.value) return
-  emit('navigate', (props.entries as any[])[currentIndex.value - 1].id)
-}
+const prevLabel = computed(() => {
+  if (!prevEntry.value) return ''
+  const desc = prevEntry.value.subtitle || prevEntry.value.Title
+  return desc ? `Previous entry: ${desc}` : ''
+})
 
-function goNext() {
-  if (!hasNext.value) return
-  emit('navigate', (props.entries as any[])[currentIndex.value + 1].id)
+const nextLabel = computed(() => {
+  if (!nextEntry.value) return ''
+  const desc = nextEntry.value.subtitle || nextEntry.value.Title
+  return desc ? `Next entry: ${desc}` : ''
+})
+
+function changeEntry(delta: number) {
+  const idx = currentIndex.value + delta
+  if (idx < 0 || idx >= entryList.value.length) return
+  emit('navigate', entryList.value[idx].id)
 }
 
 watch(
