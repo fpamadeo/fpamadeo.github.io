@@ -20,6 +20,11 @@
   "CertificationsTitle": "PROFESSIONAL DEVELOPMENT",
   "Certifications": [
     {
+      "Name": "Elements of AI",
+      "Issuer": "University of Helsinki (via Minnalearn)",
+      "Date": "Jun 2026"
+    },
+    {
       "Name": "8.3 IU Credential",
       "Issuer": "Inductive Automation",
       "Date": "May 2026"

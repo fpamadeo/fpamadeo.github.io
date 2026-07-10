@@ -5,14 +5,10 @@
   "StartDate": "",
   "EndDate": "",
   "media": "",
-  "Summary": "Explorations in software engineering, distributed systems, and development practices.",
+  "Summary": "Just a little corner of random things I'm thinking about.",
   "tags": [],
   "related": [],
   "Bullets": [],
-  "BulletsTitle": "SKILLS",
-  "Highlights": [
-    "On Distributed Consensus \u2014 An exploration of the Raft and Paxos consensus algorithms and their role in distributed systems.",
-    "Why I Switched from React to Vue \u2014 A personal take on the Vue vs React debate, covering developer experience, ecosystem, and productivity.",
-    "A Practical Guide to CI/CD for Solo Developers \u2014 Setting up GitHub Actions, automated testing, and deployment pipelines for one-person teams."
-  ]
+  "BulletsTitle": "",
+  "Highlights": []
 }

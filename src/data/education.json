@@ -13,8 +13,13 @@
       "Member of Tau Beta Pi Honor Society.",
       "Dean's Lister for 4 semesters."
     ],
-    "related": [211, 221, 222, 231],
-    "tags": ["Degree: Computer Engineering", "Honor: Cum Laude", "Society: IEEE HKN", "Society: Tau Beta Pi"],
+    "related": [221, 222, 231],
+    "tags": [
+      "Degree: Computer Engineering",
+      "Honor: Cum Laude",
+      "Society: IEEE HKN",
+      "Society: Tau Beta Pi"
+    ],
     "Highlights": [
       "Graduated Cum Laude with a 3.6 GPA.",
       "Software Lead for Project STELLA 2019, the 2nd place overall at the 32nd Midwestern Robotics Design Competition.",

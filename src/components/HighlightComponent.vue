@@ -215,47 +215,29 @@ const highlightRef = ref<any>(null)
 
 type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 
-class MediaFit {
-  private fit: ObjectFit
-
-  constructor(raw: string) {
-    const normalized = raw.toLowerCase()
-    switch (normalized) {
-      case 'cover':
-      case 'fill':
-      case 'contain':
-      case 'none':
-      case 'scale-down':
-        this.fit = normalized
-        break
-      case 'as-is':
-        this.fit = 'none'
-        break
-      case 'force-height':
-      case 'force-width':
-        this.fit = 'fill'
-        break
-      default:
-        throw new Error(
-          `Invalid mediaFit value: "${raw}". Allowed: cover, fill, contain, none, scale-down, as-is, force-height, force-width`
-        )
-    }
-  }
-
-  get value(): ObjectFit {
-    return this.fit
+function toObjectFit(raw: string): ObjectFit {
+  const normalized = raw.toLowerCase()
+  switch (normalized) {
+    case 'cover':
+    case 'fill':
+    case 'contain':
+    case 'none':
+    case 'scale-down':
+      return normalized
+    case 'as-is':
+      return 'none'
+    case 'force-height':
+    case 'force-width':
+      return 'fill'
+    default:
+      return 'cover'
   }
 }
 
 const activeEntry = computed(() => props.selectedEntry ?? props.defaultEntry)
 const mediaStyle = computed(() => {
   const raw = activeEntry.value?.mediaFit || 'cover'
-  let objectFit: ObjectFit
-  try {
-    objectFit = new MediaFit(raw).value
-  } catch {
-    objectFit = 'cover'
-  }
+  const objectFit = toObjectFit(raw)
   switch (raw) {
     case 'as-is':
       return { objectFit, width: 'auto', height: 'auto', maxHeight: 'none' }
@@ -432,6 +414,7 @@ defineExpose({ focusHighlight })
 .highlight-img {
   width: 100%;
   max-height: 260px;
+  aspect-ratio: auto;
   object-fit: cover;
   border-radius: 6px;
   display: block;
