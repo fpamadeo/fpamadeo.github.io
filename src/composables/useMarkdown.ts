@@ -27,7 +27,7 @@ marked.use({
 /**
  * Escape a string for safe use inside a RegExp.
  */
-function escapeRegex(str) {
+function escapeRegex(str: string) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
@@ -40,12 +40,12 @@ function escapeRegex(str) {
  * @param {string} query  - Search query to highlight
  * @returns {string}      - HTML with <mark>…</mark> around matches
  */
-function applySearchHighlight(html, query) {
+function applySearchHighlight(html: string, query: string) {
   if (!query || !html) return html
   const pattern = new RegExp(`(${escapeRegex(query)})`, 'gi')
 
   // Split on HTML tags; only process the non-tag segments
-  return html.replace(/(<[^>]*>)|([^<]+)/g, (match, tag, text) => {
+  return html.replace(/(<[^>]*>)|([^<]+)/g, (match: string, tag: string, text: string) => {
     if (tag) return tag           // HTML tag — return unchanged
     if (!text) return ''
     return text.replace(pattern, '<mark>$1</mark>')
@@ -60,9 +60,9 @@ function applySearchHighlight(html, query) {
  * @param {string} [searchQuery]
  * @returns {string} HTML string — safe to bind with v-html
  */
-export function renderMarkdown(text, searchQuery = '') {
+export function renderMarkdown(text: string, searchQuery = '') {
   if (!text) return ''
-  const html = marked.parse(String(text))
+  const html = marked.parse(String(text)) as string
   return applySearchHighlight(html, searchQuery)
 }
 
@@ -75,8 +75,8 @@ export function renderMarkdown(text, searchQuery = '') {
  * @param {string} [searchQuery]
  * @returns {string} HTML string — safe to bind with v-html
  */
-export function renderMarkdownInline(text, searchQuery = '') {
+export function renderMarkdownInline(text: string, searchQuery = '') {
   if (!text) return ''
-  const html = marked.parseInline(String(text))
+  const html = marked.parseInline(String(text)) as string
   return applySearchHighlight(html, searchQuery)
 }

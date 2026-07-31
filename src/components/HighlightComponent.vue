@@ -211,7 +211,7 @@ const emit = defineEmits(['tag-click', 'tag-badge-click', 'navigate'])
 const triggerPrinny = inject<(() => void) | null>('triggerPrinny', null)
 
 const dismissInvalidId = ref(false)
-const highlightRef = ref<any>(null)
+const highlightRef = ref<HTMLElement | null>(null)
 
 type ObjectFit = 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 
@@ -252,7 +252,7 @@ const mediaStyle = computed(() => {
 const showInvalidBanner = computed(() => props.invalidId && !dismissInvalidId.value)
 const isWip = computed(() => !!activeEntry.value?.isWip)
 
-const activeLinkedUID = ref<any>(null)
+const activeLinkedUID = ref<number | null>(null)
 
 interface NavEntry {
   id: number
@@ -302,23 +302,25 @@ watch(
   () => props.searchQuery,
   (val) => {
     if (['dood', 'prinny'].includes(val?.toLowerCase().trim())) {
-      triggerPrinny()
+      triggerPrinny?.()
     }
   },
 )
 
-function itemText(item: any): string {
+type HighlightItem = string | { text?: string; tagUID?: number | null }
+
+function itemText(item: HighlightItem): string {
   return typeof item === 'string' ? item : (item?.text ?? '')
 }
-function itemTagUID(item: any): number | null {
+function itemTagUID(item: HighlightItem): number | null {
   if (typeof item === 'string' || !item) return null
   return item.tagUID ?? null
 }
-function isActiveLinkItem(item: any): boolean {
+function isActiveLinkItem(item: HighlightItem): boolean {
   const uid = itemTagUID(item)
   return uid !== null && uid === activeLinkedUID.value
 }
-function handleItemClick(item: any): void {
+function handleItemClick(item: HighlightItem): void {
   const uid = itemTagUID(item)
   if (uid === null) return
   if (activeLinkedUID.value === uid) {
@@ -330,7 +332,7 @@ function handleItemClick(item: any): void {
   }
 }
 
-function handleTagBadgeClick(tag) {
+function handleTagBadgeClick(tag: string) {
   emit('tag-badge-click', tag)
 }
 

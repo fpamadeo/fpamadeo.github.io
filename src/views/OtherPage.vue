@@ -36,18 +36,18 @@ import writingData from '@/data/writing.json'
 import defaultWritingHighlightsData from '@/data/defaultWritingHighlights.json'
 
 const defaultHighlights = ref(defaultWritingHighlightsData)
-const selectedEntry = ref<any>(null)
+const selectedEntry = ref<Record<string, unknown> | undefined>(undefined)
 const searchQuery = ref('')
-const linkedUID = ref<any>(null)
+const linkedUID = ref<number | undefined>(undefined)
 const activeTag = ref('')
-const sidebarRef = ref<any>(null)
-const highlightRef = ref<any>(null)
+const sidebarRef = ref<InstanceType<typeof SidebarComponent> | null>(null)
+const highlightRef = ref<InstanceType<typeof HighlightComponent> | null>(null)
 
 const { invalidId } = useURLSelection({
   findEntry: (uid) => writingAsExperiences.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
-    sidebarRef.value?.selectById(entry.id)
+    sidebarRef.value?.selectById(entry.id as number)
   },
 })
 
@@ -70,7 +70,7 @@ function truncateSummary(text: string): string {
 }
 
 const writingAsExperiences = computed(() =>
-  writingData.map((w) => ({
+  (writingData as any[]).map((w) => ({
     id: w.id,
     Title: w.Title,
     subtitle: w.subtitle || '',
@@ -86,7 +86,7 @@ const writingAsExperiences = computed(() =>
   })),
 )
 
-function parseDate(d: any): number {
+function parseDate(d: string): number {
   if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
   return new Date(d).getTime()
 }
@@ -113,24 +113,24 @@ const sidebarConfig = computed(() => ({
   defaultSelectedUID: null,
 }))
 
-function onSelect(entry) {
+function onSelect(entry: Record<string, unknown>) {
   selectedEntry.value = entry
 }
 function onDeselect() {
-  selectedEntry.value = null
+  selectedEntry.value = undefined
   searchQuery.value = ''
-  linkedUID.value = null
+  linkedUID.value = undefined
   activeTag.value = ''
 }
-function onSearch(query) {
+function onSearch(query: string) {
   searchQuery.value = query
 }
 
-function onTagClick(uid) {
-  linkedUID.value = uid
+function onTagClick(uid: number | null) {
+  linkedUID.value = uid ?? undefined
 }
 
-function onNavigate(uid) {
+function onNavigate(uid: number) {
   const entry = writingAsExperiences.value.find((e) => e.id === uid)
   if (entry) {
     selectedEntry.value = entry
@@ -138,11 +138,11 @@ function onNavigate(uid) {
   }
 }
 
-function onTagFilter(tag) {
+function onTagFilter(tag: string | null) {
   activeTag.value = tag || ''
 }
 
-function onTagBadgeClick(tag) {
+function onTagBadgeClick(tag: string) {
   if (activeTag.value === tag) {
     activeTag.value = ''
     if (sidebarRef.value?.clearTagFilter) sidebarRef.value.clearTagFilter()

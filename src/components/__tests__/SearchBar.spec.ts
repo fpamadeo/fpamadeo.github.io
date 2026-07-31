@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import SearchBar from '../SearchBar.vue'
 
 describe('SearchBar', () => {
-  let wrapper
+  let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
     wrapper = mount(SearchBar)
@@ -26,7 +26,7 @@ describe('SearchBar', () => {
       await button.trigger('click')
 
       expect(wrapper.emitted('search')).toBeTruthy()
-      expect(wrapper.emitted('search')[0]).toEqual(['test query'])
+      expect(wrapper.emitted('search')![0]).toEqual(['test query'])
     })
 
     it('emits search event on Enter key', async () => {
@@ -35,7 +35,7 @@ describe('SearchBar', () => {
       await input.trigger('keydown.enter')
 
       expect(wrapper.emitted('search')).toBeTruthy()
-      expect(wrapper.emitted('search')[0]).toEqual(['enter query'])
+      expect(wrapper.emitted('search')![0]).toEqual(['enter query'])
     })
 
     it('trims whitespace from search query', async () => {
@@ -43,24 +43,24 @@ describe('SearchBar', () => {
       await input.setValue('  trimmed query  ')
       await input.trigger('keydown.enter')
 
-      expect(wrapper.emitted('search')[0]).toEqual(['trimmed query'])
+      expect(wrapper.emitted('search')![0]).toEqual(['trimmed query'])
     })
 
     it('clears input via exposed clear method', async () => {
       const input = wrapper.find('input')
       await input.setValue('some text')
 
-      wrapper.vm.clear()
+      ;(wrapper.vm as any).clear()
 
-      expect(wrapper.vm.query).toBe('')
+      expect((wrapper.vm as any).query).toBe('')
       expect(wrapper.emitted('search')).toBeTruthy()
-      expect(wrapper.emitted('search')[0]).toEqual([''])
+      expect(wrapper.emitted('search')![0]).toEqual([''])
     })
 
     it('sets input value via exposed setQuery method', async () => {
-      wrapper.vm.setQuery('restored query')
+      ;(wrapper.vm as any).setQuery('restored query')
 
-      expect(wrapper.vm.query).toBe('restored query')
+      expect((wrapper.vm as any).query).toBe('restored query')
     })
 
     it('has correct ARIA attributes', () => {
@@ -100,7 +100,7 @@ describe('SearchBar', () => {
       const input = wrapper.find('input')
 
       await input.setValue('mobile test')
-      expect(wrapper.vm.query).toBe('mobile test')
+      expect((wrapper.vm as any).query).toBe('mobile test')
     })
 
     it('button is tappable on mobile', async () => {
@@ -121,7 +121,7 @@ describe('SearchBar', () => {
 
   describe('Rick Roll Easter Egg', () => {
     it('opens Rick Astley video for "rick"', async () => {
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => {})
+      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
       const input = wrapper.find('input')
       await input.setValue('rick')
@@ -137,7 +137,7 @@ describe('SearchBar', () => {
     })
 
     it('opens Rick Astley video for "Rick Astley"', async () => {
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => {})
+      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
       const input = wrapper.find('input')
       await input.setValue('Rick Astley')
@@ -149,7 +149,7 @@ describe('SearchBar', () => {
     })
 
     it('does not trigger for non-rick queries', async () => {
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => {})
+      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
       const input = wrapper.find('input')
       await input.setValue('normal search')

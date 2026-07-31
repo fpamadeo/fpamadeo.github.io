@@ -33,39 +33,39 @@ import defaultHighlightsData from '@/data/defaultHighlights.json'
 
 const defaultHighlights = ref(defaultHighlightsData)
 
-const selectedEntry = ref<any>(null)
+const selectedEntry = ref<Record<string, unknown> | undefined>(undefined)
 const searchQuery   = ref('')
-const linkedUID     = ref<any>(null)
-const sidebarRef    = ref<any>(null)
-const highlightRef  = ref<any>(null)
+const linkedUID     = ref<number | undefined>(undefined)
+const sidebarRef    = ref<InstanceType<typeof SidebarComponent> | null>(null)
+const highlightRef  = ref<InstanceType<typeof HighlightComponent> | null>(null)
 
 const { invalidId } = useURLSelection({
   findEntry: (uid) => allEntries.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
-    sidebarRef.value?.selectById(entry.id)
+    sidebarRef.value?.selectById(entry.id as number)
   },
 })
 
-const allEntries = computed(() => [
-  ...experienceData,
-  ...educationData,
+const allEntries = computed<{ id: number }[]>(() => [
+  ...(experienceData as { id: number }[]),
+  ...(educationData as { id: number }[]),
 ])
 
-function parseDate(d: any): number {
+function parseDate(d: string): number {
   if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
   return new Date(d).getTime()
 }
 
 const sortedEntries = computed(() =>
-  ([...experienceData] as any[])
-    .sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate))
+  ([...experienceData] as { EndDate?: string }[])
+    .sort((a, b) => parseDate(b.EndDate!) - parseDate(a.EndDate!))
     .concat(
-      ([...educationData] as any[]).sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate))
+      ([...educationData] as { EndDate?: string }[]).sort((a, b) => parseDate(b.EndDate!) - parseDate(a.EndDate!))
     )
 )
 
-function findEntryById(id) {
+function findEntryById(id: number) {
   return allEntries.value.find(entry => entry.id === id) || null
 }
 
@@ -90,15 +90,15 @@ const sidebarConfig = computed(() => ({
   defaultSelectedUID: null,
 }))
 
-function onSelect(entry)  { selectedEntry.value = entry }
-function onDeselect()     { selectedEntry.value = null; searchQuery.value = ''; linkedUID.value = null }
-function onSearch(query)  { searchQuery.value = query }
+function onSelect(entry: Record<string, unknown>)  { selectedEntry.value = entry }
+function   onDeselect()     { selectedEntry.value = undefined; searchQuery.value = ''; linkedUID.value = undefined }
+function onSearch(query: string)  { searchQuery.value = query }
 
-function onTagClick(uid) {
-  linkedUID.value = uid
+function onTagClick(uid: number | null) {
+  linkedUID.value = uid ?? undefined
 }
 
-function onNavigate(uid) {
+function onNavigate(uid: number) {
   const entry = findEntryById(uid)
   if (entry) {
     selectedEntry.value = entry

@@ -307,19 +307,13 @@ def apply_decision(action, chosen, uid, flist, entries, used_uids, summary):
             summary.append(f'SKIPPED (duplicate): {name} (UID: {uid})')
 
 
-# ─── Main ───────────────────────────────────────────────────────────
+# ─── Phase functions ───────────────────────────────────────────────
 
-def main():
-    print('=== Writing Sync Tool ===\n')
-    CONTENT_DIR.mkdir(parents=True, exist_ok=True)
-
-    # ── Phase 1: Scan ──────────────────────────────────────────────
-
+def _phase_scan():
+    """Phase 1: Scan content/ for .txt files, parse metadata."""
     txt_files = sorted(CONTENT_DIR.glob('*.txt'))
     if not txt_files:
-        print('No .txt files found in content/.')
-        input('\nPress Enter to exit...')
-        return
+        return None, [], []
 
     summary = []
     entries = []  # list of dicts: fp, uid, title, content, sync, empty
@@ -349,8 +343,11 @@ def main():
     if empty_files:
         print(f'Empty files skipped: {len(empty_files)}\n')
 
-    # ── Phase 2: Assign UIDs to files that lack one ────────────────
+    return entries, empty_files, summary
 
+
+def _phase_assign_uids(entries, summary):
+    """Phase 2: Assign UIDs to files that lack one."""
     _, existing_raw = read_writing_json()
     used_uids = set()
     for entry in existing_raw:
@@ -373,8 +370,11 @@ def main():
             e['uid'] = str(new_uid)
             summary.append(f'GENERATED UID: {e["fp"].name} -> {new_uid}')
 
-    # ── Phase 3: Resolve duplicates ────────────────────────────────
+    return used_uids
 
+
+def _phase_resolve_duplicates(entries, used_uids, summary):
+    """Phase 3: Resolve duplicate UIDs (may prompt interactively)."""
     uid_idx_map = {}
     for idx, e in enumerate(entries):
         if e['sync'] and e['uid'] is not None:
@@ -401,15 +401,15 @@ def main():
             action, chosen = resolve_duplicate_group(uid, flist, postpone_ok=False)
             apply_decision(action, chosen, uid, flist, entries, used_uids, summary)
 
-    # ── Phase 4: Sync ──────────────────────────────────────────────
 
+def _phase_sync(entries, summary):
+    """Phase 4: Sync entries with writing.json."""
     print('\nSyncing with writing.json...')
-    entries_by_uid, existing_list = read_writing_json()
+    _, existing_list = read_writing_json()
     added = []
     updated = []
     skipped_older = []
 
-    # Rebuild map after potential external changes
     entries_by_uid = {}
     for entry in existing_list:
         entries_by_uid[str(entry.get('UID', ''))] = entry
@@ -477,9 +477,11 @@ def main():
                 pass
 
     write_writing_json(existing_list)
+    return added, updated, skipped_older
 
-    # ── Phase 5: Summary ───────────────────────────────────────────
 
+def _phase_summary(summary, added, updated, skipped_older, empty_files):
+    """Phase 5: Print and optionally log the sync summary."""
     print('\n' + '=' * 50)
     print('  SYNC SUMMARY')
     print('=' * 50)
@@ -502,6 +504,24 @@ def main():
         p = write_log(full_summary)
         print(f'Summary saved to: {p}')
         input('Press Enter to exit...')
+
+
+# ─── Main ───────────────────────────────────────────────────────────
+
+def main():
+    print('=== Writing Sync Tool ===\n')
+    CONTENT_DIR.mkdir(parents=True, exist_ok=True)
+
+    entries, empty_files, summary = _phase_scan()
+    if entries is None:
+        print('No .txt files found in content/.')
+        input('\nPress Enter to exit...')
+        return
+
+    used_uids = _phase_assign_uids(entries, summary)
+    _phase_resolve_duplicates(entries, used_uids, summary)
+    added, updated, skipped_older = _phase_sync(entries, summary)
+    _phase_summary(summary, added, updated, skipped_older, empty_files)
 
 
 if __name__ == '__main__':

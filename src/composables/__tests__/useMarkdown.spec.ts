@@ -5,8 +5,8 @@ describe('useMarkdown', () => {
   describe('renderMarkdown (block-level)', () => {
     it('returns empty string for empty input', () => {
       expect(renderMarkdown('')).toBe('')
-      expect(renderMarkdown(null)).toBe('')
-      expect(renderMarkdown(undefined)).toBe('')
+      expect(renderMarkdown(null as unknown as string)).toBe('')
+      expect(renderMarkdown(undefined as unknown as string)).toBe('')
     })
 
     it('parses bold text', () => {
@@ -77,8 +77,8 @@ describe('useMarkdown', () => {
   describe('renderMarkdownInline (no block wrappers)', () => {
     it('returns empty string for empty input', () => {
       expect(renderMarkdownInline('')).toBe('')
-      expect(renderMarkdownInline(null)).toBe('')
-      expect(renderMarkdownInline(undefined)).toBe('')
+      expect(renderMarkdownInline(null as unknown as string)).toBe('')
+      expect(renderMarkdownInline(undefined as unknown as string)).toBe('')
     })
 
     it('parses bold without p wrapper', () => {
@@ -182,7 +182,7 @@ describe('useMarkdown', () => {
     })
 
     it('handles numbers as input', () => {
-      const result = renderMarkdown(12345)
+      const result = renderMarkdown(12345 as unknown as string)
       expect(result).toContain('12345')
     })
   })

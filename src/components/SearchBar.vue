@@ -56,7 +56,7 @@ import { ref } from 'vue'
 const emit = defineEmits(['search'])
 
 const query = ref('')
-const inputRef = ref<any>(null)
+const inputRef = ref<HTMLInputElement | null>(null)
 
 const RICK_STRINGS = ['rick', 'rick astley']
 

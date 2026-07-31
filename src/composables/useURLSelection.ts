@@ -2,8 +2,8 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 export function useURLSelection(opts: {
-  findEntry: (id: number) => any
-  onSelect: (entry: any) => void
+  findEntry: (id: number) => Record<string, unknown> | undefined | null
+  onSelect: (entry: Record<string, unknown>) => void
 }) {
   const route = useRoute()
   const invalidId = ref(false)

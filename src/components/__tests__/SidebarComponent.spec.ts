@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import SidebarComponent from '../SidebarComponent.vue'
 
-const mockConfig = {
+const mockConfig: Record<string, unknown> = {
   sections: [
     {
       label: 'Experience',
@@ -71,7 +71,7 @@ const mockConfig = {
 }
 
 describe('SidebarComponent', () => {
-  let wrapper
+  let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
     wrapper = mount(SidebarComponent, {
@@ -80,7 +80,7 @@ describe('SidebarComponent', () => {
         showSearch: true,
         showTagFilter: false,
         searchQuery: '',
-        linkedId: null,
+        linkedId: undefined,
       },
     })
   })
@@ -116,7 +116,7 @@ describe('SidebarComponent', () => {
     it('emits select event when entry is clicked', async () => {
       const entries = wrapper.findAll('.sidebar-entry')
       const actualEntry = entries.find(e => !e.classes('sidebar-summary'))
-      await actualEntry.trigger('click')
+      await actualEntry!.trigger('click')
 
       expect(wrapper.emitted('select')).toBeTruthy()
     })
@@ -166,7 +166,7 @@ describe('SidebarComponent', () => {
       await firstPill.trigger('click')
       await firstPill.trigger('click')
 
-      const emits = wrapper.emitted('tag-filter')
+      const emits = wrapper.emitted('tag-filter')!
       expect(emits[1][0]).toBe(null)
     })
 
@@ -210,7 +210,7 @@ describe('SidebarComponent', () => {
 
     it('setActiveTag sets the active tag using filter value', async () => {
       await wrapper.setProps({ showTagFilter: true })
-      wrapper.vm.setActiveTag('Domain: Healthcare')
+      ;(wrapper.vm as any).setActiveTag('Domain: Healthcare')
       await wrapper.vm.$nextTick()
 
       const activePill = wrapper.find('.tag-pill.is-active')
@@ -219,9 +219,9 @@ describe('SidebarComponent', () => {
 
     it('clearTagFilter removes active tag', async () => {
       await wrapper.setProps({ showTagFilter: true })
-      wrapper.vm.setActiveTag('Domain: Healthcare')
+      ;(wrapper.vm as any).setActiveTag('Domain: Healthcare')
       await wrapper.vm.$nextTick()
-      wrapper.vm.clearTagFilter()
+      ;(wrapper.vm as any).clearTagFilter()
       await wrapper.vm.$nextTick()
 
       expect(wrapper.find('.tag-pill.is-active').exists()).toBe(false)
@@ -237,7 +237,7 @@ describe('SidebarComponent', () => {
       wrapper.findAll('.sidebar-entry').filter(e => e.text().includes('Stack:'))
       // The specific entries are hard to query, but we know UID 3 has Stack: tags
       // Just verify the tag-filter emit has "Stack:"
-      expect(wrapper.emitted('tag-filter')[0][0]).toBe('Stack:')
+      expect(wrapper.emitted('tag-filter')![0][0]).toBe('Stack:')
     })
 
     it('search includes tags in matching', async () => {
@@ -256,7 +256,7 @@ describe('SidebarComponent', () => {
       await searchInput.trigger('keydown.enter')
 
       expect(wrapper.emitted('search')).toBeTruthy()
-      expect(wrapper.emitted('search')[0][0]).toBe('Epic')
+      expect(wrapper.emitted('search')![0][0]).toBe('Epic')
     })
 
     it('does not emit search when query matches no entries', async () => {
@@ -269,7 +269,7 @@ describe('SidebarComponent', () => {
       await searchInput.setValue('xyznonexistent')
       await searchInput.trigger('keydown.enter')
 
-      const emits = wrapper.emitted('search')
+      const emits = wrapper.emitted('search')!
       expect(emits).toHaveLength(1)
       expect(emits[0][0]).toBe('Epic')
     })
@@ -284,7 +284,7 @@ describe('SidebarComponent', () => {
 
       await searchInput.trigger('keydown.enter')
 
-      const emits = wrapper.emitted('search')
+      const emits = wrapper.emitted('search')!
       expect(emits).toHaveLength(2)
       expect(emits[0][0]).toBe('Epic')
       expect(emits[1][0]).toBe('Epic')
@@ -299,7 +299,7 @@ describe('SidebarComponent', () => {
 
       await searchInput.trigger('keydown.enter')
 
-      const emits = wrapper.emitted('search')
+      const emits = wrapper.emitted('search')!
       expect(emits).toHaveLength(1)
       expect(emits[0][0]).toBe('')
     })
@@ -322,7 +322,7 @@ describe('SidebarComponent', () => {
           showSearch: true,
           showTagFilter: false,
           searchQuery: '',
-          linkedId: null,
+          linkedId: undefined,
         },
       })
     })
@@ -381,7 +381,7 @@ describe('SidebarComponent', () => {
     })
 
     it('selected entry keeps is-selected and does not get is-search-highlight', async () => {
-      const entry = wrapper.findAll('.sidebar-entry').find(e => !e.classes('sidebar-summary'))
+      const entry = wrapper.findAll('.sidebar-entry').find(e => !e.classes('sidebar-summary'))!
       await entry.trigger('click')
       await wrapper.setProps({ searchQuery: 'Epic' })
       expect(entry.classes()).toContain('is-selected')
@@ -389,7 +389,7 @@ describe('SidebarComponent', () => {
     })
 
     it('selected entry is never dimmed even when search does not match it', async () => {
-      const entry = wrapper.findAll('.sidebar-entry').find(e => e.text().includes('Epic Systems'))
+      const entry = wrapper.findAll('.sidebar-entry').find(e => e.text().includes('Epic Systems'))!
       await entry.trigger('click')
       await wrapper.setProps({ searchQuery: 'Startup' })
       expect(entry.classes()).toContain('is-selected')
@@ -444,15 +444,16 @@ describe('SidebarComponent', () => {
       defaultSelectedId: null,
     }
 
-    let wrapper
+    let wrapper: ReturnType<typeof mount>
 
     beforeEach(() => {
       wrapper = mount(SidebarComponent, {
         props: {
-          config: relatedConfig,
-          showSearch: true,
-          searchQuery: '',
-          linkedId: null,
+      config: relatedConfig,
+      showSearch: true,
+      searchQuery: '',
+      showTagFilter: true,
+      linkedId: undefined,
         },
       })
     })

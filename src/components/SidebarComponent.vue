@@ -94,7 +94,7 @@
           <span
             v-if="section.showDates !== false"
             class="entry-dates"
-          >{{ section.singularDate ? formatSingularDate(entry.StartDate) : formatDateRange(entry.StartDate, entry.EndDate) }}</span>
+          >{{ section.singularDate ? formatSingularDate(entry.StartDate || '') : formatDateRange(entry.StartDate || '', entry.EndDate || '') }}</span>
         </div>
         <div
           v-if="entry.subtitle"
@@ -104,7 +104,7 @@
         </div>
         <div
           class="entry-summary"
-          v-html="marked.parseInline(entry.Description)"
+          v-html="marked.parseInline(entry.Description || '')"
         />
       </div>
     </template>
@@ -114,8 +114,21 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { marked } from 'marked'
-import SearchBar from './SearchBar.vue'
+import SearchBar from '@/components/SearchBar.vue'
 import { buildTagDisplay } from '@/composables/useTagAggregation'
+
+interface SidebarEntry {
+  id: number
+  Title: string
+  subtitle?: string
+  StartDate?: string
+  EndDate?: string
+  Description?: string
+  tags?: string[]
+  related?: number[]
+  Bullets?: (string | { text?: string })[]
+  Highlights?: (string | { text?: string })[]
+}
 
 const props = defineProps({
   config: {
@@ -133,16 +146,16 @@ const props = defineProps({
 
 const emit = defineEmits(['select', 'deselect', 'search', 'tag-filter'])
 
-const sidebarRef    = ref<any>(null)
-const searchBarRef  = ref<any>(null)
-const selectedId   = ref<any>(null)
-const selectedTag   = ref<any>(null)
+const sidebarRef    = ref<HTMLElement | null>(null)
+const searchBarRef  = ref<InstanceType<typeof SearchBar> | null>(null)
+const selectedId   = ref<number | null>(null)
+const selectedTag   = ref<string | null>(null)
 const lastValidQuery = ref('')
-const failedQuery    = ref<any>(null)
+const failedQuery    = ref<string | null>(null)
 
 // All entries pool for tag lookups
-const allEntries = computed(() =>
-  (props.config.sections || []).flatMap((s: any) => s.entries || [])
+const allEntries = computed<SidebarEntry[]>(() =>
+  (props.config.sections || []).flatMap((s: { entries?: SidebarEntry[] }) => (s.entries || []) as SidebarEntry[])
 )
 
 const sections = computed(() => props.config.sections || [])
@@ -185,16 +198,16 @@ const relatedIds = computed(() => {
 })
 
 // Sorting
-function parseDate(d: any): number {
+function parseDate(d: string): number {
   if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
   return new Date(d).getTime()
 }
 
-function sortedSectionEntries(entries) {
-  return [...entries].sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate))
+function sortedSectionEntries(entries: SidebarEntry[]) {
+  return [...entries].sort((a, b) => parseDate(b.EndDate || '') - parseDate(a.EndDate || ''))
 }
 
-function formatDate(d) {
+function formatDate(d: string) {
   if (!d || d === 'Present') return 'Present'
   const dt = new Date(d)
   const mm = String(dt.getMonth() + 1).padStart(2, '0')
@@ -202,7 +215,7 @@ function formatDate(d) {
   return `${mm}/${yy}`
 }
 
-function formatSingularDate(d) {
+function formatSingularDate(d: string) {
   if (!d) return ''
   const dt = new Date(d)
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -213,11 +226,11 @@ function formatSingularDate(d) {
   return `${mon} ${day}, ${yr}`
 }
 
-function formatDateRange(start, end) {
+function formatDateRange(start: string, end: string) {
   return `${formatDate(start)} – ${formatDate(end)}`
 }
 
-function entryIndentStyle(entry, list) {
+function entryIndentStyle(entry: SidebarEntry, list: SidebarEntry[]) {
   const w = sidebarRef.value?.offsetWidth || 300
   const sameCompany = list.filter((e) => e.Title === entry.Title)
   const idx = sameCompany.findIndex((e) => e.id === entry.id)
@@ -225,11 +238,11 @@ function entryIndentStyle(entry, list) {
   return { paddingLeft: `${w * 0.05 * idx}px` }
 }
 
-function isSelected(entry) {
+function isSelected(entry: SidebarEntry) {
   return selectedId.value === entry.id
 }
 
-function isRelated(entry) {
+function isRelated(entry: SidebarEntry) {
   if (props.searchQuery && entryMatchesQuery(entry, props.searchQuery)) return false
   return (
     selectedId.value !== null &&
@@ -238,7 +251,7 @@ function isRelated(entry) {
   )
 }
 
-function isLinked(entry) {
+function isLinked(entry: SidebarEntry) {
   return (
     props.linkedId !== null &&
     entry.id === props.linkedId &&
@@ -246,12 +259,12 @@ function isLinked(entry) {
   )
 }
 
-function isSearchHighlight(entry) {
+function isSearchHighlight(entry: SidebarEntry) {
   if (!props.searchQuery || isSelected(entry) || isLinked(entry)) return false
   return entryMatchesQuery(entry, props.searchQuery)
 }
 
-function isDimmed(entry) {
+function isDimmed(entry: SidebarEntry) {
   if (isSelected(entry)) return false
   if (props.searchQuery && entryMatchesQuery(entry, props.searchQuery)) return false
   const searchDim = !!(props.searchQuery && !entryMatchesQuery(entry, props.searchQuery))
@@ -260,7 +273,7 @@ function isDimmed(entry) {
   return searchDim || selectionDim || tagDim
 }
 
-function entryMatchesTag(entry, tag) {
+function entryMatchesTag(entry: SidebarEntry, tag: string) {
   const entryTags = entry.tags || []
   if (tag.endsWith(':')) {
     const prefix = tag.toLowerCase()
@@ -269,7 +282,7 @@ function entryMatchesTag(entry, tag) {
   return entryTags.includes(tag)
 }
 
-function entryMatchesQuery(entry, query) {
+function entryMatchesQuery(entry: SidebarEntry, query: string) {
   if (!query) return true
   const q = query.toLowerCase()
   const fields = [
@@ -283,7 +296,7 @@ function entryMatchesQuery(entry, query) {
   return fields.some((f) => f && f.toLowerCase().includes(q))
 }
 
-function entryClasses(entry) {
+function entryClasses(entry: SidebarEntry) {
   return {
     'is-selected':         isSelected(entry),
     'is-related':          isRelated(entry),
@@ -293,7 +306,7 @@ function entryClasses(entry) {
   }
 }
 
-function selectEntry(entry) {
+function selectEntry(entry: SidebarEntry) {
   selectedId.value = entry.id
   emit('select', entry)
 }
@@ -310,7 +323,7 @@ function resetSelection() {
 
 const TRIGGER_QUERIES = ['dood', 'prinny']
 
-function onSearch(query) {
+function onSearch(query: string) {
   // Revert attempt: pressing Enter on a previously-failed query
   if (failedQuery.value !== null && query === failedQuery.value) {
     const revertTo = lastValidQuery.value
@@ -331,12 +344,12 @@ function onSearch(query) {
   emit('search', query)
 }
 
-function toggleTag(tag) {
+function toggleTag(tag: string) {
   selectedTag.value = selectedTag.value === tag ? null : tag
   emit('tag-filter', selectedTag.value)
 }
 
-function setActiveTag(tag) {
+function setActiveTag(tag: string | null) {
   selectedTag.value = tag
 }
 
@@ -345,7 +358,7 @@ function clearTagFilter() {
   emit('tag-filter', null)
 }
 
-function selectById(uid) {
+function selectById(uid: number) {
   const entry = allEntries.value.find((e) => e.id === uid)
   if (entry) {
     selectedId.value = uid
@@ -353,10 +366,10 @@ function selectById(uid) {
   }
 }
 
-function scrollToId(uid) {
+function scrollToId(uid: number) {
   nextTick(() => {
-    const el = sidebarRef.value?.querySelector(`[data-uid="${uid}"]`)
-    if (!el) return
+    const el = sidebarRef.value?.querySelector(`[data-uid="${uid}"]`) as HTMLElement | null
+    if (!el || !sidebarRef.value) return
     const container = sidebarRef.value
     const entryTop = el.offsetTop
     const entryHeight = el.offsetHeight

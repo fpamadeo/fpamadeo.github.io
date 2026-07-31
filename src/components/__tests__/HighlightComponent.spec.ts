@@ -21,12 +21,12 @@ const mockDefaultEntry = {
 }
 
 describe('HighlightComponent', () => {
-  let wrapper
+  let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
     wrapper = mount(HighlightComponent, {
       props: {
-        selectedEntry: null,
+        selectedEntry: undefined,
         defaultEntry: mockDefaultEntry,
         searchQuery: '',
         tagFilterEnabled: false,
@@ -182,7 +182,7 @@ describe('HighlightComponent', () => {
       await pill.trigger('click')
 
       expect(wrapper.emitted('tag-badge-click')).toBeTruthy()
-      expect(wrapper.emitted('tag-badge-click')[0][0]).toBe('Domain: Healthcare')
+      expect(wrapper.emitted('tag-badge-click')![0][0]).toBe('Domain: Healthcare')
     })
 
     it('active tag pill has is-active class', async () => {
@@ -210,10 +210,10 @@ describe('HighlightComponent', () => {
         value: 667,
       })
 
-      wrapper = mount(HighlightComponent, {
-        props: {
-          selectedEntry: null,
-          defaultEntry: mockDefaultEntry,
+  wrapper = mount(HighlightComponent, {
+    props: {
+      selectedEntry: undefined,
+      defaultEntry: mockDefaultEntry,
           searchQuery: '',
           tagFilterEnabled: false,
           activeTag: '',
@@ -311,7 +311,7 @@ describe('HighlightComponent', () => {
       await items[0].trigger('click')
 
       expect(wrapper.emitted('tag-click')).toBeTruthy()
-      expect(wrapper.emitted('tag-click')[0][0]).toBe(5)
+      expect(wrapper.emitted('tag-click')![0][0]).toBe(5)
     })
   })
 
@@ -327,7 +327,7 @@ describe('HighlightComponent', () => {
       const mockTrigger = vi.fn()
       const w = mount(HighlightComponent, {
         props: {
-          selectedEntry: null,
+          selectedEntry: undefined,
           defaultEntry: mockDefaultEntry,
           searchQuery: initialQuery,
         },

@@ -18,17 +18,23 @@ The project uses the following established stack:
 - **Build Tool**: Vite
 - **Routing**: vue-router (hash history mode)
 - **Markdown Rendering**: marked library
-- **Testing**: Lighthouse CI
+- **Testing**: Vitest + jsdom
+- **TypeScript**: Type checking via vue-tsc
+- **Linting**: ESLint (flat config, typescript-eslint, eslint-plugin-vue)
 
 ### Dependencies
 
 ```
-vue@^3.4.0
-vue-router@^4.3.0
-marked@^12.0.0
+vue@^3.5.34
+vue-router@5.0.3
+marked@^18.0.5
 vite@^5.0.0
 @vitejs/plugin-vue@^5.0.0
 @lhci/cli@^0.13.0
+typescript@^6.0.3
+vue-tsc@^3.3.1
+eslint@^10.4.0
+vitest@^1.0.0
 ```
 
 ---
@@ -37,44 +43,58 @@ vite@^5.0.0
 
 ```
 src/
-├── assets/styles/
-│   └── global.css              # Global styles, CSS variables
-├── components/                 # Reusable Vue components
-│   ├── AppHeader.vue          # Navigation header
+├── assets/
+│   └── styles/global.css      # Global styles, CSS variables
+├── components/                # Reusable Vue components
 │   ├── AppFooter.vue          # Footer with links
+│   ├── AppHeader.vue          # Navigation header
 │   ├── HighlightComponent.vue # Main content display
 │   ├── RuleSeparator.vue      # Visual divider
 │   ├── SearchBar.vue          # Search input
-│   └── SidebarComponent.vue   # Searchable sidebar
+│   ├── SidebarComponent.vue   # Searchable sidebar
+│   └── __tests__/             # Component tests
 ├── composables/               # Composable functions
-│   └── useMarkdown.js         # Markdown utilities
+│   ├── useMarkdown.ts         # Markdown utilities
+│   ├── useTagAggregation.ts   # Tag aggregation utilities
+│   ├── useURLSelection.ts     # URL-based entry selection
+│   └── __tests__/             # Composable tests
 ├── data/                      # Static JSON data files
 │   ├── about.json
 │   ├── defaultHighlights.json
+│   ├── defaultWritingHighlights.json
 │   ├── education.json
 │   ├── experience.json
 │   └── writing.json
 ├── router/
-│   └── index.js               # Route definitions
+│   └── index.ts               # Route definitions
 ├── views/                     # Page components
-│   ├── WorkPage.vue           # Experience & work showcase
 │   ├── AboutPage.vue          # Personality and self
+│   ├── ContactPage.vue        # Contact information
+│   ├── ExperiencePage.vue     # Experience & work showcase
+│   ├── NotFoundPage.vue       # 404 catch-all
 │   └── OtherPage.vue          # Blog/thoughts curation
+├── writing/                   # Writing sync tools
+│   ├── sync_writings.py       # Sync .txt drafts → writing.json
+│   └── test_sync_writings.py  # Tests for sync_writings
 ├── App.vue                    # Root component
-└── main.js                    # Entry point
+├── env.d.ts                   # TypeScript env declarations
+├── main.ts                    # Entry point
+└── test-setup.ts              # Vitest setup
 ```
 
 ---
 
 ## 4. Routes Structure
 
-| Route    | Page      | Purpose                              |
-| -------- | --------- | ------------------------------------ |
-| `/`      | WorkPage  | Showcase work as a software engineer |
-| `/about` | AboutPage | Showcase personality and self        |
-| `/other` | OtherPage | Curated showcase of thoughts         |
+| Route    | Page             | Purpose                              |
+| -------- | ---------------- | ------------------------------------ |
+| `/`      | ExperiencePage   | Showcase work as a software engineer |
+| `/about` | AboutPage        | Showcase personality and self        |
+| `/other` | OtherPage        | Curated showcase of thoughts         |
+| `/contact` | ContactPage    | Contact information                  |
+| `/*`     | NotFoundPage     | 404 catch-all                        |
 
-**Design Principle**: All three routes should have a similar layout and design that mirrors the simple outline of a resume, with creative liberties taken to express personality.
+**Design Principle**: All main routes share a similar layout that mirrors the simple outline of a resume, with creative liberties taken to express personality.
 
 ---
 
@@ -166,15 +186,7 @@ npm run preview    # Preview production build
 npm run lhci       # Run Lighthouse CI audits
 ```
 
-### 7.2 Future Scripts (To Be Added)
-
-The following scripts should be added to improve code quality:
-
-- **Linting**: ESLint or similar for code quality
-- **Type Checking**: TypeScript or Vue type checking
-- **Unit Testing**: Vitest or Vue Test Utils
-
-### 7.3 Development Process
+### 7.2 Development Process
 
 1. Make changes to code or data files
 2. Create or update unit tests for any new or modified functionality
@@ -280,11 +292,11 @@ The mobile version of the site is a core part of the design, not an afterthought
 
 ## 10. Future Vision & Roadmap
 
-### Short-term Goals
+### Completed
 
-- [✅] Add TypeScript support for better type safety
-- [✅] Add linting and type checking scripts
-- [✅] Finalize contact page — email (`***********@gmail.com`) and approach (static page with clickable link) finalized
+- TypeScript support added
+- Linting and type checking scripts added
+- Contact page finalized (static page with clickable email link)
 
 ### Medium-term Goals
 
@@ -297,7 +309,7 @@ The mobile version of the site is a core part of the design, not an afterthought
 - Expand the "Other" section into a full blog system
 - Add a reading list or bookmarks section
 - Implement more sophisticated content categorization
-- **Code cleanup and hardening** — see `.opencode/plans/code-cleanup.md` for the full prioritized list (target: review by June 15, 2026)
+- **Code cleanup and hardening** — see `.opencode/plans/code-cleanup.md` for the full prioritized list
 
 ---
 

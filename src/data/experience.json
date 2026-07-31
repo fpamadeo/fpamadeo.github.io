@@ -70,7 +70,7 @@
     "location": "Verona, WI",
     "Description": "Technical point-person and main contact for key stakeholders.",
     "Bullets": [
-      "Led the Development and maintenance of microservices for the Training Billing, Go-Live Scheduling, HIPAA Security Training, E-Learning functionalities, among others.",
+      "Led the Development and maintenance of microservices for the Training Billing, Go-Live Scheduling, HIPAA Security Training, and E-Learning functionalities, among others.",
       "Analyzed and outlined an optimized Training Billing process, effectively removing numerous bottlenecks and preserving data integrity.",
       "Coordinated company-wide training back-end requirements with the HIPAA Security trainer and admins for the annual HIPAA training."
     ],
@@ -78,9 +78,8 @@
     "tags": [
       "Company: Epic Systems",
       "Domain: Healthcare",
-      "Role: Leadership",
+      "Role: Ownership",
       "Skill: Microservices",
-      "Skill: HIPAA",
       "Skill: ETL"
     ],
     "Highlights": [
@@ -120,8 +119,8 @@
     "Title": "Chicago Engineering Design Team",
     "subtitle": "Senior ECE Member",
     "location": "Chicago,IL",
-    "StartDate": "2019-12-01T00:00:00",
-    "EndDate": "2017-08-04T00:00:00",
+    "StartDate": "2017-08-01T00:00:00",
+    "EndDate": "2019-12-04T00:00:00",
     "media": "",
     "Description": "Core member and mentor for the UIC Robotics organization.",
     "Bullets": [
@@ -135,7 +134,8 @@
       "Role: Mentoring",
       "Skill: Electrical Engineering",
       "Tool: Altium",
-      "Tool: Eagle"
+      "Tool: Eagle",
+      "Skill: Fabrication"
     ],
     "Highlights": [
       "Became Software Lead for Project Stella 2019.",
