@@ -2,13 +2,33 @@
   <aside
     ref="sidebarRef"
     class="sidebar"
+    :class="{ 'is-mobile-collapsed': mobileCollapsed }"
   >
-    <!-- Search Bar -->
-    <div
-      v-if="showSearch"
-      class="sidebar-search"
-      :class="{ 'is-search-active': !!searchQuery }"
+    <button
+      v-if="!mobileCollapsed"
+      class="sidebar-collapse-btn"
+      type="button"
+      :aria-expanded="!mobileCollapsed"
+      aria-controls="sidebar-body"
+      @click="$emit('toggle-collapse')"
     >
+      <span class="collapse-btn-label">Entries</span>
+      <span
+        class="collapse-btn-icon"
+        aria-hidden="true"
+      >✕</span>
+    </button>
+
+    <div
+      id="sidebar-body"
+      class="sidebar-body"
+    >
+      <!-- Search Bar -->
+      <div
+        v-if="showSearch"
+        class="sidebar-search"
+        :class="{ 'is-search-active': !!searchQuery }"
+      >
       <SearchBar
         ref="searchBarRef"
         @search="onSearch"
@@ -108,6 +128,27 @@
         />
       </div>
     </template>
+    </div>
+
+    <div
+      v-if="mobileCollapsed"
+      class="sidebar-collapsed-bar"
+    >
+      <button
+        class="sidebar-expand-btn"
+        type="button"
+        :aria-expanded="false"
+        aria-controls="sidebar-body"
+        @click="$emit('toggle-collapse')"
+      >
+        <span
+          class="expand-btn-icon"
+          aria-hidden="true"
+        >☰</span>
+        <span class="expand-btn-label">Entries</span>
+      </button>
+      <span class="collapsed-entry-title">{{ currentSelectedEntry?.Title }}</span>
+    </div>
   </aside>
 </template>
 
@@ -142,9 +183,10 @@ const props = defineProps({
   showTagFilter: { type: Boolean, default: false },
   searchQuery:   { type: String, default: '' },
   linkedId:     { type: Number, default: null },
+  mobileCollapsed: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['select', 'deselect', 'search', 'tag-filter'])
+const emit = defineEmits(['select', 'deselect', 'search', 'tag-filter', 'toggle-collapse'])
 
 const sidebarRef    = ref<HTMLElement | null>(null)
 const searchBarRef  = ref<InstanceType<typeof SearchBar> | null>(null)
@@ -370,7 +412,16 @@ function scrollToId(uid: number) {
   nextTick(() => {
     const el = sidebarRef.value?.querySelector(`[data-uid="${uid}"]`) as HTMLElement | null
     if (!el || !sidebarRef.value) return
-    const container = sidebarRef.value
+    // On mobile the scrollable area is .sidebar-body; on desktop it is the
+    // aside itself (base .sidebar { overflow-y: auto }).
+    const isMobile = typeof window.matchMedia === 'function' &&
+      window.matchMedia('(max-width: 767px)').matches
+    const container = (
+      isMobile
+        ? sidebarRef.value.querySelector<HTMLElement>('.sidebar-body')
+        : sidebarRef.value
+    )
+    if (!container) return
     const entryTop = el.offsetTop
     const entryHeight = el.offsetHeight
     const containerHeight = container.clientHeight
@@ -397,6 +448,12 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+}
+
+/* Mobile-only collapsible controls (hidden on desktop) */
+.sidebar-collapse-btn,
+.sidebar-collapsed-bar {
+  display: none;
 }
 
 .sidebar-search {
@@ -556,6 +613,115 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
     height: auto;
     border-right: none;
     border-top: 1px solid var(--color-border);
+    /* Bound to the viewport shell: expanded state fills the space
+       below the highlight preview and scrolls internally. */
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  /* Collapsed state: only the slim strip is shown, sized to content
+     (pinned at the bottom by column-reverse on the page main). */
+  .sidebar.is-mobile-collapsed {
+    flex: 0 0 auto;
+  }
+
+  /* The scrollable area in the expanded state (search + entries) */
+  .sidebar-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  /* Expanded (list) state: compact header button above the body */
+  .sidebar-collapse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.55rem var(--sidebar-padding);
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .sidebar-collapse-btn:hover {
+    background: #2a2a2a;
+  }
+
+  .sidebar-collapse-btn:focus-visible {
+    outline: 2px solid var(--color-selected-outline);
+    outline-offset: -2px;
+  }
+
+  .collapse-btn-icon {
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  /* Collapsed state: slim strip at the bottom, body hidden */
+  .sidebar.is-mobile-collapsed .sidebar-body {
+    display: none;
+  }
+
+  .sidebar-collapsed-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem var(--sidebar-padding);
+    background: var(--color-bg);
+    width: 100%;
+  }
+
+  .sidebar-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.35rem 0.7rem;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+
+  .sidebar-expand-btn:hover {
+    background: #f4f4f4;
+    border-color: #ccc;
+  }
+
+  .sidebar-expand-btn:focus-visible {
+    outline: 2px solid var(--color-selected-outline);
+    outline-offset: 2px;
+  }
+
+  .expand-btn-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .collapsed-entry-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.8rem;
+    color: var(--color-text-light);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
   }
 }
 </style>

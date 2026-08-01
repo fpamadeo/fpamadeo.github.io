@@ -251,3 +251,18 @@ provide('triggerPrinny', triggerPrinny)
   margin: 0;
 }
 </style>
+
+<style>
+/* Mobile: when the sidebar is collapsed, cap the layout to the dynamic viewport.
+   The default min-height:100vh flex chain grows with content, which pushes the
+   prev/next nav and the collapsed strip below the fold. With this cap, the
+   highlight detail view fills the remaining space and scrolls internally, and
+   the sticky nav pins above the collapsed strip. (Non-scoped: .sidebar lives
+   in a different component scope, so a scoped :has() selector would not match.) */
+@media (max-width: 767px) {
+  .page-wrapper:has(.sidebar.is-mobile-collapsed) {
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+</style>

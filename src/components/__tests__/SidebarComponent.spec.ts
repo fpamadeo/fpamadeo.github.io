@@ -349,6 +349,48 @@ describe('SidebarComponent', () => {
 
       expect(wrapper.emitted('search')).toBeTruthy()
     })
+
+    it('shows a collapse button when expanded and emits toggle-collapse', async () => {
+      wrapper = mount(SidebarComponent, {
+        props: {
+          config: mockConfig,
+          mobileCollapsed: false,
+        },
+      })
+      const btn = wrapper.find('.sidebar-collapse-btn')
+      expect(btn.exists()).toBe(true)
+      await btn.trigger('click')
+      expect(wrapper.emitted('toggle-collapse')).toHaveLength(1)
+    })
+
+    it('renders the collapsed strip, hides the body, and emits toggle-collapse on expand', async () => {
+      wrapper = mount(SidebarComponent, {
+        props: {
+          config: mockConfig,
+          mobileCollapsed: true,
+        },
+      })
+      expect(wrapper.find('.sidebar').classes()).toContain('is-mobile-collapsed')
+      expect(wrapper.find('.sidebar-body').exists()).toBe(true)
+      expect(wrapper.find('.sidebar-collapse-btn').exists()).toBe(false)
+      const bar = wrapper.find('.sidebar-collapsed-bar')
+      expect(bar.exists()).toBe(true)
+      await wrapper.find('.sidebar-expand-btn').trigger('click')
+      expect(wrapper.emitted('toggle-collapse')).toHaveLength(1)
+    })
+
+    it('shows the selected entry title in the collapsed strip', async () => {
+      wrapper = mount(SidebarComponent, {
+        props: {
+          config: mockConfig,
+          mobileCollapsed: false,
+        },
+      })
+      const entry = wrapper.findAll('.sidebar-entry').find(e => e.text().includes('Epic Systems'))!
+      await entry.trigger('click')
+      await wrapper.setProps({ mobileCollapsed: true })
+      expect(wrapper.find('.collapsed-entry-title').text()).toContain('Epic Systems')
+    })
   })
 
   describe('Search Highlighting', () => {

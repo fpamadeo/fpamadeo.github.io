@@ -237,6 +237,80 @@ describe('HighlightComponent', () => {
     })
   })
 
+  describe('Mobile Detail View', () => {
+    const navEntries = [
+      { id: 1, Title: 'Entry One', subtitle: 'First' },
+      { id: 2, Title: 'Entry Two', subtitle: 'Second' },
+      { id: 3, Title: 'Entry Three', subtitle: 'Third' },
+    ]
+    const selectedEntry = {
+      ...mockDefaultEntry,
+      id: 2,
+      Title: 'Entry Two',
+    }
+    const baseProps = {
+      selectedEntry,
+      defaultEntry: mockDefaultEntry,
+      entries: navEntries,
+      mobileDetail: true,
+    }
+
+    it('adds is-mobile-detail class when mobileDetail is true', () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      expect(w.find('.highlight').classes()).toContain('is-mobile-detail')
+      w.unmount()
+    })
+
+    it('omits is-mobile-detail class when mobileDetail is false', () => {
+      const w = mount(HighlightComponent, {
+        props: { ...baseProps, mobileDetail: false },
+      })
+      expect(w.find('.highlight').classes()).not.toContain('is-mobile-detail')
+      w.unmount()
+    })
+
+    it('renders the nav block with a swipe hint in detail mode', () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      expect(w.find('.highlight-nav').exists()).toBe(true)
+      expect(w.find('.nav-prev').exists()).toBe(true)
+      expect(w.find('.nav-next').exists()).toBe(true)
+      expect(w.find('.nav-swipe-hint').exists()).toBe(true)
+      w.unmount()
+    })
+
+    it('navigates to the next entry on a horizontal left swipe', async () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      const nav = w.find('.highlight-nav')
+      await nav.trigger('touchstart', { touches: [{ clientX: 200, clientY: 100 }] })
+      await nav.trigger('touchmove', { touches: [{ clientX: 80, clientY: 100 }] })
+      await nav.trigger('touchend')
+      expect(w.emitted('navigate')).toBeTruthy()
+      expect(w.emitted('navigate')![0][0]).toBe(3)
+      w.unmount()
+    })
+
+    it('navigates to the previous entry on a horizontal right swipe', async () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      const nav = w.find('.highlight-nav')
+      await nav.trigger('touchstart', { touches: [{ clientX: 100, clientY: 100 }] })
+      await nav.trigger('touchmove', { touches: [{ clientX: 220, clientY: 100 }] })
+      await nav.trigger('touchend')
+      expect(w.emitted('navigate')).toBeTruthy()
+      expect(w.emitted('navigate')![0][0]).toBe(1)
+      w.unmount()
+    })
+
+    it('does not navigate on a vertical swipe', async () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      const nav = w.find('.highlight-nav')
+      await nav.trigger('touchstart', { touches: [{ clientX: 200, clientY: 100 }] })
+      await nav.trigger('touchmove', { touches: [{ clientX: 180, clientY: 300 }] })
+      await nav.trigger('touchend')
+      expect(w.emitted('navigate')).toBeFalsy()
+      w.unmount()
+    })
+  })
+
   describe('Content Rendering', () => {
     it('renders markdown in highlights', () => {
       const entryWithMarkdown = {

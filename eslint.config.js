@@ -20,6 +20,7 @@ export default tseslint.config(
         HTMLElement: 'readonly',
         HTMLImageElement: 'readonly',
         HTMLInputElement: 'readonly',
+        TouchEvent: 'readonly',
         cancelAnimationFrame: 'readonly',
         requestAnimationFrame: 'readonly',
       },

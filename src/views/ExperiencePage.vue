@@ -5,9 +5,11 @@
     :show-search="true"
     :search-query="searchQuery"
     :linked-id="linkedUID"
+    :mobile-collapsed="isCollapsed"
     @select="onSelect"
     @deselect="onDeselect"
     @search="onSearch"
+    @toggle-collapse="toggle"
   />
   <HighlightComponent
     ref="highlightRef"
@@ -16,6 +18,7 @@
     :search-query="searchQuery"
     :invalid-id="invalidId"
     :entries="sortedEntries"
+    :mobile-detail="isCollapsed"
     @tag-click="onTagClick"
     @navigate="onNavigate"
   />
@@ -24,6 +27,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { useURLSelection } from '@/composables/useURLSelection'
+import { useCollapsibleSidebar } from '@/composables/useCollapsibleSidebar'
 import SidebarComponent from '@/components/SidebarComponent.vue'
 import HighlightComponent from '@/components/HighlightComponent.vue'
 
@@ -39,11 +43,14 @@ const linkedUID     = ref<number | undefined>(undefined)
 const sidebarRef    = ref<InstanceType<typeof SidebarComponent> | null>(null)
 const highlightRef  = ref<InstanceType<typeof HighlightComponent> | null>(null)
 
+const { isCollapsed, collapse, toggle } = useCollapsibleSidebar()
+
 const { invalidId } = useURLSelection({
   findEntry: (uid) => allEntries.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(entry.id as number)
+    collapse()
   },
 })
 
@@ -90,7 +97,10 @@ const sidebarConfig = computed(() => ({
   defaultSelectedUID: null,
 }))
 
-function onSelect(entry: Record<string, unknown>)  { selectedEntry.value = entry }
+function onSelect(entry: Record<string, unknown>)  {
+  selectedEntry.value = entry
+  collapse()
+}
 function   onDeselect()     { selectedEntry.value = undefined; searchQuery.value = ''; linkedUID.value = undefined }
 function onSearch(query: string)  { searchQuery.value = query }
 

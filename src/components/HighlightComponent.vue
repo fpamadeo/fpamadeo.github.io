@@ -2,6 +2,7 @@
   <section
     ref="highlightRef"
     class="highlight"
+    :class="{ 'is-mobile-detail': mobileDetail }"
     tabindex="-1"
     aria-live="polite"
     aria-atomic="true"
@@ -31,29 +32,38 @@
         WORK IN PROGRESS PO
       </div>
     </div>
-      <!-- Entry Navigation -->
-      <div
-        v-if="entries.length && selectedEntry && (hasPrev || hasNext)"
-        class="highlight-nav"
+    <!-- Entry Navigation -->
+    <div
+      v-if="entries.length && selectedEntry && (hasPrev || hasNext)"
+      class="highlight-nav"
+      @touchstart="onNavTouchStart"
+      @touchmove="onNavTouchMove"
+      @touchend="onNavTouchEnd"
+    >
+      <button
+        class="nav-btn nav-prev"
+        :disabled="!hasPrev"
+        :aria-label="prevLabel"
+        @click="changeEntry(-1)"
       >
-        <button
-          class="nav-btn nav-prev"
-          :disabled="!hasPrev"
-          :aria-label="prevLabel"
-          @click="changeEntry(-1)"
-        >
-          ← Previous
-        </button>
-        <span class="nav-position">{{ currentIndex + 1 }} / {{ entries.length }}</span>
-        <button
-          class="nav-btn nav-next"
-          :disabled="!hasNext"
-          :aria-label="nextLabel"
-          @click="changeEntry(+1)"
-        >
-          Next →
-        </button>
-      </div>
+        ← Previous
+      </button>
+      <span class="nav-position">{{ currentIndex + 1 }} / {{ entries.length }}</span>
+      <button
+        class="nav-btn nav-next"
+        :disabled="!hasNext"
+        :aria-label="nextLabel"
+        @click="changeEntry(+1)"
+      >
+        Next →
+      </button>
+      <span
+        class="nav-swipe-hint"
+        aria-hidden="true"
+      >
+        swipe ⟷
+      </span>
+    </div>
 
       <div
         v-if="activeEntry.media"
@@ -204,6 +214,7 @@ const props = defineProps({
   tagFilterEnabled: { type: Boolean, default: false },
   activeTag: { type: String, default: '' },
   entries: { type: Array, default: () => [] },
+  mobileDetail: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['tag-click', 'tag-badge-click', 'navigate'])
@@ -289,6 +300,36 @@ function changeEntry(delta: number) {
   const idx = currentIndex.value + delta
   if (idx < 0 || idx >= entryList.value.length) return
   emit('navigate', entryList.value[idx].id)
+}
+
+// ─── Mobile: horizontal swipe on the nav block ─────────────────
+const SWIPE_THRESHOLD = 50
+const touchStartX = ref(0)
+const touchStartY = ref(0)
+const isTouchTracking = ref(false)
+
+function onNavTouchStart(e: TouchEvent) {
+  const touch = e.touches[0]
+  if (!touch) return
+  touchStartX.value = touch.clientX
+  touchStartY.value = touch.clientY
+  isTouchTracking.value = true
+}
+
+function onNavTouchMove(e: TouchEvent) {
+  if (!isTouchTracking.value) return
+  const touch = e.touches[0]
+  if (!touch) return
+  const dx = touch.clientX - touchStartX.value
+  const dy = touch.clientY - touchStartY.value
+  if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    isTouchTracking.value = false
+    changeEntry(dx < 0 ? 1 : -1)
+  }
+}
+
+function onNavTouchEnd() {
+  isTouchTracking.value = false
 }
 
 watch(
@@ -477,6 +518,56 @@ defineExpose({ focusHighlight })
   align-items: baseline;
 }
 
+/* ─── Entry navigation ────────────────────────────────────────── */
+.highlight-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #f4f4f4;
+  border-color: #ccc;
+}
+
+.nav-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.nav-btn:focus-visible {
+  outline: 2px solid var(--color-selected-outline);
+  outline-offset: 2px;
+}
+
+.nav-position {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+}
+
+.nav-swipe-hint {
+  display: none;
+  font-size: 0.65rem;
+  color: var(--color-text-light);
+  opacity: 0.7;
+}
+
 /* ─── Related entries footer ─────────────────────────────────── */
 .highlight-relations {
   display: flex;
@@ -642,6 +733,51 @@ defineExpose({ focusHighlight })
     max-height: 45vh;
     padding: 1rem;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Expanded sidebar (list view) → preview band, hide nav */
+  .highlight:not(.is-mobile-detail) .highlight-nav {
+    display: none;
+  }
+
+  /* Collapsed sidebar → full-screen detail view */
+  .highlight.is-mobile-detail {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+    max-height: none;
+    border-bottom: none;
+    overflow: auto;
+  }
+
+  /* Prev/Next pinned just above the collapsed sidebar strip.
+     z-index: 10 keeps the nav above the scrolling entry content so
+     touches/buttons hit it (content paints after it in DOM order). */
+  .highlight.is-mobile-detail .highlight-nav {
+    order: 100;
+    margin-top: auto;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    flex-shrink: 0;
+    background: var(--color-bg);
+    padding-top: 0.6rem;
+    border-top: 1px solid var(--color-border);
+    touch-action: pan-y;
+  }
+
+  .highlight.is-mobile-detail .highlight-relations {
+    margin-top: 0;
+  }
+
+  .highlight.is-mobile-detail .nav-swipe-hint {
+    display: inline;
+  }
+
+  /* Native horizontal scrolling for wide content */
+  .content-body :deep(table) {
+    display: block;
+    overflow-x: auto;
   }
 }
 </style>
