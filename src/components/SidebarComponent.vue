@@ -139,15 +139,14 @@
         type="button"
         :aria-expanded="false"
         aria-controls="sidebar-body"
+        aria-label="Expand entries"
         @click="$emit('toggle-collapse')"
       >
         <span
           class="expand-btn-icon"
           aria-hidden="true"
-        >☰</span>
-        <span class="expand-btn-label">Entries</span>
+        >▾</span>
       </button>
-      <span class="collapsed-entry-title">{{ currentSelectedEntry?.Title }}</span>
     </div>
   </aside>
 </template>
@@ -155,21 +154,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { marked } from 'marked'
+import { parseDate } from '@/utils/dates'
+import type { Entry } from '@/types'
 import SearchBar from '@/components/SearchBar.vue'
 import { buildTagDisplay } from '@/composables/useTagAggregation'
-
-interface SidebarEntry {
-  id: number
-  Title: string
-  subtitle?: string
-  StartDate?: string
-  EndDate?: string
-  Description?: string
-  tags?: string[]
-  related?: number[]
-  Bullets?: (string | { text?: string })[]
-  Highlights?: (string | { text?: string })[]
-}
 
 const props = defineProps({
   config: {
@@ -196,8 +184,8 @@ const lastValidQuery = ref('')
 const failedQuery    = ref<string | null>(null)
 
 // All entries pool for tag lookups
-const allEntries = computed<SidebarEntry[]>(() =>
-  (props.config.sections || []).flatMap((s: { entries?: SidebarEntry[] }) => (s.entries || []) as SidebarEntry[])
+const allEntries = computed<Entry[]>(() =>
+  (props.config.sections || []).flatMap((s: { entries?: Entry[] }) => (s.entries || []) as Entry[])
 )
 
 const sections = computed(() => props.config.sections || [])
@@ -240,12 +228,7 @@ const relatedIds = computed(() => {
 })
 
 // Sorting
-function parseDate(d: string): number {
-  if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
-  return new Date(d).getTime()
-}
-
-function sortedSectionEntries(entries: SidebarEntry[]) {
+function sortedSectionEntries(entries: Entry[]) {
   return [...entries].sort((a, b) => parseDate(b.EndDate || '') - parseDate(a.EndDate || ''))
 }
 
@@ -272,7 +255,7 @@ function formatDateRange(start: string, end: string) {
   return `${formatDate(start)} – ${formatDate(end)}`
 }
 
-function entryIndentStyle(entry: SidebarEntry, list: SidebarEntry[]) {
+function entryIndentStyle(entry: Entry, list: Entry[]) {
   const w = sidebarRef.value?.offsetWidth || 300
   const sameCompany = list.filter((e) => e.Title === entry.Title)
   const idx = sameCompany.findIndex((e) => e.id === entry.id)
@@ -280,11 +263,11 @@ function entryIndentStyle(entry: SidebarEntry, list: SidebarEntry[]) {
   return { paddingLeft: `${w * 0.05 * idx}px` }
 }
 
-function isSelected(entry: SidebarEntry) {
+function isSelected(entry: Entry) {
   return selectedId.value === entry.id
 }
 
-function isRelated(entry: SidebarEntry) {
+function isRelated(entry: Entry) {
   if (props.searchQuery && entryMatchesQuery(entry, props.searchQuery)) return false
   return (
     selectedId.value !== null &&
@@ -293,7 +276,7 @@ function isRelated(entry: SidebarEntry) {
   )
 }
 
-function isLinked(entry: SidebarEntry) {
+function isLinked(entry: Entry) {
   return (
     props.linkedId !== null &&
     entry.id === props.linkedId &&
@@ -301,12 +284,12 @@ function isLinked(entry: SidebarEntry) {
   )
 }
 
-function isSearchHighlight(entry: SidebarEntry) {
+function isSearchHighlight(entry: Entry) {
   if (!props.searchQuery || isSelected(entry) || isLinked(entry)) return false
   return entryMatchesQuery(entry, props.searchQuery)
 }
 
-function isDimmed(entry: SidebarEntry) {
+function isDimmed(entry: Entry) {
   if (isSelected(entry)) return false
   if (props.searchQuery && entryMatchesQuery(entry, props.searchQuery)) return false
   const searchDim = !!(props.searchQuery && !entryMatchesQuery(entry, props.searchQuery))
@@ -315,7 +298,7 @@ function isDimmed(entry: SidebarEntry) {
   return searchDim || selectionDim || tagDim
 }
 
-function entryMatchesTag(entry: SidebarEntry, tag: string) {
+function entryMatchesTag(entry: Entry, tag: string) {
   const entryTags = entry.tags || []
   if (tag.endsWith(':')) {
     const prefix = tag.toLowerCase()
@@ -324,7 +307,7 @@ function entryMatchesTag(entry: SidebarEntry, tag: string) {
   return entryTags.includes(tag)
 }
 
-function entryMatchesQuery(entry: SidebarEntry, query: string) {
+function entryMatchesQuery(entry: Entry, query: string) {
   if (!query) return true
   const q = query.toLowerCase()
   const fields = [
@@ -338,7 +321,7 @@ function entryMatchesQuery(entry: SidebarEntry, query: string) {
   return fields.some((f) => f && f.toLowerCase().includes(q))
 }
 
-function entryClasses(entry: SidebarEntry) {
+function entryClasses(entry: Entry) {
   return {
     'is-selected':         isSelected(entry),
     'is-related':          isRelated(entry),
@@ -348,7 +331,7 @@ function entryClasses(entry: SidebarEntry) {
   }
 }
 
-function selectEntry(entry: SidebarEntry) {
+function selectEntry(entry: Entry) {
   selectedId.value = entry.id
   emit('select', entry)
 }
@@ -671,27 +654,41 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
     display: none;
   }
 
+  /* Collapsed state: a horizontal rule with a centered down-arrow button.
+     Clicking the button (or the prev/next nav above it) reopens the list. */
   .sidebar-collapsed-bar {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem var(--sidebar-padding);
+    justify-content: center;
+    height: 2.75rem;
     background: var(--color-bg);
     width: 100%;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sidebar-collapsed-bar::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    top: 50%;
+    height: 1px;
+    background: var(--color-border);
+    pointer-events: none;
   }
 
   .sidebar-expand-btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 0.35rem 0.7rem;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
     background: var(--color-bg);
     color: var(--color-text);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
     cursor: pointer;
     transition:
       background-color var(--transition-fast),
@@ -711,17 +708,6 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
   .expand-btn-icon {
     font-size: 1rem;
     line-height: 1;
-  }
-
-  .collapsed-entry-title {
-    flex: 1;
-    min-width: 0;
-    font-size: 0.8rem;
-    color: var(--color-text-light);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: right;
   }
 }
 </style>

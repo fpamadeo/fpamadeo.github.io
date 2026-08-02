@@ -36,6 +36,7 @@
     <div
       v-if="entries.length && selectedEntry && (hasPrev || hasNext)"
       class="highlight-nav"
+      @click.self="onNavPanelClick"
       @touchstart="onNavTouchStart"
       @touchmove="onNavTouchMove"
       @touchend="onNavTouchEnd"
@@ -205,6 +206,7 @@
 <script setup lang="ts">
 import { computed, ref, watch, inject } from 'vue'
 import { marked } from 'marked'
+import type { Entry } from '@/types'
 
 const props = defineProps({
   selectedEntry: { type: Object, default: null },
@@ -217,7 +219,7 @@ const props = defineProps({
   mobileDetail: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['tag-click', 'tag-badge-click', 'navigate'])
+const emit = defineEmits(['tag-click', 'tag-badge-click', 'navigate', 'expand-request'])
 
 const triggerPrinny = inject<(() => void) | null>('triggerPrinny', null)
 
@@ -275,7 +277,7 @@ const entryList = computed<NavEntry[]>(() => props.entries as NavEntry[])
 
 const currentIndex = computed(() => {
   if (!props.selectedEntry) return -1
-  return entryList.value.findIndex((e) => e.id === (props.selectedEntry as any).id)
+  return entryList.value.findIndex((e) => e.id === (props.selectedEntry as Entry).id)
 })
 
 const hasPrev = computed(() => currentIndex.value > 0)
@@ -300,6 +302,12 @@ function changeEntry(delta: number) {
   const idx = currentIndex.value + delta
   if (idx < 0 || idx >= entryList.value.length) return
   emit('navigate', entryList.value[idx].id)
+}
+
+// Clicking the nav panel background (not the buttons) reopens the list
+// so the prev/next strip doubles as the mobile expand target.
+function onNavPanelClick() {
+  emit('expand-request')
 }
 
 // ─── Mobile: horizontal swipe on the nav block ─────────────────

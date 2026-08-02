@@ -26,6 +26,7 @@
     @tag-click="onTagClick"
     @tag-badge-click="onTagBadgeClick"
     @navigate="onNavigate"
+    @expand-request="expand"
   />
 </template>
 
@@ -33,6 +34,8 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useURLSelection } from '@/composables/useURLSelection'
 import { useCollapsibleSidebar } from '@/composables/useCollapsibleSidebar'
+import { parseDate } from '@/utils/dates'
+import type { Entry, WritingEntry } from '@/types'
 import SidebarComponent from '@/components/SidebarComponent.vue'
 import HighlightComponent from '@/components/HighlightComponent.vue'
 
@@ -47,10 +50,10 @@ const activeTag = ref('')
 const sidebarRef = ref<InstanceType<typeof SidebarComponent> | null>(null)
 const highlightRef = ref<InstanceType<typeof HighlightComponent> | null>(null)
 
-const { isCollapsed, collapse, toggle } = useCollapsibleSidebar()
+const { isCollapsed, collapse, expand, toggle } = useCollapsibleSidebar()
 
 const { invalidId } = useURLSelection({
-  findEntry: (uid) => writingAsExperiences.value.find((e) => e.id === uid),
+  findEntry: (uid) => normalizedWritingEntries.value.find((e) => e.id === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(entry.id as number)
@@ -58,7 +61,7 @@ const { invalidId } = useURLSelection({
   },
 })
 
-function truncateSummary(text: string): string {
+function truncateSummary(text: string | undefined): string {
   if (!text) return ''
   let clean = text
     .replace(/\*\*(.+?)\*\*/g, '$1')
@@ -76,8 +79,8 @@ function truncateSummary(text: string): string {
   return (lastSpace > 0 ? trimmed.slice(0, lastSpace) : trimmed) + '…'
 }
 
-const writingAsExperiences = computed(() =>
-  (writingData as any[]).map((w) => ({
+const normalizedWritingEntries = computed<Entry[]>(() =>
+  (writingData as WritingEntry[]).map((w) => ({
     id: w.id,
     Title: w.Title,
     subtitle: w.subtitle || '',
@@ -93,20 +96,15 @@ const writingAsExperiences = computed(() =>
   })),
 )
 
-function parseDate(d: string): number {
-  if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
-  return new Date(d).getTime()
-}
-
 const sortedEntries = computed(() =>
-  [...writingAsExperiences.value].sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate)),
+  [...normalizedWritingEntries.value].sort((a, b) => parseDate(b.EndDate) - parseDate(a.EndDate)),
 )
 
 const sidebarConfig = computed(() => ({
   sections: [
     {
       label: 'Writing',
-      entries: writingAsExperiences.value,
+      entries: normalizedWritingEntries.value,
       showDates: true,
       singularDate: true,
     },
@@ -139,7 +137,7 @@ function onTagClick(uid: number | null) {
 }
 
 function onNavigate(uid: number) {
-  const entry = writingAsExperiences.value.find((e) => e.id === uid)
+  const entry = normalizedWritingEntries.value.find((e) => e.id === uid)
   if (entry) {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(uid)
@@ -161,7 +159,7 @@ function onTagBadgeClick(tag: string) {
 }
 
 function findEntryById(id: number) {
-  return writingAsExperiences.value.find((e) => e.id === id) || null
+  return normalizedWritingEntries.value.find((e) => e.id === id) || null
 }
 
 defineExpose({ findEntryById, invalidId })

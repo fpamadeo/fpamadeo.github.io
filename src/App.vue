@@ -173,6 +173,7 @@ provide('triggerPrinny', triggerPrinny)
   flex: 1;
   overflow: hidden;
   min-height: 0;
+  min-width: 0;
 }
 @media (max-width: 767px) {
   .page-main--column {

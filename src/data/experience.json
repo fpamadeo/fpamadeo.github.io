@@ -30,8 +30,8 @@
     "id": 211,
     "Title": "Epic Systems",
     "subtitle": "Software Engineer",
-    "StartDate": "2023-06-01T00:00:00",
-    "EndDate": "2020-02-28T00:00:00",
+    "StartDate": "2020-02-01T00:00:00",
+    "EndDate": "2023-06-01T00:00:00",
     "media": "assets/images/EpicU_Group_Anniversary.jpg",
     "location": "Verona, WI",
     "Description": "Developed and maintained full-stack features for the Epic's Learning Management System and Internal Tools.",
@@ -39,7 +39,7 @@
       "Freed up 50% of the Finance team to rotate to other responsibilities by automating key tasks in the training billing process with the use of MUMPS, JavaScript, Node, .NET, and C#",
       "Enabled 1,000s of billable hours of asynchronous training through implementation of completion tracking in Epic\u2019s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
       "Equipped the administrators to manage 100s of post-lockdown Go-Lives with an improved and centralized Go-Live scheduling workflow in a single-page app, utilizing Angular, JavaScript, and React.js.",
-      "improved Learning Management Systems\u2019 sites\u2019 middleware performance and scalability by refactoring backend infrastructure for customer-facing website."
+      "Improved Learning Management Systems\u2019 sites\u2019 middleware performance and scalability by refactoring backend infrastructure for the customer-facing website."
     ],
     "related": [212],
     "tags": [
@@ -64,8 +64,8 @@
     "id": 212,
     "Title": "Epic Systems",
     "subtitle": "Feature Owner",
-    "StartDate": "2023-06-01T00:00:00",
-    "EndDate": "2020-08-28T00:00:00",
+    "StartDate": "2020-10-01T00:00:00",
+    "EndDate": "2023-06-01T00:00:00",
     "media": "",
     "location": "Verona, WI",
     "Description": "Technical point-person and main contact for key stakeholders.",

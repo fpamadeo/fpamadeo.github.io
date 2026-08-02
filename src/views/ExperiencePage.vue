@@ -21,6 +21,7 @@
     :mobile-detail="isCollapsed"
     @tag-click="onTagClick"
     @navigate="onNavigate"
+    @expand-request="expand"
   />
 </template>
 
@@ -28,6 +29,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useURLSelection } from '@/composables/useURLSelection'
 import { useCollapsibleSidebar } from '@/composables/useCollapsibleSidebar'
+import { parseDate } from '@/utils/dates'
 import SidebarComponent from '@/components/SidebarComponent.vue'
 import HighlightComponent from '@/components/HighlightComponent.vue'
 
@@ -43,7 +45,7 @@ const linkedUID     = ref<number | undefined>(undefined)
 const sidebarRef    = ref<InstanceType<typeof SidebarComponent> | null>(null)
 const highlightRef  = ref<InstanceType<typeof HighlightComponent> | null>(null)
 
-const { isCollapsed, collapse, toggle } = useCollapsibleSidebar()
+const { isCollapsed, collapse, expand, toggle } = useCollapsibleSidebar()
 
 const { invalidId } = useURLSelection({
   findEntry: (uid) => allEntries.value.find((e) => e.id === uid),
@@ -58,11 +60,6 @@ const allEntries = computed<{ id: number }[]>(() => [
   ...(experienceData as { id: number }[]),
   ...(educationData as { id: number }[]),
 ])
-
-function parseDate(d: string): number {
-  if (!d || d === 'Present') return new Date(9999, 11, 31).getTime()
-  return new Date(d).getTime()
-}
 
 const sortedEntries = computed(() =>
   ([...experienceData] as { EndDate?: string }[])

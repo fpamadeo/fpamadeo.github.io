@@ -84,17 +84,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { marked } from 'marked'
+import { initialsOf } from '@/utils/strings'
 import RuleSeparator from '@/components/RuleSeparator.vue'
 import aboutData from '@/data/about.json'
 
-const initials = computed(() =>
-  aboutData.name
-    .split(' ')
-    .filter(Boolean)
-    .map((w) => w[0].toUpperCase())
-    .slice(0, 2)
-    .join('')
-)
+const initials = computed(() => initialsOf(aboutData.name))
 
 const bioParagraphs = computed(() =>
   aboutData.bio.split(/\n\n+/).filter((p) => p.trim())

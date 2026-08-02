@@ -43,9 +43,15 @@ vitest@^1.0.0
 
 ```
 src/
+├── App.vue                    # Root component
+├── env.d.ts                   # TypeScript env declarations
+├── main.ts                    # Entry point
+├── test-setup.ts              # Vitest setup
+├── types.ts                   # Shared interfaces (Entry, WritingEntry)
 ├── assets/
 │   └── styles/global.css      # Global styles, CSS variables
 ├── components/                # Reusable Vue components
+│   ├── AiInstructions.vue     # Hidden AI-content protection banner
 │   ├── AppFooter.vue          # Footer with links
 │   ├── AppHeader.vue          # Navigation header
 │   ├── HighlightComponent.vue # Main content display
@@ -54,12 +60,14 @@ src/
 │   ├── SidebarComponent.vue   # Searchable sidebar
 │   └── __tests__/             # Component tests
 ├── composables/               # Composable functions
+│   ├── useCollapsibleSidebar.ts # Mobile sidebar collapse state
 │   ├── useMarkdown.ts         # Markdown utilities
 │   ├── useTagAggregation.ts   # Tag aggregation utilities
 │   ├── useURLSelection.ts     # URL-based entry selection
 │   └── __tests__/             # Composable tests
 ├── data/                      # Static JSON data files
 │   ├── about.json
+│   ├── contact.json
 │   ├── defaultHighlights.json
 │   ├── defaultWritingHighlights.json
 │   ├── education.json
@@ -67,19 +75,20 @@ src/
 │   └── writing.json
 ├── router/
 │   └── index.ts               # Route definitions
+├── utils/                     # Shared helpers
+│   ├── dates.ts               # parseDate (missing/'Present' → far future)
+│   ├── strings.ts             # initialsOf (two-letter monogram)
+│   └── __tests__/             # Utils tests
 ├── views/                     # Page components
 │   ├── AboutPage.vue          # Personality and self
 │   ├── ContactPage.vue        # Contact information
 │   ├── ExperiencePage.vue     # Experience & work showcase
 │   ├── NotFoundPage.vue       # 404 catch-all
 │   └── OtherPage.vue          # Blog/thoughts curation
-├── writing/                   # Writing sync tools
-│   ├── sync_writings.py       # Sync .txt drafts → writing.json
-│   └── test_sync_writings.py  # Tests for sync_writings
-├── App.vue                    # Root component
-├── env.d.ts                   # TypeScript env declarations
-├── main.ts                    # Entry point
-└── test-setup.ts              # Vitest setup
+└── writing/                   # Writing sync tools
+    ├── content/               # Draft .txt sources for sync_writings
+    ├── sync_writings.py       # Sync .txt drafts → writing.json
+    └── test_sync_writings.py  # Tests for sync_writings
 ```
 
 ---

@@ -278,6 +278,21 @@ describe('HighlightComponent', () => {
       w.unmount()
     })
 
+    it('emits expand-request when the nav panel background is clicked', async () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      await w.find('.highlight-nav').trigger('click')
+      expect(w.emitted('expand-request')).toBeTruthy()
+      w.unmount()
+    })
+
+    it('does not emit expand-request when a nav button is clicked', async () => {
+      const w = mount(HighlightComponent, { props: baseProps })
+      await w.find('.nav-next').trigger('click')
+      expect(w.emitted('expand-request')).toBeFalsy()
+      expect(w.emitted('navigate')).toBeTruthy()
+      w.unmount()
+    })
+
     it('navigates to the next entry on a horizontal left swipe', async () => {
       const w = mount(HighlightComponent, { props: baseProps })
       const nav = w.find('.highlight-nav')

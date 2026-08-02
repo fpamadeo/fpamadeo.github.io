@@ -7,8 +7,8 @@ type MediaListener = (event: MediaQueryList | MediaQueryListEvent) => void
 /**
  * Responsive collapsed/expanded state for the sidebar on mobile.
  *
- * On desktop (>= 768px) `collapse()`/`toggle()` are no-ops and `isCollapsed`
- * is always `false`, so desktop layout is never affected.
+ * On desktop (>= 768px) `collapse()`/`expand()`/`toggle()` are no-ops and
+ * `isCollapsed` is always `false`, so desktop layout is never affected.
  */
 export function useCollapsibleSidebar() {
   const isCollapsed = ref(false)
@@ -39,9 +39,13 @@ export function useCollapsibleSidebar() {
     if (isMobile.value) isCollapsed.value = true
   }
 
+  function expand() {
+    if (isMobile.value) isCollapsed.value = false
+  }
+
   function toggle() {
     if (isMobile.value) isCollapsed.value = !isCollapsed.value
   }
 
-  return { isCollapsed, collapse, toggle }
+  return { isCollapsed, collapse, expand, toggle }
 }

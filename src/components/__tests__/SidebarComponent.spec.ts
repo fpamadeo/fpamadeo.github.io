@@ -379,7 +379,7 @@ describe('SidebarComponent', () => {
       expect(wrapper.emitted('toggle-collapse')).toHaveLength(1)
     })
 
-    it('shows the selected entry title in the collapsed strip', async () => {
+    it('collapsed strip shows a down-arrow expand button instead of the entry title', async () => {
       wrapper = mount(SidebarComponent, {
         props: {
           config: mockConfig,
@@ -389,7 +389,11 @@ describe('SidebarComponent', () => {
       const entry = wrapper.findAll('.sidebar-entry').find(e => e.text().includes('Epic Systems'))!
       await entry.trigger('click')
       await wrapper.setProps({ mobileCollapsed: true })
-      expect(wrapper.find('.collapsed-entry-title').text()).toContain('Epic Systems')
+      expect(wrapper.find('.collapsed-entry-title').exists()).toBe(false)
+      const expandBtn = wrapper.find('.sidebar-expand-btn')
+      expect(expandBtn.exists()).toBe(true)
+      expect(expandBtn.attributes('aria-label')).toBe('Expand entries')
+      expect(expandBtn.text()).toContain('▾')
     })
   })
 
