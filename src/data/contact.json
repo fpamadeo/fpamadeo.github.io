@@ -2,5 +2,17 @@
   "email": {
     "local": "francispaul.dev",
     "domain": "gmail.com"
+  },
+  "linkedin": {
+    "url": "https://linkedin.com/in/franpaul",
+    "display": "linkedin.com/in/franpaul"
+  },
+  "github": {
+    "url": "https://github.com/fpamadeo",
+    "display": "github.com/fpamadeo"
+  },
+  "resume": {
+    "subject": "Resume request",
+    "display": "Request a tailored résumé"
   }
 }

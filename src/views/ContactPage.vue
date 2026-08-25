@@ -31,7 +31,7 @@
   <RuleSeparator direction="vertical" />
 
   <section class="contact-highlight">
-    <div class="email-section">
+    <div class="contact-section">
       <h2 class="section-heading">
         Email
       </h2>
@@ -42,6 +42,49 @@
           class="contact-email"
         >{{ displayEmail }}</a>
       </p>
+    </div>
+
+    <div class="contact-section">
+      <h2 class="section-heading">
+        LinkedIn
+      </h2>
+      <p class="email-text">
+        Connect with me on
+        <a
+          :href="contactData.linkedin.url"
+          class="contact-email"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ contactData.linkedin.display }}</a>
+      </p>
+    </div>
+
+    <div class="contact-section">
+      <h2 class="section-heading">
+        GitHub
+      </h2>
+      <p class="email-text">
+        Browse my code on
+        <a
+          :href="contactData.github.url"
+          class="contact-email"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ contactData.github.display }}</a>
+      </p>
+    </div>
+
+    <div class="contact-section">
+      <h2 class="section-heading">
+        Résumé by request
+      </h2>
+      <p class="email-text">
+        I no longer post a generic résumé. I'm focused on specific roles and clients. If you have an opportunity in mind, email me, and if it's a fit, I'll send a version that matches it.
+      </p>
+      <a
+        :href="resumeMailto"
+        class="resume-cta"
+      >{{ contactData.resume.display }}</a>
     </div>
   </section>
 </template>
@@ -58,6 +101,8 @@ const initials = computed(() => initialsOf(aboutData.name))
 
 const { local, domain } = contactData.email
 const email = local + '@' + domain
+
+const resumeMailto = 'mailto:' + email + '?subject=' + encodeURIComponent(contactData.resume.subject)
 
 const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
 </script>
@@ -168,6 +213,23 @@ const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
 }
 
 .contact-email:hover {
+  opacity: 0.7;
+}
+
+.resume-cta {
+  display: inline-block;
+  margin-top: 0.6rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.resume-cta:hover {
   opacity: 0.7;
 }
 

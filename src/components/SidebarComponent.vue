@@ -4,20 +4,24 @@
     class="sidebar"
     :class="{ 'is-mobile-collapsed': mobileCollapsed }"
   >
-    <button
+    <div
       v-if="!mobileCollapsed"
-      class="sidebar-collapse-btn"
-      type="button"
-      :aria-expanded="!mobileCollapsed"
-      aria-controls="sidebar-body"
-      @click="$emit('toggle-collapse')"
+      class="sidebar-collapse-bar"
     >
-      <span class="collapse-btn-label">Entries</span>
-      <span
-        class="collapse-btn-icon"
-        aria-hidden="true"
-      >✕</span>
-    </button>
+      <button
+        class="sidebar-collapse-btn"
+        type="button"
+        :aria-expanded="!mobileCollapsed"
+        aria-controls="sidebar-body"
+        aria-label="Collapse entries"
+        @click="$emit('toggle-collapse')"
+      >
+        <span
+          class="collapse-btn-icon"
+          aria-hidden="true"
+        >▾</span>
+      </button>
+    </div>
 
     <div
       id="sidebar-body"
@@ -145,7 +149,7 @@
         <span
           class="expand-btn-icon"
           aria-hidden="true"
-        >▾</span>
+        >▴</span>
       </button>
     </div>
   </aside>
@@ -434,6 +438,7 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
 }
 
 /* Mobile-only collapsible controls (hidden on desktop) */
+.sidebar-collapse-bar,
 .sidebar-collapse-btn,
 .sidebar-collapsed-bar {
   display: none;
@@ -615,47 +620,9 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
     overflow-y: auto;
   }
 
-  /* Expanded (list) state: compact header button above the body */
-  .sidebar-collapse-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.55rem var(--sidebar-padding);
-    background: var(--color-header-bg);
-    color: var(--color-header-text);
-    border: none;
-    border-bottom: 1px solid var(--color-border);
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-  }
-
-  .sidebar-collapse-btn:hover {
-    background: #2a2a2a;
-  }
-
-  .sidebar-collapse-btn:focus-visible {
-    outline: 2px solid var(--color-selected-outline);
-    outline-offset: -2px;
-  }
-
-  .collapse-btn-icon {
-    font-size: 0.9rem;
-    line-height: 1;
-  }
-
-  /* Collapsed state: slim strip at the bottom, body hidden */
-  .sidebar.is-mobile-collapsed .sidebar-body {
-    display: none;
-  }
-
-  /* Collapsed state: a horizontal rule with a centered down-arrow button.
-     Clicking the button (or the prev/next nav above it) reopens the list. */
+  /* Expanded (list) state: horizontal-rule strip at the top with a centered
+     circular down-arrow button. Mirrors the collapsed strip exactly. */
+  .sidebar-collapse-bar,
   .sidebar-collapsed-bar {
     position: relative;
     display: flex;
@@ -665,8 +632,10 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
     background: var(--color-bg);
     width: 100%;
     border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
   }
 
+  .sidebar-collapse-bar::before,
   .sidebar-collapsed-bar::before {
     content: '';
     position: absolute;
@@ -678,6 +647,14 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
     pointer-events: none;
   }
 
+  /* Collapsed state: slim strip at the bottom, body hidden */
+  .sidebar.is-mobile-collapsed .sidebar-body {
+    display: none;
+  }
+
+  /* Collapsed state: a horizontal rule with a centered up-arrow button.
+     Clicking the button (or the prev/next nav above it) reopens the list. */
+  .sidebar-collapse-btn,
   .sidebar-expand-btn {
     position: relative;
     display: inline-flex;
@@ -695,16 +672,19 @@ defineExpose({ setActiveTag, clearTagFilter, selectById, scrollToId })
       border-color var(--transition-fast);
   }
 
+  .sidebar-collapse-btn:hover,
   .sidebar-expand-btn:hover {
     background: #f4f4f4;
     border-color: #ccc;
   }
 
+  .sidebar-collapse-btn:focus-visible,
   .sidebar-expand-btn:focus-visible {
     outline: 2px solid var(--color-selected-outline);
     outline-offset: 2px;
   }
 
+  .collapse-btn-icon,
   .expand-btn-icon {
     font-size: 1rem;
     line-height: 1;

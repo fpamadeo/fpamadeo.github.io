@@ -350,15 +350,19 @@ describe('SidebarComponent', () => {
       expect(wrapper.emitted('search')).toBeTruthy()
     })
 
-    it('shows a collapse button when expanded and emits toggle-collapse', async () => {
+    it('shows a mirrored strip with a down-arrow collapse button when expanded and emits toggle-collapse', async () => {
       wrapper = mount(SidebarComponent, {
         props: {
           config: mockConfig,
           mobileCollapsed: false,
         },
       })
+      expect(wrapper.find('.sidebar-collapse-bar').exists()).toBe(true)
       const btn = wrapper.find('.sidebar-collapse-btn')
       expect(btn.exists()).toBe(true)
+      expect(btn.attributes('aria-expanded')).toBe('true')
+      expect(btn.attributes('aria-label')).toBe('Collapse entries')
+      expect(btn.text()).toContain('▾')
       await btn.trigger('click')
       expect(wrapper.emitted('toggle-collapse')).toHaveLength(1)
     })
@@ -379,7 +383,7 @@ describe('SidebarComponent', () => {
       expect(wrapper.emitted('toggle-collapse')).toHaveLength(1)
     })
 
-    it('collapsed strip shows a down-arrow expand button instead of the entry title', async () => {
+    it('collapsed strip shows an up-arrow expand button instead of the entry title', async () => {
       wrapper = mount(SidebarComponent, {
         props: {
           config: mockConfig,
@@ -393,7 +397,7 @@ describe('SidebarComponent', () => {
       const expandBtn = wrapper.find('.sidebar-expand-btn')
       expect(expandBtn.exists()).toBe(true)
       expect(expandBtn.attributes('aria-label')).toBe('Expand entries')
-      expect(expandBtn.text()).toContain('▾')
+      expect(expandBtn.text()).toContain('▴')
     })
   })
 

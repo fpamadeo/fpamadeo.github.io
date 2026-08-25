@@ -756,14 +756,20 @@ defineExpose({ focusHighlight })
     max-height: none;
     border-bottom: none;
     overflow: auto;
+    padding-bottom: 0;
   }
 
-  /* Prev/Next pinned just above the collapsed sidebar strip.
+  /* Prev/Next pinned just above the collapsed sidebar strip, spanning the
+     full width (breaks out of the 1rem side padding) so it reads as a
+     same-width block physically connected to the strip below it.
      z-index: 10 keeps the nav above the scrolling entry content so
      touches/buttons hit it (content paints after it in DOM order). */
   .highlight.is-mobile-detail .highlight-nav {
     order: 100;
     margin-top: auto;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    width: calc(100% + 2rem);
     position: sticky;
     bottom: 0;
     z-index: 10;
