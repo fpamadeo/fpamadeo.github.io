@@ -41,17 +41,17 @@
 
     <!-- Tag Filter -->
     <div
-      v-if="showTagFilter && tagDisplayData.length"
+      v-if="showTagFilter && visiblePills.length"
       class="tag-filter-area"
     >
       <span
-        v-for="item in tagDisplayData"
+        v-for="item in visiblePills"
         :key="item.filter"
         class="tag-pill-wrapper"
       >
         <button
           class="tag-pill"
-          :class="{ 'is-active': selectedTag === item.filter }"
+          :class="{ 'is-active': isPillActive(item.filter) }"
           role="button"
           tabindex="0"
           :aria-pressed="selectedTag === item.filter"
@@ -161,7 +161,7 @@ import { marked } from 'marked'
 import { parseDate } from '@/utils/dates'
 import type { Entry } from '@/types'
 import SearchBar from '@/components/SearchBar.vue'
-import { buildTagDisplay } from '@/composables/useTagAggregation'
+import { buildTagTree, getVisiblePills } from '@/composables/useTagAggregation'
 
 const props = defineProps({
   config: {
@@ -199,7 +199,7 @@ const currentSelectedEntry = computed(() =>
 )
 
 // Tag aggregation
-const tagDisplayData = computed(() => {
+const tagTree = computed(() => {
   const tags = new Set<string>()
   for (const entry of allEntries.value) {
     if (entry.tags && Array.isArray(entry.tags)) {
@@ -207,8 +207,12 @@ const tagDisplayData = computed(() => {
     }
   }
   const sorted = [...tags].sort((a, b) => a.localeCompare(b))
-  return buildTagDisplay(sorted)
+  return buildTagTree(sorted)
 })
+
+const visiblePills = computed(() =>
+  getVisiblePills(tagTree.value, selectedTag.value)
+)
 
 // Auto-select default entry on mount
 watch(
@@ -373,9 +377,43 @@ function onSearch(query: string) {
   emit('search', query)
 }
 
+function isPillActive(filter: string): boolean {
+  if (!selectedTag.value) return false
+  const tag = selectedTag.value.toLowerCase()
+  const f = filter.toLowerCase()
+  if (tag === f) return true
+  if (f.endsWith(':') && tag.startsWith(f)) return true
+  return false
+}
+
+function findParentFilter(tag: string): string | null {
+  const target = tag.toLowerCase()
+  function walk(nodes: TagNode[], parentFilter: string | null): string | null {
+    for (const node of nodes) {
+      const nodeFilter = node.children.length > 0 ? node.fullName + ':' : node.fullName
+      if (nodeFilter.toLowerCase() === target) return parentFilter
+      const found = walk(node.children, node.fullName + ':')
+      if (found !== null) return found
+    }
+    return null
+  }
+  return walk(tagTree.value, null)
+}
+
 function toggleTag(tag: string) {
-  selectedTag.value = selectedTag.value === tag ? null : tag
-  emit('tag-filter', selectedTag.value)
+  if (selectedTag.value === tag) {
+    const parentFilter = findParentFilter(tag)
+    if (parentFilter) {
+      selectedTag.value = parentFilter
+      emit('tag-filter', parentFilter)
+    } else {
+      selectedTag.value = null
+      emit('tag-filter', null)
+    }
+  } else {
+    selectedTag.value = tag
+    emit('tag-filter', selectedTag.value)
+  }
 }
 
 function setActiveTag(tag: string | null) {

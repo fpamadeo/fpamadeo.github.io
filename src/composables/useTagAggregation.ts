@@ -1,44 +1,119 @@
-interface TagDisplayItem {
+export interface TagDisplayItem {
   display: string
   filter: string
 }
 
-export function buildTagDisplay(allTags: string[]): TagDisplayItem[] {
-  const groups = new Map<string, { supertag: string; tags: Array<{ full: string; subtag: string }> }>()
-  const standalone: TagDisplayItem[] = []
+export interface TagNode {
+  name: string
+  fullName: string
+  children: TagNode[]
+}
 
-  for (const tag of allTags) {
-    const colonIdx = tag.indexOf(':')
-    if (colonIdx > 0) {
-      const supertag = tag.slice(0, colonIdx).trim()
-      const subtag = tag.slice(colonIdx + 1).trim()
-      const key = supertag.toLowerCase()
-      if (!groups.has(key)) {
-        groups.set(key, { supertag, tags: [] })
+export function buildTagTree(allTags: string[]): TagNode[] {
+  const root: TagNode[] = []
+
+  const sorted = [...allTags].sort((a, b) => a.localeCompare(b))
+
+  for (const tag of sorted) {
+    const parts = tag.split(':').map(p => p.trim()).filter(Boolean)
+    if (parts.length === 0) continue
+
+    let current = root
+    let accumulated = ''
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i]
+      accumulated = accumulated ? `${accumulated}: ${part}` : part
+      const fullName = accumulated
+
+      let existing = current.find(n => n.fullName.toLowerCase() === fullName.toLowerCase())
+      if (!existing) {
+        existing = { name: part, fullName, children: [] }
+        current.push(existing)
       }
-      groups.get(key)!.tags.push({ full: tag, subtag })
-    } else {
-      standalone.push({ display: tag, filter: tag })
+      current = existing.children
     }
   }
 
-  const result: TagDisplayItem[] = []
+  return root
+}
 
-  for (const [, group] of groups) {
-    if (group.tags.length >= 2) {
-      group.tags.sort((a, b) => a.subtag.localeCompare(b.subtag))
-      result.push({ display: group.supertag, filter: group.supertag + ':' })
-      for (const t of group.tags) {
-        result.push({ display: t.full, filter: t.full })
-      }
-    } else {
-      standalone.push({ display: group.tags[0].full, filter: group.tags[0].full })
-    }
+export function getVisiblePills(tree: TagNode[], activeFilter: string | null): TagDisplayItem[] {
+  if (!activeFilter) {
+    return tree.map(node => ({
+      display: node.name,
+      filter: node.children.length > 0 ? node.fullName + ':' : node.fullName,
+    }))
   }
 
-  standalone.sort((a, b) => a.display.localeCompare(b.display))
+  const parts = activeFilter.split(':').map(p => p.trim()).filter(Boolean)
+  if (parts.length === 0) {
+    return tree.map(node => ({
+      display: node.name,
+      filter: node.children.length > 0 ? node.fullName + ':' : node.fullName,
+    }))
+  }
 
-  return [...result, ...standalone]
+  // Traverse tree to find the target node
+  let current = tree
+  const pathNodes: TagNode[] = []
+  for (const part of parts) {
+    const found = current.find(n => n.name.toLowerCase() === part.toLowerCase())
+    if (!found) break
+    pathNodes.push(found)
+    current = found.children
+  }
+
+  if (pathNodes.length === 0) {
+    return tree.map(node => ({
+      display: node.name,
+      filter: node.children.length > 0 ? node.fullName + ':' : node.fullName,
+    }))
+  }
+
+  const target = pathNodes[pathNodes.length - 1]
+  const isParent = target.children.length > 0
+
+  if (isParent) {
+    // Parent node: show ancestor path + this node + all its children
+    const pills: TagDisplayItem[] = pathNodes.map(n => ({
+      display: n.name,
+      filter: n.fullName + ':',
+    }))
+    for (const child of target.children) {
+      pills.push({
+        display: child.name,
+        filter: child.children.length > 0 ? child.fullName + ':' : child.fullName,
+      })
+    }
+    return pills
+  } else {
+    // Leaf node: show ancestor path to parent + all parent's children
+    const parentPath = pathNodes.slice(0, -1)
+    const parent = parentPath.length > 0 ? parentPath[parentPath.length - 1] : null
+
+    const pills: TagDisplayItem[] = parentPath.map(n => ({
+      display: n.name,
+      filter: n.fullName + ':',
+    }))
+
+    if (parent) {
+      for (const child of parent.children) {
+        pills.push({
+          display: child.name,
+          filter: child.children.length > 0 ? child.fullName + ':' : child.fullName,
+        })
+      }
+    } else {
+      // Leaf at root level — just show the target itself
+      pills.push({
+        display: target.name,
+        filter: target.fullName,
+      })
+    }
+
+    return pills
+  }
 }
 
 export function useTagAggregation(allEntries: Array<{ tags?: string[] }>) {
@@ -52,7 +127,6 @@ export function useTagAggregation(allEntries: Array<{ tags?: string[] }>) {
   }
 
   const sortedTags = [...allTags].sort((a, b) => a.localeCompare(b))
-  const tagDisplayData = buildTagDisplay(sortedTags)
 
-  return { allTags: sortedTags, tagDisplayData }
+  return { allTags: sortedTags }
 }

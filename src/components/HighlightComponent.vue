@@ -187,7 +187,7 @@
               @click="handleTagBadgeClick(tag)"
               @keydown.enter="handleTagBadgeClick(tag)"
               @keydown.space.prevent="handleTagBadgeClick(tag)"
-            >{{ tag }}</button>
+            >{{ compressTag(tag) }}</button>
           </span>
         </div>
       </div>
@@ -379,6 +379,12 @@ function handleItemClick(item: HighlightItem): void {
     activeLinkedUID.value = uid
     emit('tag-click', uid)
   }
+}
+
+function compressTag(tag: string): string {
+  const parts = tag.split(':').map(p => p.trim()).filter(Boolean)
+  if (parts.length <= 2) return tag
+  return `${parts[0]}: ${parts[parts.length - 1]}`
 }
 
 function handleTagBadgeClick(tag: string) {
