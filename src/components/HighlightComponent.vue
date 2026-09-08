@@ -611,7 +611,6 @@ defineExpose({ focusHighlight })
   font-size: 0.9rem;
   line-height: 1.8;
   color: var(--color-text);
-  white-space: pre-wrap;
 }
 .content-body :deep(p) {
   margin-bottom: 0.8rem;
@@ -646,6 +645,16 @@ defineExpose({ focusHighlight })
 .content-body :deep(ol) {
   padding-left: 1.2rem;
   margin: 0.3rem 0;
+}
+.content-body :deep(blockquote) {
+  margin: 0.5rem 0;
+  padding: 0.4rem 0.8rem;
+  border-left: 3px solid var(--color-border);
+  background: var(--color-dimmed-bg);
+  font-style: italic;
+}
+.content-body :deep(blockquote p) {
+  margin: 0;
 }
 .content-body :deep(table) {
   border-collapse: collapse;
