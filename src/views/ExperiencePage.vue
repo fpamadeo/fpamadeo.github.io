@@ -48,17 +48,17 @@ const highlightRef  = ref<InstanceType<typeof HighlightComponent> | null>(null)
 const { isCollapsed, collapse, expand, toggle } = useCollapsibleSidebar()
 
 const { invalidId } = useURLSelection({
-  findEntry: (uid) => allEntries.value.find((e) => e.id === uid),
+  findEntry: (uid) => allEntries.value.find((e) => e.UID === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
-    sidebarRef.value?.selectById(entry.id as number)
+    sidebarRef.value?.selectById(entry.UID as number)
     collapse()
   },
 })
 
-const allEntries = computed<{ id: number }[]>(() => [
-  ...(experienceData as { id: number }[]),
-  ...(educationData as { id: number }[]),
+const allEntries = computed<{ UID: number }[]>(() => [
+  ...(experienceData as { UID: number }[]),
+  ...(educationData as { UID: number }[]),
 ])
 
 const sortedEntries = computed(() =>
@@ -70,7 +70,7 @@ const sortedEntries = computed(() =>
 )
 
 function findEntryById(id: number) {
-  return allEntries.value.find(entry => entry.id === id) || null
+  return allEntries.value.find(entry => entry.UID === id) || null
 }
 
 const sidebarConfig = computed(() => ({

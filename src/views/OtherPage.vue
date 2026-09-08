@@ -53,10 +53,10 @@ const highlightRef = ref<InstanceType<typeof HighlightComponent> | null>(null)
 const { isCollapsed, collapse, expand, toggle } = useCollapsibleSidebar()
 
 const { invalidId } = useURLSelection({
-  findEntry: (uid) => normalizedWritingEntries.value.find((e) => e.id === uid),
+  findEntry: (uid) => normalizedWritingEntries.value.find((e) => e.UID === uid),
   onSelect: (entry) => {
     selectedEntry.value = entry
-    sidebarRef.value?.selectById(entry.id as number)
+    sidebarRef.value?.selectById(entry.UID as number)
     collapse()
   },
 })
@@ -81,18 +81,18 @@ function truncateSummary(text: string | undefined): string {
 
 const normalizedWritingEntries = computed<Entry[]>(() =>
   (writingData as WritingEntry[]).map((w) => ({
-    id: w.id,
+    UID: w.UID,
     Title: w.Title,
     subtitle: w.subtitle || '',
     StartDate: w.datePublished || w.Date,
     EndDate: w.datePublished || w.Date,
     media: '',
-    Description: w.summary || truncateSummary(w.body),
+    Description: w.summary || truncateSummary(w.Body),
     Bullets: [],
     related: w.related ?? [],
     tags: w.tags ?? [],
     Highlights: [],
-    body: w.body,
+    Body: w.Body,
   })),
 )
 
@@ -137,7 +137,7 @@ function onTagClick(uid: number | null) {
 }
 
 function onNavigate(uid: number) {
-  const entry = normalizedWritingEntries.value.find((e) => e.id === uid)
+  const entry = normalizedWritingEntries.value.find((e) => e.UID === uid)
   if (entry) {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(uid)
@@ -159,7 +159,7 @@ function onTagBadgeClick(tag: string) {
 }
 
 function findEntryById(id: number) {
-  return normalizedWritingEntries.value.find((e) => e.id === id) || null
+  return normalizedWritingEntries.value.find((e) => e.UID === id) || null
 }
 
 defineExpose({ findEntryById, invalidId })

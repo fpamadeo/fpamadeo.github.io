@@ -433,7 +433,7 @@ def _phase_sync(entries, summary):
             existing = entries_by_uid[uid]
             if file_newer_than(fp, existing.get('Date', '')):
                 existing['Title'] = e['title']
-                existing['body'] = e['content']
+                existing['Body'] = e['content']
                 existing['Date'] = date_iso
                 if e['tags'] is not None:
                     existing['tags'] = e['tags']
@@ -469,7 +469,7 @@ def _phase_sync(entries, summary):
                 'summary': e.get('summary', ''),
                 'subtitle': e.get('subtitle', ''),
                 'footnote': e.get('footnote', ''),
-                'body': e['content'],
+                'Body': e['content'],
             }
             try:
                 new_entry['id'] = int(uid)

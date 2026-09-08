@@ -40,7 +40,7 @@ const sidebarConfig = {
       showDates: true,
       entries: [
         {
-          id: 1,
+          UID: 1,
           Title: 'Malicious Co',
           subtitle: 'Dev',
           StartDate: '2020-01-01T00:00:00',
@@ -133,7 +133,7 @@ describe('Component mount proofs: payloads reach the DOM unsanitized', () => {
   it('HighlightComponent renders entry.body payload into .content-body', () => {
     const wrapper: VueWrapper = mount(HighlightComponent, {
       props: {
-        selectedEntry: { UID: 1, Title: 'Malicious', body: SVG_ONLOAD_PAYLOAD },
+        selectedEntry: { UID: 1, Title: 'Malicious', Body: SVG_ONLOAD_PAYLOAD },
         defaultEntry: {},
         searchQuery: '',
         tagFilterEnabled: false,

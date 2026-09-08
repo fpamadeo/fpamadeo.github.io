@@ -183,19 +183,19 @@ class TestParseTxtFootnote(unittest.TestCase):
 class TestWritingJsonFieldNames(unittest.TestCase):
     """Verify writing.json uses lowercase id/body that HighlightComponent expects."""
 
-    def test_writing_json_uses_lowercase_id_and_body(self):
+    def test_writing_json_uses_uppercase_UID_and_Body(self):
         import json
         data_path = Path(__file__).resolve().parent.parent / 'data' / 'writing.json'
         if not data_path.exists():
             self.skipTest('writing.json not found')
         data = json.loads(data_path.read_text(encoding='utf-8'))
         for entry in data:
-            self.assertIn('id', entry, f'Entry missing "id" field: {entry.get("Title")}')
-            self.assertNotIn('UID', entry, f'Entry uses "UID" instead of "id": {entry.get("Title")}')
-            self.assertIn('body', entry, f'Entry missing "body" field: {entry.get("Title")}')
-            self.assertNotIn('Content', entry, f'Entry uses "Content" instead of "body": {entry.get("Title")}')
-            self.assertIsInstance(entry['id'], int, f'Entry "id" should be int: {entry.get("Title")}')
-            self.assertIsInstance(entry['body'], str, f'Entry "body" should be str: {entry.get("Title")}')
+            self.assertIn('UID', entry, f'Entry missing "UID" field: {entry.get("Title")}')
+            self.assertNotIn('id', entry, f'Entry uses "id" instead of "UID": {entry.get("Title")}')
+            self.assertIn('Body', entry, f'Entry missing "Body" field: {entry.get("Title")}')
+            self.assertNotIn('body', entry, f'Entry uses "body" instead of "Body": {entry.get("Title")}')
+            self.assertIsInstance(entry['UID'], int, f'Entry "UID" should be int: {entry.get("Title")}')
+            self.assertIsInstance(entry['Body'], str, f'Entry "Body" should be str: {entry.get("Title")}')
 
     def test_writing_json_entries_have_required_fields(self):
         import json
@@ -203,10 +203,10 @@ class TestWritingJsonFieldNames(unittest.TestCase):
         if not data_path.exists():
             self.skipTest('writing.json not found')
         data = json.loads(data_path.read_text(encoding='utf-8'))
-        required = ['id', 'Title', 'tags', 'Date', 'body', 'datePublished']
+        required = ['UID', 'Title', 'tags', 'Date', 'Body', 'datePublished']
         for entry in data:
             for field in required:
-                self.assertIn(field, entry, f'Entry {entry.get("id")} missing "{field}"')
+                self.assertIn(field, entry, f'Entry {entry.get("UID")} missing "{field}"')
 
 
 if __name__ == '__main__':

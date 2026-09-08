@@ -1,6 +1,6 @@
 [
   {
-    "id": 101,
+    "UID": 101,
     "Title": "University of Illinois at Chicago",
     "subtitle": "Bachelor of Science in Computer Engineering",
     "StartDate": "",
@@ -13,7 +13,11 @@
       "Member of Tau Beta Pi Honor Society.",
       "Dean's Lister for 4 semesters."
     ],
-    "related": [221, 222, 231],
+    "related": [
+      221,
+      222,
+      231
+    ],
     "tags": [
       "Degree: Computer Engineering",
       "Honor: Cum Laude",
@@ -23,11 +27,11 @@
     "Highlights": [
       "Graduated Cum Laude with a 3.6 GPA.",
       "Software Lead for Project STELLA 2019, the 2nd place overall at the 32nd Midwestern Robotics Design Competition.",
-      "Built the circuit simulator used in UIC\u2019s ECE 464: Testing and Reliability of Digital Systems inaugural class."
+      "Built the circuit simulator used in UIC’s ECE 464: Testing and Reliability of Digital Systems inaugural class."
     ]
   },
   {
-    "id": 102,
+    "UID": 102,
     "Title": "College of Lake County",
     "subtitle": "Associate Degree in Engineering Science",
     "StartDate": "",
@@ -40,6 +44,9 @@
     "Bullets": [],
     "Description": "Graduated with High Honors.",
     "related": [],
-    "tags": ["Degree: Engineering Science", "Honor: High Honors"]
+    "tags": [
+      "Degree: Engineering Science",
+      "Honor: High Honors"
+    ]
   }
 ]

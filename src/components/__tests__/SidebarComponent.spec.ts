@@ -9,7 +9,7 @@ const mockConfig: Record<string, unknown> = {
       showDates: true,
       entries: [
         {
-          id: 1,
+          UID: 1,
           Title: 'Epic Systems',
           subtitle: 'Software Engineer',
           StartDate: '2020-06-01T00:00:00',
@@ -21,7 +21,7 @@ const mockConfig: Record<string, unknown> = {
           Highlights: [],
         },
         {
-          id: 2,
+          UID: 2,
           Title: 'Other Co',
           subtitle: 'Dev',
           StartDate: '2018-01-01T00:00:00',
@@ -33,7 +33,7 @@ const mockConfig: Record<string, unknown> = {
           Highlights: [],
         },
         {
-          id: 3,
+          UID: 3,
           Title: 'Startup',
           subtitle: 'Founder',
           StartDate: '2016-01-01T00:00:00',
@@ -51,7 +51,7 @@ const mockConfig: Record<string, unknown> = {
       showDates: false,
       entries: [
         {
-          id: 101,
+          UID: 101,
           Title: 'University of Illinois at Chicago',
           subtitle: 'BS in Computer Engineering',
           Description: 'Graduated cum laude',
@@ -464,7 +464,7 @@ describe('SidebarComponent', () => {
           showDates: true,
           entries: [
             {
-              id: 1,
+              UID: 1,
               Title: 'Epic Systems',
               subtitle: 'Software Engineer',
               StartDate: '2020-06-01T00:00:00',
@@ -476,7 +476,7 @@ describe('SidebarComponent', () => {
               Highlights: [],
             },
             {
-              id: 2,
+              UID: 2,
               Title: 'Other Co',
               subtitle: 'Dev',
               StartDate: '2018-01-01T00:00:00',
@@ -547,7 +547,7 @@ describe('SidebarComponent', () => {
             singularDate: true,
             entries: [
               {
-                id: 1,
+                UID: 1,
                 Title: 'Test',
                 subtitle: 'Post',
                 StartDate: '2026-05-31T00:00:00',
@@ -581,7 +581,7 @@ describe('SidebarComponent', () => {
             singularDate: true,
             entries: [
               {
-                id: 1,
+                UID: 1,
                 Title: 'Test',
                 subtitle: 'Post',
                 StartDate: null,

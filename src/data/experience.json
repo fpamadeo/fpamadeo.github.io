@@ -1,6 +1,6 @@
 [
   {
-    "id": 201,
+    "UID": 201,
     "Title": "Freelance",
     "subtitle": "Full Stack Software Engineer",
     "StartDate": "2024-01-01T00:00:00",
@@ -9,7 +9,7 @@
     "media": "assets/images/example freelance work.png",
     "Description": "Full Stack Engineer and consultant services based in Chicagoland",
     "Bullets": [
-      "Simplified clients\u2019 processes with automation and software tools in collaboration with power users and admins",
+      "Simplified clients’ processes with automation and software tools in collaboration with power users and admins",
       "Consulted for organizations on how to increase security and scalability of their software functionalities."
     ],
     "related": [],
@@ -23,22 +23,22 @@
     ],
     "Highlights": [
       "Reduced 80% of manual intervention in event planning and logistics by developing a customized software tool with an outlined process.",
-      "Improved member participation and retention after introducing an automated monthly process that provided data to inform the organization leadership\u2019s decisions."
+      "Improved member participation and retention after introducing an automated monthly process that provided data to inform the organization leadership’s decisions."
     ]
   },
   {
-    "id": 241,
+    "UID": 241,
     "Title": "Filipino Language Tutor",
-    "subtitle": "Freelance Filipino and Tagalog Language Tutor \u2014 One-on-One & Group Sessions",
+    "subtitle": "Freelance Filipino and Tagalog Language Tutor — One-on-One & Group Sessions",
     "StartDate": "2024-08-01T00:00:00",
     "EndDate": "Present",
     "location": "Greater Chicago Area",
     "media": "",
-    "Description": "Freelance Filipino Language tutoring for multiple students, combining general 1-hour sessions with tailored one-on-one lessons. If you\u2019re interested in my Tagalog Tutoring, feel free to [contact me](/#/contact).",
+    "Description": "Freelance Filipino Language tutoring for multiple students, combining general 1-hour sessions with tailored one-on-one lessons. If you’re interested in my Tagalog Tutoring, feel free to [contact me](/#/contact).",
     "Bullets": [
       "Taught multiple students in general 1-hour sessions, building consistent weekly practice toward conversational Tagalog.",
-      "Delivered tailored one-on-one tutoring, adapting lesson plans to each student\u2019s level, goals, and learning style.",
-      "Provided language insight and cultural context for a student\u2019s music major capstone project (a song)."
+      "Delivered tailored one-on-one tutoring, adapting lesson plans to each student’s level, goals, and learning style.",
+      "Provided language insight and cultural context for a student’s music major capstone project (a song)."
     ],
     "related": [],
     "tags": [
@@ -50,11 +50,11 @@
     ],
     "Highlights": [
       "Helped multiple learners build practical conversational Tagalog through regular 1-hour sessions since August 2024.",
-      "Enabled a student\u2019s music major capstone by contributing authentic language and cultural context to their song."
+      "Enabled a student’s music major capstone by contributing authentic language and cultural context to their song."
     ]
   },
   {
-    "id": 211,
+    "UID": 211,
     "Title": "Epic Systems",
     "subtitle": "Software Engineer",
     "StartDate": "2020-02-01T00:00:00",
@@ -64,11 +64,13 @@
     "Description": "Developed and maintained full-stack features for the Epic's Learning Management System and Internal Tools.",
     "Bullets": [
       "Freed up 50% of the Finance team to rotate to other responsibilities by automating key tasks in the training billing process with the use of MUMPS, JavaScript, Node, .NET, and C#",
-      "Enabled 1,000s of billable hours of asynchronous training through implementation of completion tracking in Epic\u2019s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
+      "Enabled 1,000s of billable hours of asynchronous training through implementation of completion tracking in Epic’s e-learning platform with .NET Core, SQL, C#, Azure, and TypeScript.",
       "Equipped the administrators to manage 100s of post-lockdown Go-Lives with an improved and centralized Go-Live scheduling workflow in a single-page app, utilizing Angular, JavaScript, and React.js.",
-      "Improved Learning Management Systems\u2019 sites\u2019 middleware performance and scalability by refactoring backend infrastructure for the customer-facing website."
+      "Improved Learning Management Systems’ sites’ middleware performance and scalability by refactoring backend infrastructure for the customer-facing website."
     ],
-    "related": [212],
+    "related": [
+      212
+    ],
     "tags": [
       "Company: Epic Systems",
       "Domain: Healthcare",
@@ -81,14 +83,14 @@
       "Tech: Azure"
     ],
     "Highlights": [
-      "Developed and designed for the successful launch of Epic\u2019s multi-million dollar end-user training management application by leading projects for new workflows and optimized existing software solutions across the stack.",
+      "Developed and designed for the successful launch of Epic’s multi-million dollar end-user training management application by leading projects for new workflows and optimized existing software solutions across the stack.",
       "Reduced the training billing process by 60%, enabling Finance to manage a 4x increase in training volume post-End User Training launch.",
       "Streamlined a >7 day process to 1 day by centralizing the Go-Live scheduling functionalities.",
-      "Supported over 500 new billable training by modernizing Epic\u2019s e-learning platform with progress and completion tracking."
+      "Supported over 500 new billable training by modernizing Epic’s e-learning platform with progress and completion tracking."
     ]
   },
   {
-    "id": 212,
+    "UID": 212,
     "Title": "Epic Systems",
     "subtitle": "Feature Owner",
     "StartDate": "2020-10-01T00:00:00",
@@ -101,7 +103,9 @@
       "Analyzed and outlined an optimized Training Billing process, effectively removing numerous bottlenecks and preserving data integrity.",
       "Coordinated company-wide training back-end requirements with the HIPAA Security trainer and admins for the annual HIPAA training."
     ],
-    "related": [211],
+    "related": [
+      211
+    ],
     "tags": [
       "Company: Epic Systems",
       "Domain: Healthcare",
@@ -116,7 +120,7 @@
     ]
   },
   {
-    "id": 221,
+    "UID": 221,
     "Title": "Chicago Engineering Design Team",
     "subtitle": "Software Lead",
     "location": "Chicago, IL",
@@ -125,8 +129,13 @@
     "media": "assets/images/Stella2019group.jpg",
     "mediaFit": "force-height",
     "Description": "Lead Programmer of the Project STELLA robot for the 32nd Midwestern Robotics Design Competition",
-    "Bullets": ["Designed and developed the main functionalities of the wireless controller."],
-    "related": [101, 222],
+    "Bullets": [
+      "Designed and developed the main functionalities of the wireless controller."
+    ],
+    "related": [
+      101,
+      222
+    ],
     "tags": [
       "Domain: Robotics",
       "Role: Leadership",
@@ -142,7 +151,7 @@
     ]
   },
   {
-    "id": 222,
+    "UID": 222,
     "Title": "Chicago Engineering Design Team",
     "subtitle": "Senior ECE Member",
     "location": "Chicago,IL",
@@ -155,7 +164,10 @@
       "Programmed Arduinos and fabricated various mechanisms to perform robots' functionalities.",
       "Mentored junior engineers on mechanical, electrical, and software needs."
     ],
-    "related": [101, 221],
+    "related": [
+      101,
+      221
+    ],
     "tags": [
       "Domain: Robotics",
       "Role: Mentoring",
@@ -171,7 +183,7 @@
     ]
   },
   {
-    "id": 231,
+    "UID": 231,
     "Title": "University of Illinois at Chicago",
     "subtitle": "Computer Engineering Intern",
     "StartDate": "2019-07-01T00:00:00",
@@ -183,10 +195,17 @@
       "Developed a circuit simulator in Python that students of all levels of Python familiarity can understand.",
       "Outlined and written the technical document used in the first ECE 464 class at UIC"
     ],
-    "related": [101],
-    "tags": ["Domain: Education", "Stack: Python", "Skill: Circuit Simulation", "Skill: Research"],
+    "related": [
+      101
+    ],
+    "tags": [
+      "Domain: Education",
+      "Stack: Python",
+      "Skill: Circuit Simulation",
+      "Skill: Research"
+    ],
     "Highlights": [
-      "Developed and designed the circuit simulator used in UIC\u2019s first offering of ECE 464: Testing and Reliability of Digital Systems in Fall 2019",
+      "Developed and designed the circuit simulator used in UIC’s first offering of ECE 464: Testing and Reliability of Digital Systems in Fall 2019",
       "Researched and presented a study in front of a panel of ECE professors."
     ]
   }

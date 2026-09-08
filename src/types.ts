@@ -1,5 +1,5 @@
 export type Entry = {
-  id: number
+  UID: number
   Title: string
   subtitle?: string
   StartDate?: string
@@ -10,7 +10,7 @@ export type Entry = {
   related?: number[]
   Bullets?: (string | { text?: string })[]
   Highlights?: (string | { text?: string })[]
-  body?: string
+  Body?: string
 }
 
 export type WritingEntry = Entry & {

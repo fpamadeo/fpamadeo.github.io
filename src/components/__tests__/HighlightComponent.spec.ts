@@ -239,13 +239,13 @@ describe('HighlightComponent', () => {
 
   describe('Mobile Detail View', () => {
     const navEntries = [
-      { id: 1, Title: 'Entry One', subtitle: 'First' },
-      { id: 2, Title: 'Entry Two', subtitle: 'Second' },
-      { id: 3, Title: 'Entry Three', subtitle: 'Third' },
+      { UID: 1, Title: 'Entry One', subtitle: 'First' },
+      { UID: 2, Title: 'Entry Two', subtitle: 'Second' },
+      { UID: 3, Title: 'Entry Three', subtitle: 'Third' },
     ]
     const selectedEntry = {
       ...mockDefaultEntry,
-      id: 2,
+      UID: 2,
       Title: 'Entry Two',
     }
     const baseProps = {
@@ -348,7 +348,7 @@ describe('HighlightComponent', () => {
     it('handles entry with Content field', async () => {
       const entryWithContent = {
         ...mockDefaultEntry,
-        body: 'This is the content field',
+        Body: 'This is the content field',
       }
 
       await wrapper.setProps({ selectedEntry: entryWithContent })
@@ -362,7 +362,7 @@ describe('HighlightComponent', () => {
       const wipEntry = {
         ...mockDefaultEntry,
         isWip: true,
-        body: 'Content visible beneath overlay',
+        Body: 'Content visible beneath overlay',
       }
 
       await wrapper.setProps({ selectedEntry: wipEntry })
@@ -376,7 +376,7 @@ describe('HighlightComponent', () => {
   describe('Tag Click Interactions', () => {
     it('emits tag-click with UID when item with tag is clicked', async () => {
       const entryWithTaggedItems = {
-        id: 1,
+        UID: 1,
         Title: 'Test',
         subtitle: 'Test',
         Highlights: [

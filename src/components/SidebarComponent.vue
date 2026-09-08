@@ -100,15 +100,15 @@
       </div>
       <div
         v-for="entry in sortedSectionEntries(section.entries)"
-        :key="entry.id"
-        :data-uid="entry.id"
+        :key="entry.UID"
+        :data-uid="entry.UID"
         class="sidebar-entry"
         :class="entryClasses(entry)"
         :style="entryIndentStyle(entry, section.entries)"
         role="button"
         tabindex="0"
         :aria-label="`${entry.Title} — ${entry.subtitle}`"
-        :aria-pressed="selectedId === entry.id"
+        :aria-pressed="selectedId === entry.UID"
         @click="selectEntry(entry)"
         @keydown.enter="selectEntry(entry)"
         @keydown.space.prevent="selectEntry(entry)"
@@ -195,7 +195,7 @@ const allEntries = computed<Entry[]>(() =>
 const sections = computed(() => props.config.sections || [])
 
 const currentSelectedEntry = computed(() =>
-  allEntries.value.find((e) => e.id === selectedId.value) ?? null
+  allEntries.value.find((e) => e.UID === selectedId.value) ?? null
 )
 
 // Tag aggregation
@@ -219,7 +219,7 @@ watch(
   () => props.config.defaultSelectedId,
   (uid) => {
     if (uid != null) {
-      const entry = allEntries.value.find((e) => e.id === uid)
+      const entry = allEntries.value.find((e) => e.UID === uid)
       if (entry) {
         selectedId.value = uid
         emit('select', entry)
@@ -266,13 +266,13 @@ function formatDateRange(start: string, end: string) {
 function entryIndentStyle(entry: Entry, list: Entry[]) {
   const w = sidebarRef.value?.offsetWidth || 300
   const sameCompany = list.filter((e) => e.Title === entry.Title)
-  const idx = sameCompany.findIndex((e) => e.id === entry.id)
+  const idx = sameCompany.findIndex((e) => e.UID === entry.UID)
   if (idx <= 0) return {}
   return { paddingLeft: `${w * 0.05 * idx}px` }
 }
 
 function isSelected(entry: Entry) {
-  return selectedId.value === entry.id
+  return selectedId.value === entry.UID
 }
 
 function isRelated(entry: Entry) {
@@ -280,14 +280,14 @@ function isRelated(entry: Entry) {
   return (
     selectedId.value !== null &&
     !isSelected(entry) &&
-    relatedIds.value.has(entry.id)
+    relatedIds.value.has(entry.UID)
   )
 }
 
 function isLinked(entry: Entry) {
   return (
     props.linkedId !== null &&
-    entry.id === props.linkedId &&
+    entry.UID === props.linkedId &&
     !isSelected(entry)
   )
 }
@@ -340,7 +340,7 @@ function entryClasses(entry: Entry) {
 }
 
 function selectEntry(entry: Entry) {
-  selectedId.value = entry.id
+  selectedId.value = entry.UID
   emit('select', entry)
 }
 
@@ -426,7 +426,7 @@ function clearTagFilter() {
 }
 
 function selectById(uid: number) {
-  const entry = allEntries.value.find((e) => e.id === uid)
+  const entry = allEntries.value.find((e) => e.UID === uid)
   if (entry) {
     selectedId.value = uid
     emit('select', entry)

@@ -81,7 +81,7 @@
       </div>
 
       <article
-        v-if="activeEntry.body"
+        v-if="activeEntry.Body"
         class="highlight-content"
       >
         <h2 class="highlight-title">
@@ -89,7 +89,7 @@
         </h2>
         <div
           class="content-body"
-          v-html="renderBlock(activeEntry.body)"
+          v-html="renderBlock(activeEntry.Body)"
         />
       </article>
 
@@ -281,7 +281,7 @@ const isWip = computed(() => !!activeEntry.value?.isWip)
 const activeLinkedUID = ref<number | null>(null)
 
 interface NavEntry {
-  id: number
+  UID: number
   subtitle?: string
   Title?: string
 }
@@ -290,7 +290,7 @@ const entryList = computed<NavEntry[]>(() => props.entries as NavEntry[])
 
 const currentIndex = computed(() => {
   if (!props.selectedEntry) return -1
-  return entryList.value.findIndex((e) => e.id === (props.selectedEntry as Entry).id)
+  return entryList.value.findIndex((e) => e.UID === (props.selectedEntry as Entry).UID)
 })
 
 const hasPrev = computed(() => currentIndex.value > 0)
@@ -314,7 +314,7 @@ const nextLabel = computed(() => {
 function changeEntry(delta: number) {
   const idx = currentIndex.value + delta
   if (idx < 0 || idx >= entryList.value.length) return
-  emit('navigate', entryList.value[idx].id)
+  emit('navigate', entryList.value[idx].UID)
 }
 
 // Clicking the nav panel background (not the buttons) reopens the list
