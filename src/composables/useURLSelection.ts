@@ -9,7 +9,7 @@ export function useURLSelection(opts: {
   const invalidId = ref(false)
 
   onMounted(() => {
-    const raw = route.query.id
+    const raw = route.query.uid
     if (!raw) return
     const id = parseInt(raw as string, 10)
     if (isNaN(id)) { invalidId.value = true; return }

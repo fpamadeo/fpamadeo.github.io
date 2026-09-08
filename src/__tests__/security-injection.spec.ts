@@ -207,7 +207,7 @@ describe('URL/route parameter injection — useURLSelection', () => {
   })
 
   it('rejects a script-injected id param (NaN path) without rendering it', async () => {
-    mockRoute.query = { id: '1"><script>alert(1)</script>' }
+    mockRoute.query = { uid: '1"><script>alert(1)</script>' }
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('invalid|none')
@@ -217,7 +217,7 @@ describe('URL/route parameter injection — useURLSelection', () => {
   })
 
   it('rejects non-numeric and out-of-range ids', async () => {
-    mockRoute.query = { id: 'abc' }
+    mockRoute.query = { uid: 'abc' }
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('invalid|none')
@@ -225,7 +225,7 @@ describe('URL/route parameter injection — useURLSelection', () => {
   })
 
   it('selects a valid numeric id', async () => {
-    mockRoute.query = { id: '7' }
+    mockRoute.query = { uid: '7' }
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('valid|Entry Seven')
