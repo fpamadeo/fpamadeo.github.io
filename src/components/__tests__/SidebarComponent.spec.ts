@@ -195,17 +195,18 @@ describe('SidebarComponent', () => {
       expect(pill.attributes('aria-pressed')).toBe('true')
     })
 
-    it('renders supertag header pill before its child tags', async () => {
+    it('renders only root-level tag header pills when no filter is active', async () => {
       await wrapper.setProps({ showTagFilter: true })
       const pills = wrapper.findAll('.tag-pill')
       const texts = pills.map(p => p.text())
-      const stackIdx = texts.indexOf('Stack')
-      const stackJsIdx = texts.indexOf('Stack: JavaScript')
-      const stackPyIdx = texts.indexOf('Stack: Python')
-      // Supergroup header "Stack" should come before its children
-      expect(stackIdx).toBeGreaterThanOrEqual(0)
-      expect(stackJsIdx).toBeGreaterThan(stackIdx)
-      expect(stackPyIdx).toBeGreaterThan(stackIdx)
+      // Root-level category headers should appear
+      expect(texts).toContain('Stack')
+      expect(texts).toContain('Skill')
+      expect(texts).toContain('Domain')
+      expect(texts).toContain('Company')
+      // Child tags should be hidden until a parent is selected
+      expect(texts).not.toContain('Stack: JavaScript')
+      expect(texts).not.toContain('Stack: Python')
     })
 
     it('setActiveTag sets the active tag using filter value', async () => {
