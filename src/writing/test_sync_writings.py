@@ -1,5 +1,7 @@
 import unittest
-from sync_writings import generate_uid, parse_semicolon_values
+import tempfile
+from pathlib import Path
+from sync_writings import generate_uid, parse_semicolon_values, parse_txt
 
 
 class TestParseSemicolonValues(unittest.TestCase):
@@ -109,6 +111,102 @@ class TestGenerateUid(unittest.TestCase):
             generated.append(uid)
         self.assertEqual(len(generated), 10)
         self.assertEqual(len(set(generated)), 10)
+
+
+class TestParseTxtFootnote(unittest.TestCase):
+
+    def _write_txt(self, content):
+        """Write content to a temporary .txt file and return its path."""
+        tmp = tempfile.NamedTemporaryFile(
+            mode='w', suffix='.txt', delete=False, encoding='utf-8'
+        )
+        tmp.write(content)
+        tmp.close()
+        return Path(tmp.name)
+
+    def test_single_line_footnote(self):
+        fp = self._write_txt(
+            '\\UID: 1\n'
+            '\\Title: Test\n'
+            '\\footnote: This is a footnote.\n'
+            'Body content here.'
+        )
+        result = parse_txt(fp)
+        uid, title, tags, related, date_published, summary, subtitle, footnote, content, warnings = result
+        self.assertEqual(footnote, 'This is a footnote.')
+        self.assertEqual(content, 'Body content here.')
+
+    def test_footnote_with_quotes(self):
+        fp = self._write_txt(
+            '\\UID: 2\n'
+            '\\Title: Test\n'
+            '\\footnote: "This is a quoted footnote."\n'
+            'Body content here.'
+        )
+        result = parse_txt(fp)
+        footnote = result[7]
+        self.assertEqual(footnote, 'This is a quoted footnote.')
+
+    def test_no_footnote_returns_none(self):
+        fp = self._write_txt(
+            '\\UID: 3\n'
+            '\\Title: Test\n'
+            'Body content here.'
+        )
+        result = parse_txt(fp)
+        footnote = result[7]
+        self.assertIsNone(footnote)
+
+    def test_empty_footnote_returns_none(self):
+        fp = self._write_txt(
+            '\\UID: 4\n'
+            '\\Title: Test\n'
+            '\\footnote:\n'
+            'Body content here.'
+        )
+        result = parse_txt(fp)
+        footnote = result[7]
+        self.assertIsNone(footnote)
+
+    def test_footnote_with_markdown(self):
+        fp = self._write_txt(
+            '\\UID: 5\n'
+            '\\Title: Test\n'
+            '\\footnote: See [this link](https://example.com) for more.\n'
+            'Body content here.'
+        )
+        result = parse_txt(fp)
+        footnote = result[7]
+        self.assertEqual(footnote, 'See [this link](https://example.com) for more.')
+
+
+class TestWritingJsonFieldNames(unittest.TestCase):
+    """Verify writing.json uses lowercase id/body that HighlightComponent expects."""
+
+    def test_writing_json_uses_lowercase_id_and_body(self):
+        import json
+        data_path = Path(__file__).resolve().parent.parent / 'data' / 'writing.json'
+        if not data_path.exists():
+            self.skipTest('writing.json not found')
+        data = json.loads(data_path.read_text(encoding='utf-8'))
+        for entry in data:
+            self.assertIn('id', entry, f'Entry missing "id" field: {entry.get("Title")}')
+            self.assertNotIn('UID', entry, f'Entry uses "UID" instead of "id": {entry.get("Title")}')
+            self.assertIn('body', entry, f'Entry missing "body" field: {entry.get("Title")}')
+            self.assertNotIn('Content', entry, f'Entry uses "Content" instead of "body": {entry.get("Title")}')
+            self.assertIsInstance(entry['id'], int, f'Entry "id" should be int: {entry.get("Title")}')
+            self.assertIsInstance(entry['body'], str, f'Entry "body" should be str: {entry.get("Title")}')
+
+    def test_writing_json_entries_have_required_fields(self):
+        import json
+        data_path = Path(__file__).resolve().parent.parent / 'data' / 'writing.json'
+        if not data_path.exists():
+            self.skipTest('writing.json not found')
+        data = json.loads(data_path.read_text(encoding='utf-8'))
+        required = ['id', 'Title', 'tags', 'Date', 'body', 'datePublished']
+        for entry in data:
+            for field in required:
+                self.assertIn(field, entry, f'Entry {entry.get("id")} missing "{field}"')
 
 
 if __name__ == '__main__':

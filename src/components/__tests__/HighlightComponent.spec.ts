@@ -459,4 +459,45 @@ describe('HighlightComponent', () => {
       expect(mockTrigger).toHaveBeenCalledTimes(1)
     })
   })
+
+  describe('Footnote', () => {
+    it('renders footnote section when footnote is present', async () => {
+      const entryWithFootnote = {
+        ...mockDefaultEntry,
+        footnote: 'This is a footnote about the content.',
+      }
+
+      await wrapper.setProps({ selectedEntry: entryWithFootnote })
+
+      const allTitles = wrapper.findAll('.highlight-section-title')
+      const footnoteTitle = allTitles.find(t => t.text() === 'FOOTNOTE')
+      expect(footnoteTitle).toBeTruthy()
+    })
+
+    it('does not render footnote section when footnote is absent', async () => {
+      const entryWithoutFootnote = {
+        ...mockDefaultEntry,
+        footnote: '',
+      }
+
+      await wrapper.setProps({ selectedEntry: entryWithoutFootnote })
+
+      const allTitles = wrapper.findAll('.highlight-section-title')
+      const footnoteTitle = allTitles.find(t => t.text() === 'FOOTNOTE')
+      expect(footnoteTitle).toBeUndefined()
+    })
+
+    it('renders footnote content with markdown', async () => {
+      const entryWithFootnote = {
+        ...mockDefaultEntry,
+        footnote: 'See [this link](https://example.com) for more.',
+      }
+
+      await wrapper.setProps({ selectedEntry: entryWithFootnote })
+
+      const footnoteContent = wrapper.find('.footnote-content')
+      expect(footnoteContent.exists()).toBe(true)
+      expect(footnoteContent.html()).toContain('<a href="https://example.com">')
+    })
+  })
 })

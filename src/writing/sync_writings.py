@@ -92,7 +92,7 @@ def parse_semicolon_values(val, field_name="field"):
 
 
 def parse_txt(path):
-    """Return (uid, title, tags, related, date_published, summary, subtitle, content, warnings).
+    """Return (uid, title, tags, related, date_published, summary, subtitle, footnote, content, warnings).
 
     Lines starting with \\ are metadata.  The first line that does *not*
     start with \\ marks the beginning of the content body.  No title →
@@ -101,7 +101,7 @@ def parse_txt(path):
     \\tags: and \\related: are FIELD_DELIMITER-separated lists.
     If absent they return None (preserve existing on update).
 
-    \\datePublished:, \\summary:, \\subtitle: are plain text fields.
+    \\datePublished:, \\summary:, \\subtitle:, \\footnote: are plain text fields.
     If absent they return None.
     """
     lines = path.read_text(encoding='utf-8').splitlines(keepends=True)
@@ -113,6 +113,7 @@ def parse_txt(path):
     date_published = None
     summary = None
     subtitle = None
+    footnote = None
     content_start = 0
     warnings = []
 
@@ -159,13 +160,18 @@ def parse_txt(path):
         elif meta.startswith('subtitle:'):
             val = meta[9:].strip()
             subtitle = val if val else None
+        elif meta.startswith('footnote:'):
+            val = meta[9:].strip()
+            if len(val) >= 2 and val[0] == '"' and val[-1] == '"':
+                val = val[1:-1]
+            footnote = val if val else None
     else:
         content_start = len(lines)
 
     content = ''.join(lines[content_start:]).strip()
     if title is None:
         title = path.stem
-    return uid, title, tags, related, date_published, summary, subtitle, content, warnings
+    return uid, title, tags, related, date_published, summary, subtitle, footnote, content, warnings
 
 
 def ensure_uid(path, uid):
@@ -207,7 +213,7 @@ def read_writing_json():
         data = json.load(f)
     by_uid = {}
     for entry in data:
-        uid = str(entry.get('UID', ''))
+        uid = str(entry.get('UID', entry.get('id', '')))
         by_uid[uid] = entry
     return by_uid, data
 
@@ -325,7 +331,7 @@ def _phase_scan():
                 'content': '', 'sync': False, 'empty': True,
             })
             continue
-        uid, title, tags, related, date_published, summary_text, subtitle, content, parse_warnings = parse_txt(fp)
+        uid, title, tags, related, date_published, summary_text, subtitle, footnote, content, parse_warnings = parse_txt(fp)
         for w in parse_warnings:
             summary.append(f'WARNING: {fp.name}: {w}')
         entries.append({
@@ -334,6 +340,7 @@ def _phase_scan():
             'date_published': date_published,
             'summary': summary_text,
             'subtitle': subtitle,
+            'footnote': footnote,
             'content': content, 'sync': True, 'empty': False,
         })
 
@@ -352,8 +359,8 @@ def _phase_assign_uids(entries, summary):
     used_uids = set()
     for entry in existing_raw:
         try:
-            used_uids.add(int(entry['UID']))
-        except (ValueError, KeyError, TypeError):
+            used_uids.add(int(entry.get('UID', entry.get('id', ''))))
+        except (ValueError, TypeError):
             pass
     for e in entries:
         if e['uid'] is not None:
@@ -412,7 +419,8 @@ def _phase_sync(entries, summary):
 
     entries_by_uid = {}
     for entry in existing_list:
-        entries_by_uid[str(entry.get('UID', ''))] = entry
+        uid = str(entry.get('UID', entry.get('id', '')))
+        entries_by_uid[uid] = entry
 
     for e in entries:
         if not e['sync']:
@@ -425,7 +433,7 @@ def _phase_sync(entries, summary):
             existing = entries_by_uid[uid]
             if file_newer_than(fp, existing.get('Date', '')):
                 existing['Title'] = e['title']
-                existing['Content'] = e['content']
+                existing['body'] = e['content']
                 existing['Date'] = date_iso
                 if e['tags'] is not None:
                     existing['tags'] = e['tags']
@@ -441,6 +449,10 @@ def _phase_sync(entries, summary):
                     existing['subtitle'] = e['subtitle']
                 elif existing.get('subtitle') is None:
                     existing['subtitle'] = ''
+                if e.get('footnote') is not None:
+                    existing['footnote'] = e['footnote']
+                elif existing.get('footnote') is None:
+                    existing['footnote'] = ''
                 updated.append(fp.name)
                 summary.append(f'UPDATED: {fp.name} (UID: {uid})')
             else:
@@ -448,7 +460,7 @@ def _phase_sync(entries, summary):
                 summary.append(f'SKIPPED (not modified): {fp.name} (UID: {uid})')
         else:
             new_entry = {
-                'UID': uid,
+                'id': uid,
                 'Title': e['title'],
                 'tags': e['tags'] if e['tags'] is not None else [],
                 'related': e['related'] if e['related'] is not None else [],
@@ -456,25 +468,17 @@ def _phase_sync(entries, summary):
                 'datePublished': e.get('date_published') or date_iso,
                 'summary': e.get('summary', ''),
                 'subtitle': e.get('subtitle', ''),
-                'Content': e['content'],
+                'footnote': e.get('footnote', ''),
+                'body': e['content'],
             }
             try:
-                new_entry['UID'] = int(uid)
+                new_entry['id'] = int(uid)
             except ValueError:
                 pass
             existing_list.append(new_entry)
             entries_by_uid[uid] = new_entry
             added.append(fp.name)
             summary.append(f'ADDED: {fp.name} (UID: {uid})')
-
-    # Normalise UID type (int if possible, else str)
-    for entry in existing_list:
-        uid_val = entry.get('UID')
-        if isinstance(uid_val, str):
-            try:
-                entry['UID'] = int(uid_val)
-            except ValueError:
-                pass
 
     write_writing_json(existing_list)
     return added, updated, skipped_older

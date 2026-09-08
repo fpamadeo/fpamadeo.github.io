@@ -18,4 +18,5 @@ export type WritingEntry = Entry & {
   Date?: string
   datePublished?: string
   summary?: string
+  footnote?: string
 }

@@ -193,6 +193,19 @@
       </div>
 
       <div
+        v-if="activeEntry.footnote"
+        class="highlight-section"
+      >
+        <h3 class="highlight-section-title">
+          FOOTNOTE
+        </h3>
+        <div
+          class="footnote-content"
+          v-html="renderBlock(activeEntry.footnote)"
+        />
+      </div>
+
+      <div
         v-if="activeEntry.related && activeEntry.related.length"
         class="highlight-relations"
       >
@@ -671,6 +684,25 @@ defineExpose({ focusHighlight })
   background: #f0f0f0;
   padding: 0 3px;
   border-radius: 3px;
+}
+
+/* ─── Footnote ────────────────────────────────────────────────── */
+.footnote-content {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+.footnote-content :deep(p) {
+  margin-bottom: 0.4rem;
+}
+.footnote-content :deep(a) {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity var(--transition-fast);
+}
+.footnote-content :deep(a:hover) {
+  opacity: 0.7;
 }
 
 /* ─── Certification list ─────────────────────────────────────── */
