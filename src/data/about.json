@@ -5,25 +5,19 @@
   "bio": "Hi! I have two first names, but you can just call me Francis. I build customized software solutions that make people's daily work a little less tedious. But I'll leave that to the [at work](/#/) section. \n\n I am a serial learner: the kind of person who enjoys diving into music rabbit holes after dinner then goes to bed 3 hours after bedtime with twenty one <sup>|-/(kek)</sup> new subgenres, each with a new favorite band. I love good poetry and great lyrics that will make you pause and listen again. (*See entirety of \"**Complainers**\" by Rudy Francisco*) \n\n I'm the kind of person that watches quiz shows, like *Only Connect*, *Lateral with Tom Scott* and *Jeopardy!* because it makes me feel smart and dumb at the same time. I love learning how things connect, which is probably why I enjoy making software. :D \n\n I am a devout catholic who's been taught **It'll all work out as He intended, as long as I do my best.** \n Not because  everything goes right, but because showing up, staying curious and a willingness to adapt to any situation will guide me even when it doesn't. If any of this resonates, [I'd love to hear from you](/#/contact)",
   "favorites": {
     "Music": [
-      "Vessel â€” twenty one pilots",
-      "Tanya Markova [Album] â€” Tanya Markova",
-      "Arigato, Internet! â€” Reese Lansangan",
-      "P.K.A.N.M. â€” Himawari (Single)",
-      "Parts of Speech â€” Dessa"
+      "Vessel — twenty one pilots",
+      "Tanya Markova [Album] — Tanya Markova",
+      "Arigato, Internet! — Reese Lansangan",
+      "P.K.A.N.M. —  Himawari (Single)",
+      "Parts of Speech — Dessa"
     ],
-    "Movies": [
-      "Hot Fuzz",
-      "Back to the Future Trilogy",
-      "Knives Out",
-      "Past Lives",
-      "Sinners"
-    ],
+    "Movies": ["Hot Fuzz", "Back to the Future Trilogy", "Knives Out", "Past Lives", "Sinners"],
     "Books": [
-      "No Matter The Wreckage â€” Sarah Kay",
-      "Atomic Habits â€” James Clear",
-      "Insomniacs After School â€” Makoto Ojiro",
-      "Helium â€” Rudy Francisco",
-      "The Craft of Scientific Presentations â€” Michael Alley (Currently Reading)"
+      "No Matter The Wreckage — Sarah Kay",
+      "Atomic Habits — James Clear",
+      "Insomniacs After School — Makoto Ojiro",
+      "Helium — Rudy Francisco",
+      "The Craft of Scientific Presentations — Michael Alley (Currently Reading)"
     ],
     "TV Shows": [
       "How I Met Your Mother",
@@ -32,12 +26,6 @@
       "Only Connect",
       "Ted Lasso"
     ],
-    "Video Games": [
-      "Tekken 7",
-      "Disgaea 5",
-      "Hades",
-      "Inscryption",
-      "Persona 4"
-    ]
+    "Video Games": ["Tekken 7", "Disgaea 5", "Hades", "Inscryption", "Persona 4"]
   }
 }
