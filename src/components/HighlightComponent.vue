@@ -193,25 +193,22 @@
       </div>
 
       <div
-        v-if="activeEntry.footnote"
-        class="highlight-section"
+        v-if="activeEntry.footnote || (activeEntry.related && activeEntry.related.length)"
+        class="highlight-footnotes"
       >
-        <h3 class="highlight-section-title">
-          FOOTNOTE
-        </h3>
         <div
+          v-if="activeEntry.footnote"
           class="footnote-content"
           v-html="renderBlock(activeEntry.footnote)"
         />
-      </div>
-
-      <div
-        v-if="activeEntry.related && activeEntry.related.length"
-        class="highlight-relations"
-      >
-        <span class="relations-label">Related entries:</span>
-        <span class="relations-count">{{ activeEntry.related.length }}</span>
-        <span class="relations-hint">(highlighted in sidebar)</span>
+        <div
+          v-if="activeEntry.related && activeEntry.related.length"
+          class="footnote-related"
+        >
+          <span class="footnote-label">Related entries:</span>
+          <span class="footnote-count">{{ activeEntry.related.length }}</span>
+          <span class="footnote-hint">(highlighted in sidebar)</span>
+        </div>
       </div>
   </section>
 </template>
@@ -595,15 +592,21 @@ defineExpose({ focusHighlight })
   opacity: 0.7;
 }
 
-/* ─── Related entries footer ─────────────────────────────────── */
-.highlight-relations {
+/* ─── Footnotes footer ──────────────────────────────────────── */
+.highlight-footnotes {
   display: flex;
+  flex-direction: column;
   gap: 0.3rem;
   font-size: 0.75rem;
   color: var(--color-text-light);
   padding-top: 1rem;
   border-top: 1px solid var(--color-border);
   margin-top: auto;
+}
+
+.footnote-related {
+  display: flex;
+  gap: 0.3rem;
 }
 
 /* ─── Writing content ─────────────────────────────────────────── */
@@ -695,7 +698,7 @@ defineExpose({ focusHighlight })
   border-radius: 3px;
 }
 
-/* ─── Footnote ────────────────────────────────────────────────── */
+/* ─── Footnote content ──────────────────────────────────────── */
 .footnote-content {
   font-size: 0.75rem;
   line-height: 1.6;
@@ -827,7 +830,7 @@ defineExpose({ focusHighlight })
     touch-action: pan-y;
   }
 
-  .highlight.is-mobile-detail .highlight-relations {
+  .highlight.is-mobile-detail .highlight-footnotes {
     margin-top: 0;
   }
 

@@ -161,7 +161,7 @@ import { marked } from 'marked'
 import { parseDate } from '@/utils/dates'
 import type { Entry } from '@/types'
 import SearchBar from '@/components/SearchBar.vue'
-import { buildTagTree, getVisiblePills } from '@/composables/useTagAggregation'
+import { buildTagTree, getVisiblePills, type TagNode } from '@/composables/useTagAggregation'
 
 const props = defineProps({
   config: {

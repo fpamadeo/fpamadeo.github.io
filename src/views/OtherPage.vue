@@ -93,6 +93,7 @@ const normalizedWritingEntries = computed<Entry[]>(() =>
     tags: w.tags ?? [],
     Highlights: [],
     Body: w.Body,
+    footnote: w.footnote,
   })),
 )
 

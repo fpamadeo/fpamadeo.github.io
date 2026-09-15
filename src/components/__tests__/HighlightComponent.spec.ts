@@ -57,9 +57,9 @@ describe('HighlightComponent', () => {
     })
 
     it('displays related entries count', () => {
-      const relations = wrapper.find('.highlight-relations')
-      expect(relations.exists()).toBe(true)
-      expect(wrapper.find('.relations-count').text()).toBe('2')
+      const footnotes = wrapper.find('.highlight-footnotes')
+      expect(footnotes.exists()).toBe(true)
+      expect(wrapper.find('.footnote-count').text()).toBe('2')
     })
 
     it('shows media when provided', async () => {
@@ -232,8 +232,8 @@ describe('HighlightComponent', () => {
     })
 
     it('related entries display correctly on mobile', () => {
-      const relations = wrapper.find('.highlight-relations')
-      expect(relations.exists()).toBe(true)
+      const footnotes = wrapper.find('.highlight-footnotes')
+      expect(footnotes.exists()).toBe(true)
     })
   })
 
@@ -469,9 +469,8 @@ describe('HighlightComponent', () => {
 
       await wrapper.setProps({ selectedEntry: entryWithFootnote })
 
-      const allTitles = wrapper.findAll('.highlight-section-title')
-      const footnoteTitle = allTitles.find(t => t.text() === 'FOOTNOTE')
-      expect(footnoteTitle).toBeTruthy()
+      const footnote = wrapper.find('.footnote-content')
+      expect(footnote.exists()).toBe(true)
     })
 
     it('does not render footnote section when footnote is absent', async () => {

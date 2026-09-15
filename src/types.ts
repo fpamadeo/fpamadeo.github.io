@@ -11,6 +11,7 @@ export type Entry = {
   Bullets?: (string | { text?: string })[]
   Highlights?: (string | { text?: string })[]
   Body?: string
+  footnote?: string
 }
 
 export type WritingEntry = Entry & {
