@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useURLSelection } from '@/composables/useURLSelection'
 import { useCollapsibleSidebar } from '@/composables/useCollapsibleSidebar'
 import { parseDate } from '@/utils/dates'
@@ -41,7 +42,13 @@ import HighlightComponent from '@/components/HighlightComponent.vue'
 
 import writingData from '@/data/writing.json'
 import defaultWritingHighlightsData from '@/data/defaultWritingHighlights.json'
+import { buildSlugMap, buildUidToSlugMap } from '@/utils/slugs'
 
+const route = useRoute()
+const router = useRouter()
+const writingEntries = writingData as WritingEntry[]
+const slugMap = buildSlugMap(writingEntries)
+const uidToSlugMap = buildUidToSlugMap(writingEntries)
 const defaultHighlights = ref(defaultWritingHighlightsData)
 const selectedEntry = ref<Record<string, unknown> | undefined>(undefined)
 const searchQuery = ref('')
@@ -54,12 +61,30 @@ const { isCollapsed, collapse, expand, toggle } = useCollapsibleSidebar()
 
 const { invalidId } = useURLSelection({
   findEntry: (uid) => normalizedWritingEntries.value.find((e) => e.UID === uid),
+  findEntryBySlug: (slug) => {
+    const source = slugMap.get(slug)
+    if (!source) return undefined
+    return normalizedWritingEntries.value.find((e) => e.UID === source.UID)
+  },
   onSelect: (entry) => {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(entry.UID as number)
     collapse()
   },
+  onDeselect: () => {
+    selectedEntry.value = undefined
+    searchQuery.value = ''
+    linkedUID.value = undefined
+    activeTag.value = ''
+  },
 })
+
+function updateSlugRoute(uid: number) {
+  const slug = uidToSlugMap.get(uid)
+  if (slug && route.params?.slug !== slug) {
+    router.replace({ name: 'OtherEntry', params: { slug } })
+  }
+}
 
 function truncateSummary(text: string | undefined): string {
   if (!text) return ''
@@ -122,12 +147,18 @@ const sidebarConfig = computed(() => ({
 function onSelect(entry: Record<string, unknown>) {
   selectedEntry.value = entry
   collapse()
+  if (typeof entry.UID === 'number') {
+    updateSlugRoute(entry.UID)
+  }
 }
 function onDeselect() {
   selectedEntry.value = undefined
   searchQuery.value = ''
   linkedUID.value = undefined
   activeTag.value = ''
+  if (route.name === 'OtherEntry' || route.params?.slug) {
+    router.replace({ name: 'Other' })
+  }
 }
 function onSearch(query: string) {
   searchQuery.value = query
@@ -142,6 +173,7 @@ function onNavigate(uid: number) {
   if (entry) {
     selectedEntry.value = entry
     sidebarRef.value?.selectById(uid)
+    updateSlugRoute(uid)
   }
 }
 

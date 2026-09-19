@@ -87,7 +87,7 @@ const sidebarConfig = computed(() => ({
     },
   ],
   summary: {
-    content: 'Full-stack engineer with 5+ years building scalable products. For freelance and professional opportunities, [connect on LinkedIn](https://linkedin.com/in/franpaul) or [send me an email](/#/contact).',
+    content: 'Full-stack engineer with 5+ years building scalable products. For freelance and professional opportunities, [connect on LinkedIn](https://linkedin.com/in/franpaul) or [send me an email](/contact).',
     hint: '(Click any role to explore details, or use search to filter by skill or keyword.)',
     ariaLabel: 'Career summary — click to reset selection',
   },

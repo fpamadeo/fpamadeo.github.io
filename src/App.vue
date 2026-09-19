@@ -48,14 +48,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, nextTick, provide, onUnmounted } from 'vue'
-import { RouterView, useRoute } from 'vue-router'
+import { computed, ref, nextTick, provide, onMounted, onUnmounted } from 'vue'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 import AiInstructions from '@/components/AiInstructions.vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import RuleSeparator from '@/components/RuleSeparator.vue'
+import { useRouteMeta } from '@/composables/useRouteMeta'
+import { getInternalPath } from '@/utils/links'
 
 const route = useRoute()
+const router = useRouter()
+
+useRouteMeta()
 const mainClass = computed(() => {
   const name = route.name as string
   if (name === 'Experience' || name === 'Other') return 'page-main--reverse'
@@ -146,6 +151,22 @@ function triggerPrinny() {
 
   prinnyTimeout = setTimeout(dismissPrinny, 15000)
 }
+
+function handleGlobalClick(event: MouseEvent) {
+  if (event.defaultPrevented || event.button !== 0) return
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+  const anchor = event.target instanceof Element ? event.target.closest('a') : null
+  if (!anchor) return
+  const href = anchor.getAttribute('href')
+  const target = getInternalPath(href)
+  if (!target) return
+  if (router.currentRoute.value.fullPath === target) return
+  event.preventDefault()
+  router.push(target)
+}
+
+onMounted(() => document.addEventListener('click', handleGlobalClick))
+onUnmounted(() => document.removeEventListener('click', handleGlobalClick))
 
 onUnmounted(() => {
   if (rafId !== null) cancelAnimationFrame(rafId)

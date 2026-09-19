@@ -21,6 +21,8 @@ export default tseslint.config(
         HTMLImageElement: 'readonly',
         HTMLInputElement: 'readonly',
         TouchEvent: 'readonly',
+        Element: 'readonly',
+        MouseEvent: 'readonly',
         cancelAnimationFrame: 'readonly',
         requestAnimationFrame: 'readonly',
       },

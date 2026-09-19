@@ -187,7 +187,13 @@ describe('Safe paths (must hold today)', () => {
   })
 })
 
-const { mockRoute } = vi.hoisted(() => ({ mockRoute: { query: {} as Record<string, string> } }))
+const { mockRoute } = vi.hoisted(() => ({
+  mockRoute: {
+    query: {} as Record<string, string>,
+    params: {} as Record<string, string>,
+    fullPath: '',
+  },
+}))
 
 vi.mock('vue-router', () => ({
   useRoute: () => mockRoute,
@@ -199,6 +205,8 @@ describe('URL/route parameter injection — useURLSelection', () => {
       const selected = ref<Record<string, unknown> | null>(null)
       const { invalidId } = useURLSelection({
         findEntry: (id) => (id === 7 ? { id: 7, Title: 'Entry Seven' } : undefined),
+        findEntryBySlug: (slug) =>
+          slug === 'entry-seven' ? { id: 7, Title: 'Entry Seven' } : undefined,
         onSelect: (entry) => { selected.value = entry },
       })
       return { invalidId, selected }
@@ -206,8 +214,52 @@ describe('URL/route parameter injection — useURLSelection', () => {
     template: `<div class="host">{{ invalidId ? 'invalid' : 'valid' }}|{{ selected ? selected.Title : 'none' }}</div>`,
   })
 
+  it('selects a valid slug via findEntryBySlug', async () => {
+    mockRoute.params = { slug: 'entry-seven' }
+    mockRoute.query = {}
+    mockRoute.fullPath = '/other/entry-seven'
+    const wrapper: VueWrapper = mount(Host)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.host').text()).toBe('valid|Entry Seven')
+    wrapper.unmount()
+  })
+
+  it('rejects a script-injected slug without rendering it', async () => {
+    mockRoute.params = { slug: '1"><script>alert(1)</script>' }
+    mockRoute.query = {}
+    mockRoute.fullPath = '/other/1"><script>'
+    const wrapper: VueWrapper = mount(Host)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.host').text()).toBe('invalid|none')
+    expect(wrapper.html()).not.toContain('script')
+    expect(wrapper.html()).not.toContain('alert')
+    wrapper.unmount()
+  })
+
+  it('rejects unknown slugs', async () => {
+    mockRoute.params = { slug: 'nope-not-real' }
+    mockRoute.query = {}
+    mockRoute.fullPath = '/other/nope-not-real'
+    const wrapper: VueWrapper = mount(Host)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.host').text()).toBe('invalid|none')
+    wrapper.unmount()
+  })
+
+  it('prioritizes the slug param over the uid query', async () => {
+    mockRoute.params = { slug: 'entry-seven' }
+    mockRoute.query = { uid: 'not-a-number' }
+    mockRoute.fullPath = '/other/entry-seven?uid=not-a-number'
+    const wrapper: VueWrapper = mount(Host)
+    await wrapper.vm.$nextTick()
+    expect(wrapper.find('.host').text()).toBe('valid|Entry Seven')
+    wrapper.unmount()
+  })
+
   it('rejects a script-injected id param (NaN path) without rendering it', async () => {
+    mockRoute.params = {}
     mockRoute.query = { uid: '1"><script>alert(1)</script>' }
+    mockRoute.fullPath = '/other?uid=1"><script>alert(1)</script>'
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('invalid|none')
@@ -217,7 +269,9 @@ describe('URL/route parameter injection — useURLSelection', () => {
   })
 
   it('rejects non-numeric and out-of-range ids', async () => {
+    mockRoute.params = {}
     mockRoute.query = { uid: 'abc' }
+    mockRoute.fullPath = '/other?uid=abc'
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('invalid|none')
@@ -225,15 +279,19 @@ describe('URL/route parameter injection — useURLSelection', () => {
   })
 
   it('selects a valid numeric id', async () => {
+    mockRoute.params = {}
     mockRoute.query = { uid: '7' }
+    mockRoute.fullPath = '/other?uid=7'
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('valid|Entry Seven')
     wrapper.unmount()
   })
 
-  it('does nothing when no id param is present', async () => {
+  it('does nothing when no id or slug param is present', async () => {
+    mockRoute.params = {}
     mockRoute.query = {}
+    mockRoute.fullPath = '/other'
     const wrapper: VueWrapper = mount(Host)
     await wrapper.vm.$nextTick()
     expect(wrapper.find('.host').text()).toBe('valid|none')

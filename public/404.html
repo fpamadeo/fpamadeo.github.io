@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting…</title>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif;
+        color: #333;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        margin: 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <p>This page does not exist. <a href="/">Go to the home page</a>.</p>
+    </noscript>
+    <script>
+      ;(function () {
+        try {
+          window.sessionStorage.setItem(
+            'redirect',
+            window.location.pathname + window.location.search,
+          )
+        } catch (err) {}
+        window.location.replace('/')
+      })()
+    </script>
+  </body>
+</html>
