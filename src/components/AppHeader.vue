@@ -33,7 +33,7 @@
       > | </span>
       <RouterLink
         to="/other"
-        :class="{ active: route.path === '/other' }"
+        :class="{ active: route.path === '/other' || route.path.startsWith('/other/') }"
       >
         at Random
       </RouterLink>
@@ -87,18 +87,31 @@ const route = useRoute()
   color: var(--color-header-text);
   text-decoration: none;
   opacity: 0.75;
-  transition: opacity var(--transition-fast);
-  padding: 0 0.3rem;
+  transition:
+    opacity var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
 }
 
-.header-nav a:hover,
-.header-nav a.active {
+.header-nav a:hover {
   opacity: 1;
   text-decoration: none;
 }
 
 .header-nav a.active {
+  opacity: 1;
+  text-decoration: none;
   font-weight: 700;
+  color: #ffffff;
+  background-color: rgba(245, 93, 62, 0.15);
+  border-color: #f55d3e;
+  box-shadow:
+    0 0 8px rgba(245, 93, 62, 0.6),
+    inset 0 0 4px rgba(245, 93, 62, 0.2);
 }
 
 .nav-sep {

@@ -69,14 +69,42 @@ body {
   --transition-med: 0.25s ease;
 }
 
-/* ─── Router link reset ───────────────────────────────────────── */
-a {
-  color: inherit;
+/* ─── Body links (exclude header/footer) ─────────────────────────── */
+.page-main a {
+  color: #0077B6;
+  position: relative;
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+.page-main a:visited {
+  color: #946E83;
+}
+
+.page-main a::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background-color: currentColor;
+  bottom: 0;
+  left: 0;
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform .3s ease-in-out;
+}
+
+.page-main a:hover::before {
+  transform-origin: left;
+  transform: scaleX(1);
+}
+
+.page-main a:hover {
+  text-decoration: none;
+}
+
+.page-main a.pronouns-link::before {
+  display: none;
 }
 
 /* ─── Screen-reader-only utility ─────────────────────────────── */

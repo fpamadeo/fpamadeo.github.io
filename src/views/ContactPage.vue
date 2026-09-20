@@ -9,22 +9,22 @@
           class="profile-img"
           loading="lazy"
           decoding="async"
-        >
-        <div
-          v-else
-          class="profile-img-placeholder"
-          aria-label="Profile photo placeholder"
-        >
+        />
+        <div v-else class="profile-img-placeholder" aria-label="Profile photo placeholder">
           <span class="placeholder-initials">{{ initials }}</span>
         </div>
       </div>
       <h1 class="profile-name">
         {{ aboutData.name }}
+        <a
+          href="https://web.archive.org/web/20260826095739/https://straightforequality.org/resource/pronouns-why-they-matter/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pronouns-link"
+          >(he/him)</a
+        >
       </h1>
-      <p
-        class="profile-summary"
-        v-html="marked.parseInline(aboutData.summary)"
-      />
+      <p class="profile-summary" v-html="marked.parseInline(aboutData.summary)" />
     </div>
   </aside>
 
@@ -32,22 +32,15 @@
 
   <section class="contact-highlight">
     <div class="contact-section">
-      <h2 class="section-heading">
-        Email
-      </h2>
+      <h2 class="section-heading">Email</h2>
       <p class="email-text">
         Feel free to reach out at
-        <a
-          :href="'mailto:' + email"
-          class="contact-email"
-        >{{ displayEmail }}</a>
+        <a :href="'mailto:' + email" class="contact-email">{{ displayEmail }}</a>
       </p>
     </div>
 
     <div class="contact-section">
-      <h2 class="section-heading">
-        LinkedIn
-      </h2>
+      <h2 class="section-heading">LinkedIn</h2>
       <p class="email-text">
         Connect with me on
         <a
@@ -55,14 +48,13 @@
           class="contact-email"
           target="_blank"
           rel="noopener noreferrer"
-        >{{ contactData.linkedin.display }}</a>
+          >{{ contactData.linkedin.display }}</a
+        >
       </p>
     </div>
 
     <div class="contact-section">
-      <h2 class="section-heading">
-        GitHub
-      </h2>
+      <h2 class="section-heading">GitHub</h2>
       <p class="email-text">
         Browse my code on
         <a
@@ -70,21 +62,18 @@
           class="contact-email"
           target="_blank"
           rel="noopener noreferrer"
-        >{{ contactData.github.display }}</a>
+          >{{ contactData.github.display }}</a
+        >
       </p>
     </div>
 
     <div class="contact-section">
-      <h2 class="section-heading">
-        Résumé by request
-      </h2>
+      <h2 class="section-heading">Résumé by request</h2>
       <p class="email-text">
-        I no longer post a generic résumé. I'm focused on specific roles and clients. If you have an opportunity in mind, email me, and if it's a fit, I'll send a version that matches it.
+        I no longer post a generic résumé. I'm focused on specific roles and clients. If you have an
+        opportunity in mind, email me, and if it's a fit, I'll send a version that matches it.
       </p>
-      <a
-        :href="resumeMailto"
-        class="resume-cta"
-      >{{ contactData.resume.display }}</a>
+      <a :href="resumeMailto" class="resume-cta">{{ contactData.resume.display }}</a>
     </div>
   </section>
 </template>
@@ -102,9 +91,10 @@ const initials = computed(() => initialsOf(aboutData.name))
 const { local, domain } = contactData.email
 const email = local + '@' + domain
 
-const resumeMailto = 'mailto:' + email + '?subject=' + encodeURIComponent(contactData.resume.subject)
+const resumeMailto =
+  'mailto:' + email + '?subject=' + encodeURIComponent(contactData.resume.subject)
 
-const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
+const displayEmail = "[firstname][secondname].dev(at)[Google's email service]"
 </script>
 
 <style scoped>
@@ -174,7 +164,87 @@ const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
   line-height: 1.6;
   font-style: italic;
 }
-.profile-summary :deep(a) { text-decoration: underline; }
+
+/* ─── Distinguishable Links ─────────────────────────────────── */
+.profile-summary :deep(a),
+.contact-email {
+  color: #1b998b;
+
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  transition: color var(--transition-fast);
+}
+
+.pronouns-link {
+  color: inherit;
+  font-size: 0.64em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: static;
+}
+
+.pronouns-link::before {
+  display: none;
+}
+
+
+.pronouns-link:visited {
+  color: inherit;
+}
+
+.profile-summary :deep(a::before),
+.profile-summary :deep(a::after),
+.contact-email::before,
+.contact-email::after {
+  position: absolute;
+  content: '';
+  border-bottom: 2px solid currentColor;
+  border-radius: 1em;
+  bottom: 0.1em;
+  transition: transform 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.profile-summary :deep(a::before),
+.contact-email::before,
+.pronouns-link::before {
+  width: 0.8em;
+  transform-origin: left;
+}
+
+.profile-summary :deep(a:visited::before),
+.contact-email:visited::before,
+.pronouns-link:visited::before {
+  width: 0.8em;
+  transform-origin: left;
+}
+
+.profile-summary :deep(a::after),
+.contact-email::after,
+.pronouns-link::after,
+.pronouns-link:visited::after,
+.profile-summary :deep(a:visited::after),
+.contact-email:visited::after {
+  width: 82%;
+  left: 0.8em;
+  transform: translateX(110%);
+}
+
+.profile-summary :deep(a:hover::before),
+.contact-email:hover::before,
+.pronouns-link:hover::before,
+.pronouns-link:focus-visible::before {
+  transform: scaleX(0.3);
+}
+
+.profile-summary :deep(a:hover::after),
+.contact-email:hover::after,
+.pronouns-link:hover::after,
+.pronouns-link:focus-visible::after {
+  transform: translateX(0);
+}
 
 /* ─── Right panel ────────────────────────────────────────────── */
 .contact-highlight {
@@ -202,18 +272,6 @@ const displayEmail = '[firstname][secondname].dev(at)[Google\'s email service]'
   font-size: 0.88rem;
   line-height: 1.8;
   color: var(--color-text);
-}
-
-.contact-email {
-  color: var(--color-text);
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: opacity var(--transition-fast);
-}
-
-.contact-email:hover {
-  opacity: 0.7;
 }
 
 .resume-cta {

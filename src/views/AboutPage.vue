@@ -9,22 +9,23 @@
           class="profile-img"
           loading="lazy"
           decoding="async"
-        >
-        <div
-          v-else
-          class="profile-img-placeholder"
-          aria-label="Profile photo placeholder"
-        >
+        />
+        <div v-else class="profile-img-placeholder" aria-label="Profile photo placeholder">
           <span class="placeholder-initials">{{ initials }}</span>
         </div>
       </div>
       <h1 class="profile-name">
         {{ aboutData.name }}
+
+        <a
+          href="https://web.archive.org/web/20260826095739/https://straightforequality.org/resource/pronouns-why-they-matter/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pronouns-link"
+          >(he/him)</a
+        >
       </h1>
-      <p
-        class="profile-summary"
-        v-html="marked.parseInline(aboutData.summary)"
-      />
+      <p class="profile-summary" v-html="marked.parseInline(aboutData.summary)" />
     </div>
   </aside>
 
@@ -32,9 +33,7 @@
 
   <section class="about-highlight">
     <div class="bio-section">
-      <h2 class="section-heading">
-        Bio
-      </h2>
+      <h2 class="section-heading">Bio</h2>
       <div class="bio-text">
         <div
           v-for="(paragraph, i) in bioParagraphs"
@@ -46,9 +45,7 @@
     </div>
 
     <div class="favorites-section">
-      <h2 class="section-heading">
-        Current Favorites
-      </h2>
+      <h2 class="section-heading">Current Favorites</h2>
       <div class="favorites-grid">
         <div
           v-for="(items, category) in aboutData.favorites"
@@ -59,11 +56,7 @@
             {{ category }}
           </h3>
           <ul class="favorites-list">
-            <li
-              v-for="(item, i) in items"
-              :key="i"
-              v-html="marked.parseInline(item)"
-            />
+            <li v-for="(item, i) in items" :key="i" v-html="marked.parseInline(item)" />
           </ul>
         </div>
       </div>
@@ -71,11 +64,9 @@
 
     <p class="attribution-footnote">
       Favicon by
-      <a
-        href="https://duckhive.itch.io/penguin"
-        target="_blank"
-        rel="noopener noreferrer"
-      >duckhive</a>
+      <a href="https://duckhive.itch.io/penguin" target="_blank" rel="noopener noreferrer"
+        >duckhive</a
+      >
       on itch.io
     </p>
   </section>
@@ -90,9 +81,7 @@ import aboutData from '@/data/about.json'
 
 const initials = computed(() => initialsOf(aboutData.name))
 
-const bioParagraphs = computed(() =>
-  aboutData.bio.split(/\n\n+/).filter((p) => p.trim())
-)
+const bioParagraphs = computed(() => aboutData.bio.split(/\n\n+/).filter((p) => p.trim()))
 </script>
 
 <style scoped>
@@ -162,7 +151,21 @@ const bioParagraphs = computed(() =>
   line-height: 1.6;
   font-style: italic;
 }
-.profile-summary :deep(a) { text-decoration: underline; }
+.profile-summary :deep(a) {
+  text-decoration: underline;
+}
+
+.pronouns-link {
+  color: inherit;
+  font-size: 0.64em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: static;
+}
+
+.pronouns-link::before {
+  display: none;
+}
 
 /* ─── Right panel ────────────────────────────────────────────── */
 .about-highlight {
@@ -198,13 +201,22 @@ const bioParagraphs = computed(() =>
   color: var(--color-text);
 }
 
-.bio-paragraph :deep(p)      { margin-bottom: 0.5rem; }
-.bio-paragraph :deep(strong) { font-weight: 700; }
-.bio-paragraph :deep(em)     { font-style: italic; }
+.bio-paragraph :deep(p) {
+  margin-bottom: 0.5rem;
+}
+.bio-paragraph :deep(strong) {
+  font-weight: 700;
+}
+.bio-paragraph :deep(em) {
+  font-style: italic;
+}
 .bio-paragraph :deep(h1),
 .bio-paragraph :deep(h2),
-.bio-paragraph :deep(h3)     { margin: 0.6rem 0 0.3rem; font-weight: 700; }
-.bio-paragraph :deep(code)   {
+.bio-paragraph :deep(h3) {
+  margin: 0.6rem 0 0.3rem;
+  font-weight: 700;
+}
+.bio-paragraph :deep(code) {
   font-family: monospace;
   font-size: 0.82rem;
   background: #f0f0f0;
@@ -212,8 +224,15 @@ const bioParagraphs = computed(() =>
   border-radius: 3px;
 }
 .bio-paragraph :deep(ul),
-.bio-paragraph :deep(ol)     { padding-left: 1.2rem; margin: 0.3rem 0; }
-.bio-paragraph :deep(hr)     { border: none; border-top: 1px solid var(--color-border); margin: 0.6rem 0; }
+.bio-paragraph :deep(ol) {
+  padding-left: 1.2rem;
+  margin: 0.3rem 0;
+}
+.bio-paragraph :deep(hr) {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0.6rem 0;
+}
 
 .favorites-grid {
   display: grid;
@@ -238,9 +257,13 @@ const bioParagraphs = computed(() =>
   gap: 0.3rem;
 }
 
-.favorites-list li :deep(strong) { font-weight: 700; }
-.favorites-list li :deep(em)     { font-style: italic; }
-.favorites-list li :deep(code)   {
+.favorites-list li :deep(strong) {
+  font-weight: 700;
+}
+.favorites-list li :deep(em) {
+  font-style: italic;
+}
+.favorites-list li :deep(code) {
   font-family: monospace;
   font-size: 0.78rem;
   background: #f0f0f0;

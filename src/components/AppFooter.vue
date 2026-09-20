@@ -1,35 +1,30 @@
 <template>
   <footer class="app-footer">
-    <nav
-      class="footer-nav"
-      aria-label="Footer navigation"
-    >
+    <nav class="footer-nav" aria-label="Footer navigation">
       <a
         href="https://github.com/fpamadeo"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="GitHub profile"
-      >GitHub</a>
-      <span
-        class="nav-sep"
-        aria-hidden="true"
-      > | </span>
+        >GitHub</a
+      >
+      <span class="nav-sep" aria-hidden="true"> | </span>
       <a
         href="https://linkedin.com/in/franpaul"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LinkedIn profile"
-      >LinkedIn</a>
-      <span
-        class="nav-sep"
-        aria-hidden="true"
-      > | </span>
+        >LinkedIn</a
+      >
+      <span class="nav-sep" aria-hidden="true"> | </span>
+      <a href="/contact" target="_blank" rel="noopener noreferrer" aria-label="contact page"
+        >Contact</a
+      >
+      <span class="nav-sep" aria-hidden="true"> | </span>
       <!-- Easter egg: invisible text, tooltip hints to search for Rick -->
-      <span
-        class="easter-egg"
-        :title="easterEggTooltip"
-        aria-hidden="true"
-      >{{ easterEggText }}</span>
+      <span class="easter-egg" :title="easterEggTooltip" aria-hidden="true">{{
+        easterEggText
+      }}</span>
     </nav>
   </footer>
 </template>
