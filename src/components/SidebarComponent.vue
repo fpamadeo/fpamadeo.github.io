@@ -33,105 +33,105 @@
         class="sidebar-search"
         :class="{ 'is-search-active': !!searchQuery }"
       >
-      <SearchBar
-        ref="searchBarRef"
-        @search="onSearch"
-      />
-    </div>
-
-    <!-- Tag Filter -->
-    <div
-      v-if="showTagFilter && visiblePills.length"
-      class="tag-filter-area"
-    >
-      <span
-        v-for="item in visiblePills"
-        :key="item.filter"
-        class="tag-pill-wrapper"
-      >
-        <button
-          class="tag-pill"
-          :class="{ 'is-active': isPillActive(item.filter) }"
-          role="button"
-          tabindex="0"
-          :aria-pressed="selectedTag === item.filter"
-          :aria-label="'Filter by tag: ' + item.display"
-          @click="toggleTag(item.filter)"
-          @keydown.enter="toggleTag(item.filter)"
-          @keydown.space.prevent="toggleTag(item.filter)"
-        >{{ item.display }}</button>
-      </span>
-    </div>
-
-    <!-- Configurable Summary Section -->
-    <div
-      v-if="config.summary"
-      class="sidebar-entry sidebar-summary"
-      role="button"
-      tabindex="0"
-      :aria-label="config.summary.ariaLabel || 'Summary — click to reset selection'"
-      @click="resetSelection"
-      @keydown.enter="resetSelection"
-      @keydown.space.prevent="resetSelection"
-    >
-      <p
-        class="summary-text"
-        v-html="marked.parseInline(config.summary.content)"
-      />
-      <p
-        v-if="config.summary.hint"
-        class="summary-hint"
-      >
-        {{ config.summary.hint }}
-      </p>
-    </div>
-
-    <!-- Configurable Sections -->
-    <template
-      v-for="(section, index) in sections"
-      :key="section.label"
-    >
-      <div
-        v-if="section.entries.length"
-        class="section-label"
-        :class="{ 'section-label--education': index !== 0 }"
-      >
-        {{ section.label }}
-      </div>
-      <div
-        v-for="entry in sortedSectionEntries(section.entries)"
-        :key="entry.UID"
-        :data-uid="entry.UID"
-        class="sidebar-entry"
-        :class="entryClasses(entry)"
-        :style="entryIndentStyle(entry, section.entries)"
-        role="button"
-        tabindex="0"
-        :aria-label="`${entry.Title} — ${entry.subtitle}`"
-        :aria-pressed="selectedId === entry.UID"
-        @click="selectEntry(entry)"
-        @keydown.enter="selectEntry(entry)"
-        @keydown.space.prevent="selectEntry(entry)"
-      >
-        <div class="entry-top-line">
-          <span class="entry-company">{{ entry.Title }}</span>
-          <span
-            v-if="section.showDates !== false"
-            class="entry-dates"
-          >{{ section.singularDate ? formatSingularDate(entry.StartDate || '') : formatDateRange(entry.StartDate || '', entry.EndDate || '') }}</span>
-        </div>
-        <div
-          v-if="entry.subtitle"
-          class="entry-title"
-        >
-          {{ entry.subtitle }}
-        </div>
-        <div
-          class="entry-summary"
-          v-html="marked.parseInline(entry.Description || '')"
+        <SearchBar
+          ref="searchBarRef"
+          @search="onSearch"
         />
       </div>
-    </template>
+
+      <!-- Tag Filter -->
+      <div
+        v-if="showTagFilter && visiblePills.length"
+        class="tag-filter-area"
+      >
+        <span
+          v-for="item in visiblePills"
+          :key="item.filter"
+          class="tag-pill-wrapper"
+        >
+          <button
+            class="tag-pill"
+            :class="{ 'is-active': isPillActive(item.filter) }"
+            role="button"
+            tabindex="0"
+            :aria-pressed="selectedTag === item.filter"
+            :aria-label="'Filter by tag: ' + item.display"
+            @click="toggleTag(item.filter)"
+            @keydown.enter="toggleTag(item.filter)"
+            @keydown.space.prevent="toggleTag(item.filter)"
+          >{{ item.display }}</button>
+        </span>
+      </div>
+
+      <!-- Configurable Summary Section -->
+      <div
+        v-if="config.summary"
+        class="sidebar-entry sidebar-summary"
+        role="button"
+        tabindex="0"
+        :aria-label="config.summary.ariaLabel || 'Summary — click to reset selection'"
+        @click="resetSelection"
+        @keydown.enter="resetSelection"
+        @keydown.space.prevent="resetSelection"
+      >
+        <p
+          class="summary-text"
+          v-html="marked.parseInline(config.summary.content)"
+        />
+        <p
+          v-if="config.summary.hint"
+          class="summary-hint"
+        >
+          {{ config.summary.hint }}
+        </p>
+      </div>
+
+      <!-- Configurable Sections -->
+      <template
+        v-for="(section, index) in sections"
+        :key="section.label"
+      >
+        <div
+          v-if="section.entries.length"
+          class="section-label"
+          :class="{ 'section-label--education': index !== 0 }"
+        >
+          {{ section.label }}
+        </div>
+        <div
+          v-for="entry in sortedSectionEntries(section.entries)"
+          :key="entry.UID"
+          :data-uid="entry.UID"
+          class="sidebar-entry"
+          :class="entryClasses(entry)"
+          :style="entryIndentStyle(entry, section.entries)"
+          role="button"
+          tabindex="0"
+          :aria-label="`${entry.Title} — ${entry.subtitle}`"
+          :aria-pressed="selectedId === entry.UID"
+          @click="selectEntry(entry)"
+          @keydown.enter="selectEntry(entry)"
+          @keydown.space.prevent="selectEntry(entry)"
+        >
+          <div class="entry-top-line">
+            <span class="entry-company">{{ entry.Title }}</span>
+            <span
+              v-if="section.showDates !== false"
+              class="entry-dates"
+            >{{ section.singularDate ? formatSingularDate(entry.StartDate || '') : formatDateRange(entry.StartDate || '', entry.EndDate || '') }}</span>
+          </div>
+          <div
+            v-if="entry.subtitle"
+            class="entry-title"
+          >
+            {{ entry.subtitle }}
+          </div>
+          <div
+            class="entry-summary"
+            v-html="marked.parseInline(entry.Description || '')"
+          />
+        </div>
+      </template>
     </div>
 
     <div

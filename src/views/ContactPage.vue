@@ -9,8 +9,12 @@
           class="profile-img"
           loading="lazy"
           decoding="async"
-        />
-        <div v-else class="profile-img-placeholder" aria-label="Profile photo placeholder">
+        >
+        <div
+          v-else
+          class="profile-img-placeholder"
+          aria-label="Profile photo placeholder"
+        >
           <span class="placeholder-initials">{{ initials }}</span>
         </div>
       </div>
@@ -21,10 +25,12 @@
           target="_blank"
           rel="noopener noreferrer"
           class="pronouns-link"
-          >(he/him)</a
-        >
+        >(he/him)</a>
       </h1>
-      <p class="profile-summary" v-html="marked.parseInline(aboutData.summary)" />
+      <p
+        class="profile-summary"
+        v-html="marked.parseInline(aboutData.summary)"
+      />
     </div>
   </aside>
 
@@ -32,15 +38,22 @@
 
   <section class="contact-highlight">
     <div class="contact-section">
-      <h2 class="section-heading">Email</h2>
+      <h2 class="section-heading">
+        Email
+      </h2>
       <p class="email-text">
         Feel free to reach out at
-        <a :href="'mailto:' + email" class="contact-email">{{ displayEmail }}</a>
+        <a
+          :href="'mailto:' + email"
+          class="contact-email"
+        >{{ displayEmail }}</a>
       </p>
     </div>
 
     <div class="contact-section">
-      <h2 class="section-heading">LinkedIn</h2>
+      <h2 class="section-heading">
+        LinkedIn
+      </h2>
       <p class="email-text">
         Connect with me on
         <a
@@ -48,13 +61,14 @@
           class="contact-email"
           target="_blank"
           rel="noopener noreferrer"
-          >{{ contactData.linkedin.display }}</a
-        >
+        >{{ contactData.linkedin.display }}</a>
       </p>
     </div>
 
     <div class="contact-section">
-      <h2 class="section-heading">GitHub</h2>
+      <h2 class="section-heading">
+        GitHub
+      </h2>
       <p class="email-text">
         Browse my code on
         <a
@@ -62,18 +76,22 @@
           class="contact-email"
           target="_blank"
           rel="noopener noreferrer"
-          >{{ contactData.github.display }}</a
-        >
+        >{{ contactData.github.display }}</a>
       </p>
     </div>
 
     <div class="contact-section">
-      <h2 class="section-heading">Résumé by request</h2>
+      <h2 class="section-heading">
+        Résumé by request
+      </h2>
       <p class="email-text">
         I no longer post a generic résumé. I'm focused on specific roles and clients. If you have an
         opportunity in mind, email me, and if it's a fit, I'll send a version that matches it.
       </p>
-      <a :href="resumeMailto" class="resume-cta">{{ contactData.resume.display }}</a>
+      <a
+        :href="resumeMailto"
+        class="resume-cta"
+      >{{ contactData.resume.display }}</a>
     </div>
   </section>
 </template>

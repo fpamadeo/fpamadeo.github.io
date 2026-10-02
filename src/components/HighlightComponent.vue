@@ -7,7 +7,6 @@
     aria-live="polite"
     aria-atomic="true"
   >
-
     <div
       v-if="showInvalidBanner"
       class="invalid-id-banner"
@@ -66,150 +65,150 @@
       </span>
     </div>
 
-      <div
-        v-if="activeEntry.media"
-        class="highlight-media"
+    <div
+      v-if="activeEntry.media"
+      class="highlight-media"
+    >
+      <img
+        :src="activeEntry.media"
+        :alt="`Media for ${activeEntry.Title || activeEntry.subtitle}`"
+        class="highlight-img"
+        :style="mediaStyle"
+        loading="lazy"
+        decoding="async"
       >
-        <img
-          :src="activeEntry.media"
-          :alt="`Media for ${activeEntry.Title || activeEntry.subtitle}`"
-          class="highlight-img"
-          :style="mediaStyle"
-          loading="lazy"
-          decoding="async"
-        >
-      </div>
+    </div>
 
-      <article
-        v-if="activeEntry.Body"
-        class="highlight-content"
-      >
-        <h2 class="highlight-title">
-          {{ activeEntry.Title }}
-        </h2>
-        <div
-          class="content-body"
-          v-html="renderBlock(activeEntry.Body)"
-        />
-      </article>
-
-      <!-- Standard experience/education entry -->
-      <template v-else>
-        <div
-          v-if="activeEntry.Highlights && activeEntry.Highlights.length"
-          class="highlight-section"
-        >
-          <h3 class="highlight-section-title">
-            HIGHLIGHTS
-          </h3>
-          <ul class="highlight-list">
-            <li
-              v-for="(item, i) in activeEntry.Highlights"
-              :key="`h-${i}`"
-              :class="{
-                'has-tag': itemTagUID(item) !== null,
-                'is-active-link': isActiveLinkItem(item),
-              }"
-              @click="handleItemClick(item)"
-            >
-              <span
-                class="item-text"
-                v-html="highlightText(itemText(item))"
-              />
-            </li>
-          </ul>
-        </div>
-
-        <div
-          v-if="activeEntry.Bullets && activeEntry.Bullets.length"
-          class="highlight-section"
-        >
-          <h3 class="highlight-section-title">
-            {{ activeEntry.BulletsTitle || 'BULLETS' }}
-          </h3>
-          <ul class="highlight-list">
-            <li
-              v-for="(item, i) in activeEntry.Bullets"
-              :key="`b-${i}`"
-              :class="{
-                'has-tag': itemTagUID(item) !== null,
-                'is-active-link': isActiveLinkItem(item),
-              }"
-              @click="handleItemClick(item)"
-            >
-              <span
-                class="item-text"
-                v-html="highlightText(itemText(item))"
-              />
-            </li>
-          </ul>
-        </div>
-
-        <div
-          v-if="activeEntry.Certifications && activeEntry.Certifications.length"
-          class="highlight-section"
-        >
-          <h3 class="highlight-section-title">
-            {{ activeEntry.CertificationsTitle || 'PROFESSIONAL DEVELOPMENT' }}
-          </h3>
-          <div class="cert-list">
-            <div
-              v-for="cert in activeEntry.Certifications"
-              :key="cert.Name + cert.Date"
-              class="cert-row"
-            >
-              <span class="cert-name">{{ cert.Name.trim() }}</span>
-              <span class="cert-issuer">{{ cert.Issuer.trim() }}</span>
-              <span class="cert-date">{{ cert.Date.trim() }}</span>
-            </div>
-          </div>
-        </div>
-      </template>
-
+    <article
+      v-if="activeEntry.Body"
+      class="highlight-content"
+    >
+      <h2 class="highlight-title">
+        {{ activeEntry.Title }}
+      </h2>
       <div
-        v-if="activeEntry.tags && activeEntry.tags.length"
+        class="content-body"
+        v-html="renderBlock(activeEntry.Body)"
+      />
+    </article>
+
+    <!-- Standard experience/education entry -->
+    <template v-else>
+      <div
+        v-if="activeEntry.Highlights && activeEntry.Highlights.length"
         class="highlight-section"
       >
         <h3 class="highlight-section-title">
-          TAGS
+          HIGHLIGHTS
         </h3>
-        <div class="tag-filter-area">
-          <span
-            v-for="tag in activeEntry.tags"
-            :key="tag"
-            class="tag-pill-wrapper"
+        <ul class="highlight-list">
+          <li
+            v-for="(item, i) in activeEntry.Highlights"
+            :key="`h-${i}`"
+            :class="{
+              'has-tag': itemTagUID(item) !== null,
+              'is-active-link': isActiveLinkItem(item),
+            }"
+            @click="handleItemClick(item)"
           >
-            <button
-              class="tag-pill"
-              :class="{ 'is-active': tagFilterEnabled && activeTag === tag }"
-              :disabled="!tagFilterEnabled"
-              :aria-pressed="tagFilterEnabled ? activeTag === tag : undefined"
-              @click="handleTagBadgeClick(tag)"
-              @keydown.enter="handleTagBadgeClick(tag)"
-              @keydown.space.prevent="handleTagBadgeClick(tag)"
-            >{{ compressTag(tag) }}</button>
-          </span>
-        </div>
+            <span
+              class="item-text"
+              v-html="highlightText(itemText(item))"
+            />
+          </li>
+        </ul>
       </div>
 
       <div
-        v-if="activeEntry.footnote || (activeEntry.related && activeEntry.related.length)"
-        class="highlight-footnotes"
+        v-if="activeEntry.Bullets && activeEntry.Bullets.length"
+        class="highlight-section"
       >
-        <div
-          v-if="activeEntry.footnote"
-          class="footnote-content"
-          v-html="renderBlock(activeEntry.footnote)"
-        />
-        <div
-          v-if="activeEntry.related && activeEntry.related.length"
-          class="footnote-related"
-        >
-          <span class="footnote-label">Related entries:</span>
-          <span class="footnote-count">{{ activeEntry.related.length }}</span>
-          <span class="footnote-hint">(highlighted in sidebar)</span>
+        <h3 class="highlight-section-title">
+          {{ activeEntry.BulletsTitle || 'BULLETS' }}
+        </h3>
+        <ul class="highlight-list">
+          <li
+            v-for="(item, i) in activeEntry.Bullets"
+            :key="`b-${i}`"
+            :class="{
+              'has-tag': itemTagUID(item) !== null,
+              'is-active-link': isActiveLinkItem(item),
+            }"
+            @click="handleItemClick(item)"
+          >
+            <span
+              class="item-text"
+              v-html="highlightText(itemText(item))"
+            />
+          </li>
+        </ul>
+      </div>
+
+      <div
+        v-if="activeEntry.Certifications && activeEntry.Certifications.length"
+        class="highlight-section"
+      >
+        <h3 class="highlight-section-title">
+          {{ activeEntry.CertificationsTitle || 'PROFESSIONAL DEVELOPMENT' }}
+        </h3>
+        <div class="cert-list">
+          <div
+            v-for="cert in activeEntry.Certifications"
+            :key="cert.Name + cert.Date"
+            class="cert-row"
+          >
+            <span class="cert-name">{{ cert.Name.trim() }}</span>
+            <span class="cert-issuer">{{ cert.Issuer.trim() }}</span>
+            <span class="cert-date">{{ cert.Date.trim() }}</span>
+          </div>
         </div>
       </div>
+    </template>
+
+    <div
+      v-if="activeEntry.tags && activeEntry.tags.length"
+      class="highlight-section"
+    >
+      <h3 class="highlight-section-title">
+        TAGS
+      </h3>
+      <div class="tag-filter-area">
+        <span
+          v-for="tag in activeEntry.tags"
+          :key="tag"
+          class="tag-pill-wrapper"
+        >
+          <button
+            class="tag-pill"
+            :class="{ 'is-active': tagFilterEnabled && activeTag === tag }"
+            :disabled="!tagFilterEnabled"
+            :aria-pressed="tagFilterEnabled ? activeTag === tag : undefined"
+            @click="handleTagBadgeClick(tag)"
+            @keydown.enter="handleTagBadgeClick(tag)"
+            @keydown.space.prevent="handleTagBadgeClick(tag)"
+          >{{ compressTag(tag) }}</button>
+        </span>
+      </div>
+    </div>
+
+    <div
+      v-if="activeEntry.footnote || (activeEntry.related && activeEntry.related.length)"
+      class="highlight-footnotes"
+    >
+      <div
+        v-if="activeEntry.footnote"
+        class="footnote-content"
+        v-html="renderBlock(activeEntry.footnote)"
+      />
+      <div
+        v-if="activeEntry.related && activeEntry.related.length"
+        class="footnote-related"
+      >
+        <span class="footnote-label">Related entries:</span>
+        <span class="footnote-count">{{ activeEntry.related.length }}</span>
+        <span class="footnote-hint">(highlighted in sidebar)</span>
+      </div>
+    </div>
   </section>
 </template>
 

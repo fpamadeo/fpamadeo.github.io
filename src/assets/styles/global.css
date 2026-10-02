@@ -1,6 +1,6 @@
-/* ─── Barbara Font (About page name only) ─────────────────────── */
+/* ─── Barabara Font (About page name only) ─────────────────────── */
 @font-face {
-  font-family: 'Barbara';
+  font-family: 'Barabara';
   src: url('/assets/fonts/BARABARA-final.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
@@ -61,7 +61,7 @@ body {
   --sidebar-width: 35%;
   --highlight-width: 65%;
 
-  --font-barbara: 'Barbara', cursive;
+  --font-barbara: 'Barabara', cursive;
   --font-body: 'Lato', sans-serif;
 
   --sidebar-padding: 1rem;

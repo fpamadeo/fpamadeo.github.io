@@ -9,8 +9,12 @@
           class="profile-img"
           loading="lazy"
           decoding="async"
-        />
-        <div v-else class="profile-img-placeholder" aria-label="Profile photo placeholder">
+        >
+        <div
+          v-else
+          class="profile-img-placeholder"
+          aria-label="Profile photo placeholder"
+        >
           <span class="placeholder-initials">{{ initials }}</span>
         </div>
       </div>
@@ -22,10 +26,12 @@
           target="_blank"
           rel="noopener noreferrer"
           class="pronouns-link"
-          >(he/him)</a
-        >
+        >(he/him)</a>
       </h1>
-      <p class="profile-summary" v-html="marked.parseInline(aboutData.summary)" />
+      <p
+        class="profile-summary"
+        v-html="marked.parseInline(aboutData.summary)"
+      />
     </div>
   </aside>
 
@@ -33,7 +39,9 @@
 
   <section class="about-highlight">
     <div class="bio-section">
-      <h2 class="section-heading">Bio</h2>
+      <h2 class="section-heading">
+        Bio
+      </h2>
       <div class="bio-text">
         <div
           v-for="(paragraph, i) in bioParagraphs"
@@ -45,7 +53,9 @@
     </div>
 
     <div class="favorites-section">
-      <h2 class="section-heading">Current Favorites</h2>
+      <h2 class="section-heading">
+        Current Favorites
+      </h2>
       <div class="favorites-grid">
         <div
           v-for="(items, category) in aboutData.favorites"
@@ -56,7 +66,11 @@
             {{ category }}
           </h3>
           <ul class="favorites-list">
-            <li v-for="(item, i) in items" :key="i" v-html="marked.parseInline(item)" />
+            <li
+              v-for="(item, i) in items"
+              :key="i"
+              v-html="marked.parseInline(item)"
+            />
           </ul>
         </div>
       </div>
@@ -64,9 +78,11 @@
 
     <p class="attribution-footnote">
       Favicon by
-      <a href="https://duckhive.itch.io/penguin" target="_blank" rel="noopener noreferrer"
-        >duckhive</a
-      >
+      <a
+        href="https://duckhive.itch.io/penguin"
+        target="_blank"
+        rel="noopener noreferrer"
+      >duckhive</a>
       on itch.io
     </p>
   </section>
